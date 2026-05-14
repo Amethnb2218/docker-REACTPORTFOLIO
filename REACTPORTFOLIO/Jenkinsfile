@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = 'REACTPORTFOLIO/compose.yaml'
         FRONTEND_DIR = 'REACTPORTFOLIO/reactportfolio'
         BACKEND_DIR = 'REACTPORTFOLIO/EXPRESSJS PORTFOLIO'
     }
@@ -22,7 +21,7 @@ pipeline {
                     steps {
                         dir("${env.FRONTEND_DIR}") {
                             echo '📦 Installation des dépendances frontend...'
-                            sh 'npm ci'
+                            sh 'npm install'
                         }
                     }
                 }
@@ -30,7 +29,7 @@ pipeline {
                     steps {
                         dir("${env.BACKEND_DIR}") {
                             echo '📦 Installation des dépendances backend...'
-                            sh 'npm ci'
+                            sh 'npm install'
                         }
                     }
                 }
@@ -58,15 +57,24 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo '🐳 Construction des images Docker...'
-                sh "docker compose -f ${DOCKER_COMPOSE_FILE} build"
+                dir('REACTPORTFOLIO') {
+                    sh 'docker build -t portfolio-frontend ./reactportfolio'
+                    sh 'docker build -t portfolio-backend "./EXPRESSJS PORTFOLIO"'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
                 echo '🚀 Déploiement des conteneurs...'
-                sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
-                sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                sh '''
+                    docker stop portfolio-frontend portfolio-backend portfolio-mongo || true
+                    docker rm portfolio-frontend portfolio-backend portfolio-mongo || true
+                    docker network create portfolio-net || true
+                    docker run -d --name portfolio-mongo --network portfolio-net mongo:7
+                    docker run -d --name portfolio-backend --network portfolio-net -p 5000:5000 -e MONGO_URI=mongodb://portfolio-mongo:27017/portfolio -e USE_MEMORY_DB=false portfolio-backend
+                    docker run -d --name portfolio-frontend --network portfolio-net -p 3000:80 portfolio-frontend
+                '''
             }
         }
 
@@ -89,7 +97,8 @@ pipeline {
         }
         failure {
             echo '❌ Pipeline ÉCHOUÉ !'
-            sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
+            sh 'docker stop portfolio-frontend portfolio-backend portfolio-mongo || true'
+            sh 'docker rm portfolio-frontend portfolio-backend portfolio-mongo || true'
         }
         always {
             echo '📊 Nettoyage du workspace...'
