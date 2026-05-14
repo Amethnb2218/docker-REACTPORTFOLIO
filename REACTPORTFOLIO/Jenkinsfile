@@ -83,12 +83,12 @@ pipeline {
                 echo '✅ Vérification que les services sont opérationnels...'
                 sh '''
                     sleep 10
-                    FRONTEND_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' portfolio-frontend)
-                    BACKEND_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' portfolio-backend)
-                    echo "Frontend IP: $FRONTEND_IP"
-                    echo "Backend IP: $BACKEND_IP"
-                    curl -f http://$FRONTEND_IP:80 || exit 1
-                    curl -f http://$BACKEND_IP:5000/api/projects || exit 1
+                    echo "Vérification frontend (nginx)..."
+                    docker exec portfolio-frontend wget -qO- http://localhost:80 > /dev/null || exit 1
+                    echo "Frontend OK"
+                    echo "Vérification backend (express)..."
+                    docker exec portfolio-backend node -e "fetch('http://localhost:5000/api/projects').then(r=>{if(!r.ok)process.exit(1);process.exit(0)}).catch(()=>process.exit(1))"
+                    echo "Backend OK"
                 '''
                 echo '✅ Tous les services sont UP !'
             }
