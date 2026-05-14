@@ -4,6 +4,11 @@ pipeline {
     environment {
         FRONTEND_DIR = 'REACTPORTFOLIO/reactportfolio'
         BACKEND_DIR = 'REACTPORTFOLIO/EXPRESSJS PORTFOLIO'
+        EMAIL_RECIPIENTS = 'mouhamed.sall@email.com'
+    }
+
+    triggers {
+        githubPush()
     }
 
     stages {
@@ -100,11 +105,44 @@ pipeline {
     post {
         success {
             echo '✅ Pipeline terminé avec SUCCÈS !'
+            mail to: "${env.EMAIL_RECIPIENTS}",
+                 subject: "✅ Jenkins - Build #${env.BUILD_NUMBER} RÉUSSI - ${env.JOB_NAME}",
+                 body: """Bonjour,
+
+Le pipeline "${env.JOB_NAME}" (Build #${env.BUILD_NUMBER}) s'est terminé avec SUCCÈS.
+
+Détails :
+- Job : ${env.JOB_NAME}
+- Build : #${env.BUILD_NUMBER}
+- Durée : ${currentBuild.durationString}
+- URL : ${env.BUILD_URL}
+
+Cordialement,
+Jenkins CI/CD
+"""
         }
         failure {
             echo '❌ Pipeline ÉCHOUÉ !'
             sh 'docker stop portfolio-frontend portfolio-backend portfolio-mongo || true'
             sh 'docker rm portfolio-frontend portfolio-backend portfolio-mongo || true'
+            mail to: "${env.EMAIL_RECIPIENTS}",
+                 subject: "❌ Jenkins - Build #${env.BUILD_NUMBER} ÉCHOUÉ - ${env.JOB_NAME}",
+                 body: """Bonjour,
+
+Le pipeline "${env.JOB_NAME}" (Build #${env.BUILD_NUMBER}) a ÉCHOUÉ.
+
+Détails :
+- Job : ${env.JOB_NAME}
+- Build : #${env.BUILD_NUMBER}
+- Durée : ${currentBuild.durationString}
+- URL : ${env.BUILD_URL}
+- Console : ${env.BUILD_URL}console
+
+Merci de vérifier les logs pour identifier l'erreur.
+
+Cordialement,
+Jenkins CI/CD
+"""
         }
         always {
             echo '📊 Nettoyage du workspace...'
