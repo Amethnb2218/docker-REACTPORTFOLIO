@@ -1,0 +1,125 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_COMPOSE_FILE = 'compose.yaml'
+        FRONTEND_IMAGE = 'portfolio-frontend'
+        BACKEND_IMAGE = 'portfolio-backend'
+    }
+
+    stages {
+
+        // ============================================================
+        // STAGE 1 : Récupération du code source depuis Git
+        // ============================================================
+        stage('Checkout') {
+            steps {
+                echo '📥 Récupération du code source...'
+                checkout scm
+            }
+        }
+
+        // ============================================================
+        // STAGE 2 : Installation des dépendances
+        // ============================================================
+        stage('Install Dependencies') {
+            parallel {
+                stage('Frontend Dependencies') {
+                    steps {
+                        dir('reactportfolio') {
+                            echo '📦 Installation des dépendances frontend...'
+                            sh 'npm ci'
+                        }
+                    }
+                }
+                stage('Backend Dependencies') {
+                    steps {
+                        dir('EXPRESSJS PORTFOLIO') {
+                            echo '📦 Installation des dépendances backend...'
+                            sh 'npm ci'
+                        }
+                    }
+                }
+            }
+        }
+
+        // ============================================================
+        // STAGE 3 : Exécution des tests
+        // ============================================================
+        stage('Tests') {
+            steps {
+                dir('EXPRESSJS PORTFOLIO') {
+                    echo '🧪 Lancement des tests backend...'
+                    sh 'npm test'
+                }
+            }
+        }
+
+        // ============================================================
+        // STAGE 4 : Build du frontend (vérification que ça compile)
+        // ============================================================
+        stage('Build Frontend') {
+            steps {
+                dir('reactportfolio') {
+                    echo '🔨 Build du frontend React...'
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        // ============================================================
+        // STAGE 5 : Construction des images Docker
+        // ============================================================
+        stage('Docker Build') {
+            steps {
+                echo '🐳 Construction des images Docker...'
+                sh "docker compose -f ${DOCKER_COMPOSE_FILE} build"
+            }
+        }
+
+        // ============================================================
+        // STAGE 6 : Déploiement (lancement des conteneurs)
+        // ============================================================
+        stage('Deploy') {
+            steps {
+                echo '🚀 Déploiement des conteneurs...'
+                sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
+                sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d"
+            }
+        }
+
+        // ============================================================
+        // STAGE 7 : Vérification post-déploiement (Health Check)
+        // ============================================================
+        stage('Health Check') {
+            steps {
+                echo '✅ Vérification que les services sont opérationnels...'
+                sh '''
+                    sleep 10
+                    curl -f http://localhost:3000 || exit 1
+                    curl -f http://localhost:5000/api/projects || exit 1
+                '''
+                echo '✅ Tous les services sont UP !'
+            }
+        }
+    }
+
+    // ============================================================
+    // ACTIONS POST-PIPELINE (notifications)
+    // ============================================================
+    post {
+        success {
+            echo '✅ Pipeline terminé avec SUCCÈS !'
+            // En production, on enverrait un email/Slack ici
+        }
+        failure {
+            echo '❌ Pipeline ÉCHOUÉ !'
+            // Nettoyage en cas d'échec
+            sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
+        }
+        always {
+            echo '📊 Nettoyage du workspace...'
+            cleanWs()
+        }
+    }
+}

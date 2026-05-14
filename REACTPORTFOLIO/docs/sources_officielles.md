@@ -1,0 +1,17 @@
+# Sources officielles utilisées
+
+- [Glossaire SonarQube](https://docs.sonarsource.com/sonarqube-server/glossary)
+- [Project analysis setup](https://docs.sonarsource.com/sonarqube-server/analyzing-source-code/overview)
+- [Analysis overview](https://docs.sonarsource.com/sonarqube-server/10.8/analyzing-source-code/analysis-overview/)
+- [Analysis parameters](https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/analysis-parameters/)
+- [Quality gates](https://docs.sonarsource.com/sonarqube-server/2026.1/quality-standards-administration/managing-quality-gates/introduction-to-quality-gates)
+- [Quality profiles](https://docs.sonarsource.com/sonarqube-server/quality-standards-administration/managing-quality-profiles/understanding-quality-profiles)
+- [Rules](https://docs.sonarsource.com/sonarqube-server/quality-standards-administration/managing-rules/rules)
+- [Metrics](https://docs.sonarsource.com/sonarqube-server/user-guide/code-metrics/metrics-definition)
+- [Clean as You Code](https://docs.sonarsource.com/sonarqube-server/latest/user-guide/clean-as-you-code/implementation/)
+- [Security hotspots](https://docs.sonarsource.com/sonarqube-server/2025.3/user-guide/security-hotspots/)
+- [Server components](https://docs.sonarsource.com/sonarqube-server/server-installation/server-components-overview)
+- [Webhooks](https://docs.sonarsource.com/sonarqube-server/latest/project-administration/webhooks/)
+- [Permissions](https://docs.sonarsource.com/sonarqube-server/2026.1/instance-administration/user-management/user-permissions)
+- [Applications](https://docs.sonarsource.com/sonarqube-server/user-guide/applications)
+- [Advanced Security / SCA](https://docs.sonarsource.com/sonarqube-server/latest/advanced-security/introduction/)

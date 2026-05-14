@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build: ./reactportfolio
+    container_name: portfolio-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - portfolio-net
+
+  backend:
+    build: "./EXPRESSJS PORTFOLIO"
+    container_name: portfolio-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - USE_MEMORY_DB=false
+      - MONGO_URI=mongodb://mongo:27017/portfolio
+    depends_on:
+      - mongo
+    networks:
+      - portfolio-net
+
+  mongo:
+    image: mongo:7
+    container_name: portfolio-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - portfolio-net
+
+volumes:
+  mongo-data:
+
+networks:
+  portfolio-net:
