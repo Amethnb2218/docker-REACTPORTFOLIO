@@ -10,4 +10,7 @@ RUN apt-get update && apt-get install -y curl && \
 # Install Docker CLI
 RUN apt-get install -y docker.io
 
+# Donner à jenkins l'accès au socket Docker
+RUN usermod -aG docker jenkins
+
 USER jenkins
