@@ -2,16 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = 'compose.yaml'
-        FRONTEND_IMAGE = 'portfolio-frontend'
-        BACKEND_IMAGE = 'portfolio-backend'
+        DOCKER_COMPOSE_FILE = 'REACTPORTFOLIO/compose.yaml'
+        FRONTEND_DIR = 'REACTPORTFOLIO/reactportfolio'
+        BACKEND_DIR = 'REACTPORTFOLIO/EXPRESSJS PORTFOLIO'
     }
 
     stages {
 
-        // ============================================================
-        // STAGE 1 : Récupération du code source depuis Git
-        // ============================================================
         stage('Checkout') {
             steps {
                 echo '📥 Récupération du code source...'
@@ -19,14 +16,11 @@ pipeline {
             }
         }
 
-        // ============================================================
-        // STAGE 2 : Installation des dépendances
-        // ============================================================
         stage('Install Dependencies') {
             parallel {
                 stage('Frontend Dependencies') {
                     steps {
-                        dir('reactportfolio') {
+                        dir("${env.FRONTEND_DIR}") {
                             echo '📦 Installation des dépendances frontend...'
                             sh 'npm ci'
                         }
@@ -34,7 +28,7 @@ pipeline {
                 }
                 stage('Backend Dependencies') {
                     steps {
-                        dir('EXPRESSJS PORTFOLIO') {
+                        dir("${env.BACKEND_DIR}") {
                             echo '📦 Installation des dépendances backend...'
                             sh 'npm ci'
                         }
@@ -43,33 +37,24 @@ pipeline {
             }
         }
 
-        // ============================================================
-        // STAGE 3 : Exécution des tests
-        // ============================================================
         stage('Tests') {
             steps {
-                dir('EXPRESSJS PORTFOLIO') {
+                dir("${env.BACKEND_DIR}") {
                     echo '🧪 Lancement des tests backend...'
                     sh 'npm test'
                 }
             }
         }
 
-        // ============================================================
-        // STAGE 4 : Build du frontend (vérification que ça compile)
-        // ============================================================
         stage('Build Frontend') {
             steps {
-                dir('reactportfolio') {
+                dir("${env.FRONTEND_DIR}") {
                     echo '🔨 Build du frontend React...'
                     sh 'npm run build'
                 }
             }
         }
 
-        // ============================================================
-        // STAGE 5 : Construction des images Docker
-        // ============================================================
         stage('Docker Build') {
             steps {
                 echo '🐳 Construction des images Docker...'
@@ -77,9 +62,6 @@ pipeline {
             }
         }
 
-        // ============================================================
-        // STAGE 6 : Déploiement (lancement des conteneurs)
-        // ============================================================
         stage('Deploy') {
             steps {
                 echo '🚀 Déploiement des conteneurs...'
@@ -88,9 +70,6 @@ pipeline {
             }
         }
 
-        // ============================================================
-        // STAGE 7 : Vérification post-déploiement (Health Check)
-        // ============================================================
         stage('Health Check') {
             steps {
                 echo '✅ Vérification que les services sont opérationnels...'
@@ -104,17 +83,12 @@ pipeline {
         }
     }
 
-    // ============================================================
-    // ACTIONS POST-PIPELINE (notifications)
-    // ============================================================
     post {
         success {
             echo '✅ Pipeline terminé avec SUCCÈS !'
-            // En production, on enverrait un email/Slack ici
         }
         failure {
             echo '❌ Pipeline ÉCHOUÉ !'
-            // Nettoyage en cas d'échec
             sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
         }
         always {
