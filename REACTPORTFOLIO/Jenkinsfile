@@ -4,7 +4,7 @@ pipeline {
     environment {
         FRONTEND_DIR = 'REACTPORTFOLIO/reactportfolio'
         BACKEND_DIR = 'REACTPORTFOLIO/EXPRESSJS PORTFOLIO'
-        EMAIL_RECIPIENTS = 'mouhamed.sall@email.com'
+        EMAIL_RECIPIENTS = 'amethsl2218@gmail.com'
     }
 
     triggers {
@@ -150,3 +150,4 @@ Jenkins CI/CD
         }
     }
 }
+

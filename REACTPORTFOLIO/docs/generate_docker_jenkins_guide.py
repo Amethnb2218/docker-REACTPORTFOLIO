@@ -1,0 +1,1127 @@
+# -*- coding: utf-8 -*-
+from pathlib import Path
+import subprocess
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DOCS = ROOT / "docs"
+HTML_PATH = DOCS / "GUIDE_DOCKER_JENKINS_COMPLET.html"
+PDF_PATH = DOCS / "GUIDE_DOCKER_JENKINS_COMPLET.pdf"
+
+
+HTML = r"""<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Guide complet Docker, Docker Compose et Jenkins - Portfolio React Express MongoDB</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm;
+    }
+
+    :root {
+      --ink: #18202a;
+      --muted: #526070;
+      --line: #d8dee8;
+      --soft: #f4f7fb;
+      --accent: #0f766e;
+      --accent-dark: #134e4a;
+      --code-bg: #0f172a;
+      --code-ink: #e5e7eb;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.48;
+      background: white;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .cover {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-bottom: 5px solid var(--accent);
+      page-break-after: always;
+    }
+
+    .eyebrow {
+      color: var(--accent-dark);
+      font-size: 11pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 30pt;
+      line-height: 1.08;
+      margin: 0 0 18px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 20pt;
+      margin: 32px 0 12px;
+      color: #111827;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 6px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 14pt;
+      margin: 24px 0 8px;
+      color: var(--accent-dark);
+      page-break-after: avoid;
+    }
+
+    h4 {
+      font-size: 11.5pt;
+      margin: 18px 0 6px;
+      color: #111827;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin: 7px 0;
+    }
+
+    ul, ol {
+      margin: 7px 0 12px 21px;
+      padding: 0;
+    }
+
+    li {
+      margin: 4px 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14pt;
+      max-width: 780px;
+      margin-bottom: 30px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 7px 14px;
+      margin-top: 30px;
+      max-width: 720px;
+      font-size: 11pt;
+    }
+
+    .meta strong {
+      color: var(--accent-dark);
+    }
+
+    .toc {
+      page-break-after: always;
+    }
+
+    .toc ol {
+      columns: 2;
+      column-gap: 30px;
+      margin-left: 20px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 12px 14px;
+      margin: 13px 0;
+      border-radius: 6px;
+      page-break-inside: avoid;
+    }
+
+    .warning {
+      border-left: 5px solid #b45309;
+      background: #fff7ed;
+    }
+
+    .success {
+      border-left: 5px solid var(--accent);
+      background: #ecfdf5;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9.2pt;
+      background: #eef2f7;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 12px;
+      border-radius: 7px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 8.7pt;
+      line-height: 1.36;
+      page-break-inside: avoid;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 7px 8px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e8f3f1;
+      color: var(--accent-dark);
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .small {
+      font-size: 9pt;
+      color: var(--muted);
+    }
+
+    .flow {
+      font-family: Consolas, "Courier New", monospace;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      padding: 12px;
+      border-radius: 7px;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+
+    .break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+  <section class="cover">
+    <div class="eyebrow">Documentation technique complete</div>
+    <h1>Docker, Docker Compose et Jenkins<br>Portfolio React + Express + MongoDB</h1>
+    <p class="subtitle">
+      Explication ordonnee, detaillee et ligne par ligne des Dockerfiles,
+      du fichier Compose, de Nginx, des ports, de <code>npm ci</code>,
+      de la base MongoDB, du dossier <code>dist</code> et du pipeline Jenkins.
+    </p>
+    <div class="meta">
+      <strong>Projet</strong><span>REACTPORTFOLIO</span>
+      <strong>Frontend</strong><span>React + Vite servi par Nginx</span>
+      <strong>Backend</strong><span>Express.js + Mongoose</span>
+      <strong>Base de donnees</strong><span>MongoDB via image officielle <code>mongo:7</code></span>
+      <strong>CI/CD</strong><span>Jenkins avec build, tests, images Docker, deploiement et health check</span>
+    </div>
+  </section>
+
+  <section class="toc">
+    <h2>Table des matieres</h2>
+    <ol>
+      <li>Vue d'ensemble du projet</li>
+      <li>Definitions Docker essentielles</li>
+      <li>Relation Dockerfile, image, conteneur et Docker Hub</li>
+      <li>Explication de <code>npm ci</code></li>
+      <li>Explication des ports</li>
+      <li>Dockerfile backend Express</li>
+      <li>Dockerfile frontend React</li>
+      <li>Le dossier <code>dist</code></li>
+      <li>Fichier <code>compose.yaml</code></li>
+      <li>MongoDB, image Docker Hub et volume</li>
+      <li>Configuration Nginx</li>
+      <li>Jenkins avec Docker</li>
+      <li>Jenkinsfile ligne par ligne</li>
+      <li>Health checks et correction de l'erreur du pipeline</li>
+      <li>Commandes utiles</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>1. Vue d'ensemble du projet</h2>
+    <p>
+      Ton projet est une application en trois parties. Le frontend React affiche
+      l'interface utilisateur. Le backend Express expose une API REST. MongoDB
+      stocke les donnees des projets du portfolio.
+    </p>
+    <div class="flow">Navigateur
+  -> http://localhost:3000
+  -> conteneur frontend Nginx, port 80
+  -> fichiers React compiles dans /usr/share/nginx/html
+  -> appels /api envoyes au backend
+  -> conteneur backend Express, port 5000
+  -> connexion MongoDB
+  -> conteneur mongo, port 27017, volume mongo-data</div>
+    <p>
+      Les fichiers principaux sont :
+    </p>
+    <table>
+      <tr><th>Fichier</th><th>Role</th></tr>
+      <tr><td><code>reactportfolio/Dockerfile</code></td><td>Construit le frontend React avec Node, puis sert le resultat avec Nginx.</td></tr>
+      <tr><td><code>EXPRESSJS PORTFOLIO/Dockerfile</code></td><td>Construit l'image du backend Express.</td></tr>
+      <tr><td><code>compose.yaml</code></td><td>Lance ensemble frontend, backend et MongoDB.</td></tr>
+      <tr><td><code>reactportfolio/nginx.conf</code></td><td>Configure Nginx pour servir React et relayer les appels API.</td></tr>
+      <tr><td><code>Jenkinsfile</code></td><td>Definit le pipeline CI/CD : checkout, install, tests, build, Docker, deploy, verification.</td></tr>
+      <tr><td><code>Dockerfile.jenkins</code></td><td>Construit une image Jenkins personnalisee avec Node.js et Docker CLI.</td></tr>
+      <tr><td><code>docker-compose.jenkins.yml</code></td><td>Lance Jenkins dans un conteneur avec acces au Docker de la machine.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>2. Definitions Docker essentielles</h2>
+
+    <h3>Docker</h3>
+    <p>
+      Docker est une plateforme qui permet d'emballer une application avec tout
+      ce dont elle a besoin pour fonctionner : systeme minimal, dependances,
+      fichiers, variables et commande de demarrage.
+    </p>
+
+    <h3>Dockerfile</h3>
+    <p>
+      Un Dockerfile est une recette. Il explique comment construire une image.
+      Il contient des instructions comme <code>FROM</code>, <code>WORKDIR</code>,
+      <code>COPY</code>, <code>RUN</code>, <code>ENV</code>, <code>EXPOSE</code>
+      et <code>CMD</code>.
+    </p>
+
+    <h3>Image Docker</h3>
+    <p>
+      Une image est le resultat construit a partir d'un Dockerfile ou telecharge
+      depuis un registre comme Docker Hub. Elle est immuable : elle sert de modele.
+    </p>
+
+    <h3>Conteneur</h3>
+    <p>
+      Un conteneur est une image en cours d'execution. Si l'image est le modele,
+      le conteneur est l'instance vivante.
+    </p>
+
+    <h3>Docker Compose</h3>
+    <p>
+      Docker Compose permet de declarer plusieurs conteneurs dans un seul fichier
+      YAML. Dans ton projet, Compose lance le frontend, le backend et MongoDB,
+      puis les place sur le meme reseau.
+    </p>
+
+    <h3>Docker Hub</h3>
+    <p>
+      Docker Hub est un registre public d'images. Par exemple, <code>mongo:7</code>,
+      <code>node:20-slim</code>, <code>node:20-alpine</code> et <code>nginx:alpine</code>
+      viennent de Docker Hub si elles ne sont pas deja presentes localement.
+    </p>
+  </section>
+
+  <section>
+    <h2>3. Relation Dockerfile, image, conteneur et Docker Hub</h2>
+    <div class="flow">Dockerfile local
+  -> docker build
+  -> image personnalisee
+  -> docker run
+  -> conteneur en execution</div>
+    <p>
+      Pour obtenir un conteneur, il faut toujours une image. Mais pour obtenir
+      une image, il y a deux possibilites :
+    </p>
+    <table>
+      <tr><th>Cas</th><th>Exemple</th><th>Explication</th></tr>
+      <tr>
+        <td>Image construite localement</td>
+        <td><code>build: ./reactportfolio</code></td>
+        <td>Docker lit le Dockerfile du dossier et construit une image frontend.</td>
+      </tr>
+      <tr>
+        <td>Image recuperee depuis Docker Hub</td>
+        <td><code>image: mongo:7</code></td>
+        <td>Docker telecharge l'image officielle MongoDB. Tu n'as pas besoin d'ecrire un Dockerfile MongoDB.</td>
+      </tr>
+    </table>
+    <div class="box success">
+      La base de donnees a bien une image. Elle n'a simplement pas de Dockerfile
+      dans ton projet parce que l'image officielle <code>mongo:7</code> existe deja.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Explication de npm ci</h2>
+    <p>
+      Dans les deux Dockerfiles, on trouve :
+    </p>
+    <pre>COPY package.json package-lock.json ./
+RUN npm ci</pre>
+    <p>
+      <code>npm ci</code> installe les dependances Node.js de facon propre,
+      stricte et reproductible. Il lit <code>package-lock.json</code> et installe
+      exactement les versions indiquees.
+    </p>
+    <table>
+      <tr><th>Element</th><th>Utilite</th></tr>
+      <tr><td><code>package.json</code></td><td>Liste les dependances directes et les scripts du projet.</td></tr>
+      <tr><td><code>package-lock.json</code></td><td>Verrouille les versions exactes de toutes les dependances.</td></tr>
+      <tr><td><code>npm ci</code></td><td>Installe exactement ce qui est dans le lock file, sans le modifier.</td></tr>
+      <tr><td><code>node_modules</code></td><td>Dossier genere contenant les dependances installees.</td></tr>
+    </table>
+    <h3>Difference entre npm install et npm ci</h3>
+    <table>
+      <tr><th>Commande</th><th>Comportement</th><th>Quand l'utiliser</th></tr>
+      <tr>
+        <td><code>npm install</code></td>
+        <td>Installe les dependances et peut modifier <code>package-lock.json</code>.</td>
+        <td>Pratique en developpement quand tu ajoutes ou modifies des dependances.</td>
+      </tr>
+      <tr>
+        <td><code>npm ci</code></td>
+        <td>Supprime <code>node_modules</code> s'il existe, puis reinstalle exactement les versions du lock file.</td>
+        <td>Ideal pour Docker, Jenkins et les builds automatiques.</td>
+      </tr>
+    </table>
+    <p>
+      Dans Docker, on prefere <code>npm ci</code> car l'objectif est de construire
+      la meme image sur toutes les machines. Cela evite les surprises entre ton PC,
+      Jenkins et un serveur de production.
+    </p>
+  </section>
+
+  <section>
+    <h2>5. Explication des ports</h2>
+    <p>
+      Un port est une porte reseau. Une application ecoute sur un port pour recevoir
+      des connexions. Dans Docker, il faut distinguer le port de la machine et le
+      port du conteneur.
+    </p>
+    <pre>ports:
+  - "PORT_MACHINE:PORT_CONTENEUR"</pre>
+    <table>
+      <tr><th>Service</th><th>Port machine</th><th>Port conteneur</th><th>Utilite</th></tr>
+      <tr><td>Frontend</td><td><code>3000</code></td><td><code>80</code></td><td>Le navigateur ouvre <code>http://localhost:3000</code>, Docker redirige vers Nginx.</td></tr>
+      <tr><td>Backend</td><td><code>5000</code></td><td><code>5000</code></td><td>L'API Express est accessible sur <code>http://localhost:5000</code>.</td></tr>
+      <tr><td>MongoDB</td><td><code>27017</code></td><td><code>27017</code></td><td>MongoDB Compass peut se connecter a <code>mongodb://localhost:27017</code>.</td></tr>
+      <tr><td>Jenkins</td><td><code>8080</code></td><td><code>8080</code></td><td>Interface web Jenkins.</td></tr>
+      <tr><td>Agents Jenkins</td><td><code>50000</code></td><td><code>50000</code></td><td>Communication entre Jenkins et ses agents.</td></tr>
+    </table>
+    <div class="box">
+      <strong>Regle importante :</strong> depuis ta machine, on utilise
+      <code>localhost</code>. Entre conteneurs, on utilise les noms Docker :
+      <code>portfolio-backend</code>, <code>backend</code>, <code>mongo</code>,
+      selon la configuration du reseau.
+    </div>
+    <div class="flow">Depuis ta machine :
+localhost:3000  -> frontend:80
+localhost:5000  -> backend:5000
+localhost:27017 -> mongo:27017
+
+Depuis les conteneurs :
+frontend -> portfolio-backend:5000
+backend  -> mongo:27017</div>
+  </section>
+
+  <section class="break">
+    <h2>6. Dockerfile backend Express</h2>
+    <pre>FROM node:20-slim
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY app.js ./
+COPY src/ ./src/
+
+ENV USE_MEMORY_DB=true
+ENV PORT=5000
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]</pre>
+    <table>
+      <tr><th>Ligne</th><th>Explication</th></tr>
+      <tr><td><code>FROM node:20-slim</code></td><td>Point de depart de l'image. Elle contient Node.js 20 dans une version Linux allegee. Le backend a besoin de Node pour executer <code>app.js</code>.</td></tr>
+      <tr><td><code>WORKDIR /app</code></td><td>Cree et utilise le dossier <code>/app</code> dans le conteneur. Les commandes suivantes s'executent dans ce dossier.</td></tr>
+      <tr><td><code>COPY package.json package-lock.json ./</code></td><td>Copie les fichiers de dependances avant le code. Docker peut ainsi reutiliser le cache si le code change mais pas les dependances.</td></tr>
+      <tr><td><code>RUN npm ci</code></td><td>Installe les dependances backend : Express, CORS, Mongoose, dotenv, mongodb-memory-server, etc.</td></tr>
+      <tr><td><code>COPY app.js ./</code></td><td>Copie le point d'entree de l'API Express.</td></tr>
+      <tr><td><code>COPY src/ ./src/</code></td><td>Copie le dossier contenant les routes et le modele MongoDB.</td></tr>
+      <tr><td><code>ENV USE_MEMORY_DB=true</code></td><td>Valeur par defaut : utiliser MongoDB en memoire. Dans Compose et Jenkins, cette valeur est remplacee par <code>false</code>.</td></tr>
+      <tr><td><code>ENV PORT=5000</code></td><td>Definit le port par defaut de l'application Express.</td></tr>
+      <tr><td><code>EXPOSE 5000</code></td><td>Documente que le conteneur ecoute sur le port 5000. Ne publie pas le port tout seul.</td></tr>
+      <tr><td><code>CMD ["node", "app.js"]</code></td><td>Commande lancee quand le conteneur demarre. Si cette commande s'arrete, le conteneur s'arrete.</td></tr>
+    </table>
+
+    <h3>Lien avec app.js</h3>
+    <pre>const PORT = process.env.PORT || 5000
+...
+const useMemoryDB = process.env.USE_MEMORY_DB === 'true'
+...
+const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio'
+...
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})</pre>
+    <p>
+      Le backend lit les variables d'environnement. Si <code>USE_MEMORY_DB=true</code>,
+      il lance une base temporaire avec <code>mongodb-memory-server</code>. Si
+      <code>USE_MEMORY_DB=false</code>, il utilise <code>MONGO_URI</code> pour se connecter
+      au vrai conteneur MongoDB.
+    </p>
+  </section>
+
+  <section>
+    <h2>7. Dockerfile frontend React</h2>
+    <pre>FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY index.html vite.config.js styles.css ./
+COPY src/ ./src/
+COPY assets/ ./assets/
+
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]</pre>
+    <h3>Pourquoi deux FROM ?</h3>
+    <p>
+      Ce Dockerfile utilise un build multi-stage. La premiere image, Node.js,
+      sert uniquement a compiler React. La deuxieme image, Nginx, sert uniquement
+      a executer le site en production.
+    </p>
+    <table>
+      <tr><th>Ligne</th><th>Explication</th></tr>
+      <tr><td><code>FROM node:20-alpine AS build</code></td><td>Demarre une etape de construction nommee <code>build</code>. Node est necessaire pour executer Vite.</td></tr>
+      <tr><td><code>WORKDIR /app</code></td><td>Dossier de travail dans l'etape Node.</td></tr>
+      <tr><td><code>COPY package.json package-lock.json ./</code></td><td>Copie les fichiers qui definissent les dependances frontend.</td></tr>
+      <tr><td><code>RUN npm ci</code></td><td>Installe React, Vite, React Router, Framer Motion et les autres dependances.</td></tr>
+      <tr><td><code>COPY index.html vite.config.js styles.css ./</code></td><td>Copie le HTML racine, la configuration Vite et le CSS global.</td></tr>
+      <tr><td><code>COPY src/ ./src/</code></td><td>Copie les composants et pages React.</td></tr>
+      <tr><td><code>COPY assets/ ./assets/</code></td><td>Copie les images et ressources utilisees par le frontend.</td></tr>
+      <tr><td><code>RUN npm run build</code></td><td>Execute <code>vite build</code>. Cela genere le dossier <code>dist</code>.</td></tr>
+      <tr><td><code>FROM nginx:alpine</code></td><td>Nouvelle image finale plus legere. Elle ne contient pas Node ni le code source complet.</td></tr>
+      <tr><td><code>COPY --from=build /app/dist /usr/share/nginx/html</code></td><td>Copie uniquement le resultat compile dans le dossier servi par Nginx.</td></tr>
+      <tr><td><code>COPY nginx.conf /etc/nginx/conf.d/default.conf</code></td><td>Installe la configuration Nginx du projet.</td></tr>
+      <tr><td><code>EXPOSE 80</code></td><td>Indique que Nginx ecoute sur le port 80 dans le conteneur.</td></tr>
+      <tr><td><code>CMD ["nginx", "-g", "daemon off;"]</code></td><td>Lance Nginx au premier plan. <code>daemon off</code> evite que le conteneur s'arrete immediatement.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>8. Le dossier dist</h2>
+    <p>
+      Le dossier <code>dist</code> est genere par Vite quand tu executes
+      <code>npm run build</code>. Ce n'est pas le code source React. C'est le
+      resultat final optimise pour le navigateur.
+    </p>
+    <table>
+      <tr><th>Element dans dist</th><th>Role</th></tr>
+      <tr><td><code>dist/index.html</code></td><td>Page HTML principale envoyee au navigateur.</td></tr>
+      <tr><td><code>dist/assets/*.js</code></td><td>JavaScript compile et optimise. Il contient le code React transforme en code executable par le navigateur.</td></tr>
+      <tr><td><code>dist/assets/*.css</code></td><td>CSS final minifie.</td></tr>
+      <tr><td><code>dist/assets/*image*</code></td><td>Images optimisees et renommees avec un hash pour le cache navigateur.</td></tr>
+    </table>
+    <p>
+      Dans le Dockerfile frontend, seul <code>dist</code> est copie dans l'image
+      finale Nginx. Cela rend l'image finale plus petite et plus propre.
+    </p>
+  </section>
+
+  <section class="break">
+    <h2>9. Fichier compose.yaml</h2>
+    <pre>services:
+  frontend:
+    build: ./reactportfolio
+    container_name: portfolio-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - portfolio-net
+
+  backend:
+    build: "./EXPRESSJS PORTFOLIO"
+    container_name: portfolio-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - USE_MEMORY_DB=false
+      - MONGO_URI=mongodb://mongo:27017/portfolio
+    depends_on:
+      - mongo
+    networks:
+      - portfolio-net
+
+  mongo:
+    image: mongo:7
+    container_name: portfolio-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - portfolio-net
+
+volumes:
+  mongo-data:
+
+networks:
+  portfolio-net:</pre>
+
+    <h3>Bloc services</h3>
+    <p>
+      <code>services:</code> declare les conteneurs que Compose doit creer.
+      Chaque sous-bloc represente un service.
+    </p>
+
+    <h3>Service frontend</h3>
+    <table>
+      <tr><th>Instruction</th><th>Explication</th></tr>
+      <tr><td><code>frontend:</code></td><td>Nom logique du service dans Compose.</td></tr>
+      <tr><td><code>build: ./reactportfolio</code></td><td>Construit une image a partir du Dockerfile du dossier frontend.</td></tr>
+      <tr><td><code>container_name: portfolio-frontend</code></td><td>Nom fixe du conteneur cree.</td></tr>
+      <tr><td><code>"3000:80"</code></td><td>Le port 3000 de ta machine redirige vers le port 80 du conteneur Nginx.</td></tr>
+      <tr><td><code>depends_on: backend</code></td><td>Compose demarre le backend avant le frontend. Cela ne garantit pas que l'API soit deja prete, seulement que le conteneur est lance.</td></tr>
+      <tr><td><code>networks: portfolio-net</code></td><td>Place le frontend sur le reseau prive commun.</td></tr>
+    </table>
+
+    <h3>Service backend</h3>
+    <table>
+      <tr><th>Instruction</th><th>Explication</th></tr>
+      <tr><td><code>backend:</code></td><td>Nom logique du service API.</td></tr>
+      <tr><td><code>build: "./EXPRESSJS PORTFOLIO"</code></td><td>Construit l'image backend depuis le Dockerfile Express.</td></tr>
+      <tr><td><code>container_name: portfolio-backend</code></td><td>Nom fixe du conteneur backend.</td></tr>
+      <tr><td><code>"5000:5000"</code></td><td>Expose l'API sur <code>localhost:5000</code>.</td></tr>
+      <tr><td><code>PORT=5000</code></td><td>Dit a Express d'ecouter sur le port 5000.</td></tr>
+      <tr><td><code>USE_MEMORY_DB=false</code></td><td>Desactive la base en memoire et force l'utilisation de MongoDB.</td></tr>
+      <tr><td><code>MONGO_URI=mongodb://mongo:27017/portfolio</code></td><td>Adresse interne de MongoDB dans le reseau Docker.</td></tr>
+      <tr><td><code>depends_on: mongo</code></td><td>Demarre MongoDB avant le backend.</td></tr>
+    </table>
+
+    <h3>Service mongo</h3>
+    <table>
+      <tr><th>Instruction</th><th>Explication</th></tr>
+      <tr><td><code>mongo:</code></td><td>Nom logique du service base de donnees.</td></tr>
+      <tr><td><code>image: mongo:7</code></td><td>Utilise l'image officielle MongoDB version 7 depuis Docker Hub.</td></tr>
+      <tr><td><code>container_name: portfolio-mongo</code></td><td>Nom fixe du conteneur MongoDB.</td></tr>
+      <tr><td><code>"27017:27017"</code></td><td>Expose MongoDB sur ta machine pour les outils externes.</td></tr>
+      <tr><td><code>mongo-data:/data/db</code></td><td>Stocke les fichiers de la base dans un volume persistant.</td></tr>
+      <tr><td><code>networks: portfolio-net</code></td><td>Connecte MongoDB au meme reseau que l'API.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>10. MongoDB, image Docker Hub et volume</h2>
+    <p>
+      MongoDB n'a pas de Dockerfile local parce que ton projet n'a pas besoin de
+      construire MongoDB. Il utilise une image officielle deja prete :
+    </p>
+    <pre>image: mongo:7</pre>
+    <p>
+      Si l'image <code>mongo:7</code> n'existe pas localement, Docker la recupere
+      automatiquement depuis Docker Hub.
+    </p>
+    <h3>Pourquoi le volume est important</h3>
+    <pre>volumes:
+  - mongo-data:/data/db</pre>
+    <p>
+      MongoDB stocke ses donnees dans <code>/data/db</code>. Le volume
+      <code>mongo-data</code> garde ces donnees en dehors du cycle de vie du
+      conteneur. Tu peux supprimer et recréer le conteneur MongoDB sans perdre
+      les donnees tant que le volume existe.
+    </p>
+    <table>
+      <tr><th>Commande</th><th>Effet</th></tr>
+      <tr><td><code>docker compose down</code></td><td>Supprime les conteneurs, mais garde le volume.</td></tr>
+      <tr><td><code>docker compose down -v</code></td><td>Supprime les conteneurs et les volumes. Les donnees MongoDB sont supprimees.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>11. Configuration Nginx</h2>
+    <pre>resolver 127.0.0.11 valid=10s;
+
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        set $backend_url http://portfolio-backend:5000;
+        proxy_pass $backend_url;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</pre>
+    <table>
+      <tr><th>Ligne</th><th>Utilite</th></tr>
+      <tr><td><code>resolver 127.0.0.11 valid=10s;</code></td><td>Utilise le DNS interne de Docker. Cela aide Nginx a resoudre les noms de conteneurs sur le reseau Docker.</td></tr>
+      <tr><td><code>listen 80;</code></td><td>Nginx ecoute sur le port 80 dans le conteneur.</td></tr>
+      <tr><td><code>server_name localhost;</code></td><td>Nom symbolique du serveur Nginx.</td></tr>
+      <tr><td><code>root /usr/share/nginx/html;</code></td><td>Dossier ou se trouvent les fichiers React compiles.</td></tr>
+      <tr><td><code>index index.html;</code></td><td>Fichier par defaut servi au navigateur.</td></tr>
+      <tr><td><code>location /</code></td><td>Regle pour toutes les pages frontend.</td></tr>
+      <tr><td><code>try_files $uri $uri/ /index.html;</code></td><td>Si l'URL ne correspond pas a un fichier physique, Nginx renvoie <code>index.html</code>. C'est necessaire pour une SPA React.</td></tr>
+      <tr><td><code>location /api</code></td><td>Regle speciale pour les appels API.</td></tr>
+      <tr><td><code>set $backend_url http://portfolio-backend:5000;</code></td><td>Definit l'adresse du backend dans le reseau Docker.</td></tr>
+      <tr><td><code>proxy_pass $backend_url;</code></td><td>Transfere la requete API vers Express.</td></tr>
+      <tr><td><code>proxy_http_version 1.1</code></td><td>Utilise HTTP/1.1 pour le proxy.</td></tr>
+      <tr><td><code>proxy_set_header Host $host</code></td><td>Transmet l'hote original au backend.</td></tr>
+      <tr><td><code>proxy_cache_bypass $http_upgrade</code></td><td>Evite certains problemes de cache avec les connexions speciales.</td></tr>
+    </table>
+    <div class="box">
+      Quand le navigateur appelle <code>/api/projects</code> depuis le frontend,
+      Nginx intercepte <code>/api</code> et transmet la requete au backend Express.
+    </div>
+  </section>
+
+  <section class="break">
+    <h2>12. Jenkins avec Docker</h2>
+    <h3>docker-compose.jenkins.yml</h3>
+    <pre>services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    container_name: jenkins-server
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    user: root
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:</pre>
+    <table>
+      <tr><th>Instruction</th><th>Explication</th></tr>
+      <tr><td><code>jenkins:</code></td><td>Service Jenkins.</td></tr>
+      <tr><td><code>build: context: .</code></td><td>Construit l'image Jenkins depuis le dossier courant.</td></tr>
+      <tr><td><code>dockerfile: Dockerfile.jenkins</code></td><td>Indique le Dockerfile special Jenkins.</td></tr>
+      <tr><td><code>container_name: jenkins-server</code></td><td>Nom fixe du conteneur Jenkins.</td></tr>
+      <tr><td><code>"8080:8080"</code></td><td>Expose l'interface Jenkins sur <code>http://localhost:8080</code>.</td></tr>
+      <tr><td><code>"50000:50000"</code></td><td>Port utilise pour les agents Jenkins.</td></tr>
+      <tr><td><code>user: root</code></td><td>Permet a Jenkins d'avoir les droits necessaires pour utiliser Docker dans ce contexte.</td></tr>
+      <tr><td><code>jenkins_home:/var/jenkins_home</code></td><td>Volume persistant pour garder la configuration Jenkins, les jobs et plugins.</td></tr>
+      <tr><td><code>/var/run/docker.sock:/var/run/docker.sock</code></td><td>Donne au Jenkins conteneurise l'acces au Docker de la machine hote.</td></tr>
+      <tr><td><code>JAVA_OPTS=...</code></td><td>Configure Jenkins pour afficher l'assistant d'installation au demarrage.</td></tr>
+      <tr><td><code>restart: unless-stopped</code></td><td>Relance Jenkins automatiquement sauf si tu l'arretes volontairement.</td></tr>
+    </table>
+
+    <h3>Dockerfile.jenkins</h3>
+    <pre>FROM jenkins/jenkins:lts
+
+USER root
+
+# Install Node.js 20
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
+# Install Docker CLI
+RUN apt-get install -y docker.io
+
+# Autoriser Git dans tous les repertoires (necessaire quand root)
+RUN git config --global --add safe.directory '*'</pre>
+    <table>
+      <tr><th>Ligne</th><th>Explication</th></tr>
+      <tr><td><code>FROM jenkins/jenkins:lts</code></td><td>Utilise l'image officielle Jenkins Long Term Support.</td></tr>
+      <tr><td><code>USER root</code></td><td>Passe en root pour installer des paquets systeme.</td></tr>
+      <tr><td><code>apt-get update</code></td><td>Met a jour la liste des paquets Debian.</td></tr>
+      <tr><td><code>apt-get install -y curl</code></td><td>Installe curl pour telecharger le script NodeSource.</td></tr>
+      <tr><td><code>curl -fsSL ...setup_20.x | bash -</code></td><td>Ajoute le depot Node.js 20.</td></tr>
+      <tr><td><code>apt-get install -y nodejs</code></td><td>Installe Node.js et npm dans le conteneur Jenkins.</td></tr>
+      <tr><td><code>apt-get install -y docker.io</code></td><td>Installe la CLI Docker pour que Jenkins puisse executer <code>docker build</code> et <code>docker run</code>.</td></tr>
+      <tr><td><code>git config --global --add safe.directory '*'</code></td><td>Evite les erreurs Git de securite quand Jenkins travaille en root.</td></tr>
+    </table>
+  </section>
+
+  <section class="break">
+    <h2>13. Jenkinsfile ligne par ligne</h2>
+    <p>
+      Le <code>Jenkinsfile</code> decrit le pipeline CI/CD. Jenkins lit ce fichier
+      depuis GitHub, puis execute les etapes dans l'ordre.
+    </p>
+
+    <h3>Structure globale</h3>
+    <pre>pipeline {
+    agent any
+    environment { ... }
+    triggers { ... }
+    stages { ... }
+    post { ... }
+}</pre>
+    <table>
+      <tr><th>Element</th><th>Utilite</th></tr>
+      <tr><td><code>pipeline {}</code></td><td>Declare un pipeline Jenkins declaratif.</td></tr>
+      <tr><td><code>agent any</code></td><td>Jenkins peut executer ce pipeline sur n'importe quel agent disponible.</td></tr>
+      <tr><td><code>environment {}</code></td><td>Definit des variables globales reutilisables dans les etapes.</td></tr>
+      <tr><td><code>triggers {}</code></td><td>Definit ce qui declenche automatiquement le pipeline.</td></tr>
+      <tr><td><code>stages {}</code></td><td>Contient les grandes etapes : checkout, install, tests, build, deploy.</td></tr>
+      <tr><td><code>post {}</code></td><td>Actions executees apres le pipeline : succes, echec, nettoyage.</td></tr>
+    </table>
+
+    <h3>Variables d'environnement Jenkins</h3>
+    <pre>environment {
+    FRONTEND_DIR = 'REACTPORTFOLIO/reactportfolio'
+    BACKEND_DIR = 'REACTPORTFOLIO/EXPRESSJS PORTFOLIO'
+    EMAIL_RECIPIENTS = 'mouhamed.sall@email.com'
+}</pre>
+    <table>
+      <tr><th>Variable</th><th>Utilite</th></tr>
+      <tr><td><code>FRONTEND_DIR</code></td><td>Chemin du frontend dans le workspace Jenkins.</td></tr>
+      <tr><td><code>BACKEND_DIR</code></td><td>Chemin du backend. Les guillemets sont importants car le dossier contient un espace.</td></tr>
+      <tr><td><code>EMAIL_RECIPIENTS</code></td><td>Adresse qui recevra les notifications de succes ou d'echec.</td></tr>
+    </table>
+
+    <h3>Declencheur GitHub</h3>
+    <pre>triggers {
+    githubPush()
+}</pre>
+    <p>
+      Cette instruction indique que Jenkins peut lancer le pipeline quand GitHub
+      envoie un evenement de push, si le webhook GitHub est configure.
+    </p>
+
+    <h3>Stage Checkout</h3>
+    <pre>stage('Checkout') {
+    steps {
+        echo 'Recuperation du code source...'
+        checkout scm
+    }
+}</pre>
+    <table>
+      <tr><th>Element</th><th>Utilite</th></tr>
+      <tr><td><code>stage('Checkout')</code></td><td>Nom visible dans Jenkins pour l'etape de recuperation du code.</td></tr>
+      <tr><td><code>steps {}</code></td><td>Liste les actions de cette etape.</td></tr>
+      <tr><td><code>echo</code></td><td>Affiche un message dans les logs Jenkins.</td></tr>
+      <tr><td><code>checkout scm</code></td><td>Recupere le code depuis le depot Git configure dans le job Jenkins.</td></tr>
+    </table>
+
+    <h3>Stage Install Dependencies</h3>
+    <pre>stage('Install Dependencies') {
+    parallel {
+        stage('Frontend Dependencies') {
+            steps {
+                dir("${env.FRONTEND_DIR}") {
+                    sh 'npm install'
+                }
+            }
+        }
+        stage('Backend Dependencies') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'npm install'
+                }
+            }
+        }
+    }
+}</pre>
+    <p>
+      Cette etape installe les dependances frontend et backend en parallele.
+      Cela accelere le pipeline car les deux installations ne dependent pas l'une
+      de l'autre.
+    </p>
+    <table>
+      <tr><th>Element</th><th>Utilite</th></tr>
+      <tr><td><code>parallel</code></td><td>Lance plusieurs branches en meme temps.</td></tr>
+      <tr><td><code>dir("${env.FRONTEND_DIR}")</code></td><td>Entre dans le dossier frontend avant d'executer la commande.</td></tr>
+      <tr><td><code>dir("${env.BACKEND_DIR}")</code></td><td>Entre dans le dossier backend avant d'executer la commande.</td></tr>
+      <tr><td><code>sh 'npm install'</code></td><td>Installe les dependances dans le workspace Jenkins. Pour un build plus reproductible, <code>npm ci</code> peut aussi etre utilise ici.</td></tr>
+    </table>
+
+    <h3>Stage Tests</h3>
+    <pre>stage('Tests') {
+    steps {
+        dir("${env.BACKEND_DIR}") {
+            sh 'npm test'
+        }
+    }
+}</pre>
+    <p>
+      Jenkins execute les tests backend. Dans ton <code>package.json</code>,
+      <code>npm test</code> lance <code>node --test</code>.
+    </p>
+
+    <h3>Stage Build Frontend</h3>
+    <pre>stage('Build Frontend') {
+    steps {
+        dir("${env.FRONTEND_DIR}") {
+            sh 'npm run build'
+        }
+    }
+}</pre>
+    <p>
+      Cette etape compile React avec Vite. Elle genere un dossier
+      <code>dist</code> dans le workspace Jenkins. Ensuite, le Dockerfile frontend
+      reconstruit aussi le frontend dans l'image Docker pour produire une image
+      autonome.
+    </p>
+
+    <h3>Stage Docker Build</h3>
+    <pre>stage('Docker Build') {
+    steps {
+        dir('REACTPORTFOLIO') {
+            sh 'docker build -t portfolio-frontend ./reactportfolio'
+            sh 'docker build -t portfolio-backend "./EXPRESSJS PORTFOLIO"'
+        }
+    }
+}</pre>
+    <table>
+      <tr><th>Commande</th><th>Utilite</th></tr>
+      <tr><td><code>dir('REACTPORTFOLIO')</code></td><td>Se place a la racine du projet clone dans Jenkins.</td></tr>
+      <tr><td><code>docker build -t portfolio-frontend ./reactportfolio</code></td><td>Construit l'image frontend et lui donne le tag <code>portfolio-frontend</code>.</td></tr>
+      <tr><td><code>docker build -t portfolio-backend "./EXPRESSJS PORTFOLIO"</code></td><td>Construit l'image backend. Les guillemets protegent l'espace dans le nom du dossier.</td></tr>
+    </table>
+
+    <h3>Stage Deploy</h3>
+    <pre>stage('Deploy') {
+    steps {
+        sh '''
+            docker stop portfolio-frontend portfolio-backend portfolio-mongo || true
+            docker rm portfolio-frontend portfolio-backend portfolio-mongo || true
+            docker network create portfolio-net || true
+            docker run -d --name portfolio-mongo --network portfolio-net --network-alias mongo mongo:7
+            sleep 5
+            docker run -d --name portfolio-backend --network portfolio-net --network-alias backend -p 5000:5000 -e PORT=5000 -e MONGO_URI=mongodb://mongo:27017/portfolio -e USE_MEMORY_DB=false portfolio-backend
+            sleep 3
+            docker run -d --name portfolio-frontend --network portfolio-net --network-alias frontend -p 3000:80 portfolio-frontend
+        '''
+    }
+}</pre>
+    <table>
+      <tr><th>Commande</th><th>Explication</th></tr>
+      <tr><td><code>docker stop ... || true</code></td><td>Arrete les anciens conteneurs s'ils existent. <code>|| true</code> evite que Jenkins echoue si le conteneur n'existe pas.</td></tr>
+      <tr><td><code>docker rm ... || true</code></td><td>Supprime les anciens conteneurs pour pouvoir recreer des conteneurs avec les memes noms.</td></tr>
+      <tr><td><code>docker network create portfolio-net || true</code></td><td>Cree le reseau Docker. Si le reseau existe deja, l'erreur est ignoree.</td></tr>
+      <tr><td><code>docker run -d --name portfolio-mongo ... mongo:7</code></td><td>Lance MongoDB en arriere-plan depuis l'image officielle.</td></tr>
+      <tr><td><code>--network portfolio-net</code></td><td>Connecte le conteneur au reseau commun.</td></tr>
+      <tr><td><code>--network-alias mongo</code></td><td>Permet au backend d'utiliser le nom <code>mongo</code> dans <code>MONGO_URI</code>.</td></tr>
+      <tr><td><code>sleep 5</code></td><td>Laisse quelques secondes a MongoDB pour demarrer.</td></tr>
+      <tr><td><code>docker run -d --name portfolio-backend ...</code></td><td>Lance l'API Express.</td></tr>
+      <tr><td><code>-p 5000:5000</code></td><td>Publie l'API sur le port 5000 de la machine.</td></tr>
+      <tr><td><code>-e PORT=5000</code></td><td>Injecte la variable d'environnement du port Express.</td></tr>
+      <tr><td><code>-e MONGO_URI=mongodb://mongo:27017/portfolio</code></td><td>Indique au backend l'adresse interne de MongoDB.</td></tr>
+      <tr><td><code>-e USE_MEMORY_DB=false</code></td><td>Force le backend a utiliser MongoDB reel.</td></tr>
+      <tr><td><code>--network-alias backend</code></td><td>Permet d'appeler le backend avec le nom <code>backend</code> si necessaire.</td></tr>
+      <tr><td><code>sleep 3</code></td><td>Laisse quelques secondes au backend pour demarrer.</td></tr>
+      <tr><td><code>docker run -d --name portfolio-frontend ...</code></td><td>Lance Nginx avec le frontend React compile.</td></tr>
+      <tr><td><code>-p 3000:80</code></td><td>Publie le frontend sur <code>http://localhost:3000</code>.</td></tr>
+    </table>
+
+    <h3>Stage Health Check</h3>
+    <pre>stage('Health Check') {
+    steps {
+        sh '''
+            sleep 10
+            docker exec portfolio-frontend wget -qO- http://127.0.0.1:80 > /dev/null || exit 1
+            docker exec portfolio-backend node -e "fetch('http://127.0.0.1:5000/api/projects').then(r=>{if(!r.ok)process.exit(1);process.exit(0)}).catch(()=>process.exit(1))"
+        '''
+    }
+}</pre>
+    <table>
+      <tr><th>Element</th><th>Utilite</th></tr>
+      <tr><td><code>sleep 10</code></td><td>Attend que les services soient prets.</td></tr>
+      <tr><td><code>docker exec portfolio-frontend ...</code></td><td>Execute une commande a l'interieur du conteneur frontend.</td></tr>
+      <tr><td><code>wget -qO- http://127.0.0.1:80</code></td><td>Teste que Nginx repond depuis l'interieur du conteneur.</td></tr>
+      <tr><td><code>&gt; /dev/null</code></td><td>Cache le HTML recu pour garder les logs propres.</td></tr>
+      <tr><td><code>|| exit 1</code></td><td>Fait echouer le pipeline si le frontend ne repond pas.</td></tr>
+      <tr><td><code>node -e "fetch(...)"</code></td><td>Execute un mini-script Node pour tester l'API backend.</td></tr>
+      <tr><td><code>127.0.0.1</code></td><td>Force l'adresse IPv4 locale dans le conteneur. Cela evite certains problemes de resolution de <code>localhost</code>.</td></tr>
+    </table>
+
+    <h3>Bloc post</h3>
+    <pre>post {
+    success { ... mail ... }
+    failure { ... stop/rm ... mail ... }
+    always { cleanWs() }
+}</pre>
+    <table>
+      <tr><th>Bloc</th><th>Explication</th></tr>
+      <tr><td><code>success</code></td><td>Execute si tout le pipeline reussit. Envoie un email de succes.</td></tr>
+      <tr><td><code>failure</code></td><td>Execute si une etape echoue. Arrete et supprime les conteneurs, puis envoie un email d'echec.</td></tr>
+      <tr><td><code>always</code></td><td>Execute quoi qu'il arrive. Nettoie le workspace Jenkins avec <code>cleanWs()</code>.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>14. Health checks et correction de l'erreur du pipeline</h2>
+    <p>
+      L'erreur vue dans les logs etait :
+    </p>
+    <pre>Error response from daemon: container ... is not running</pre>
+    <p>
+      Cela signifie que Jenkins avait cree le conteneur frontend, mais que celui-ci
+      s'etait arrete avant la verification.
+    </p>
+    <h3>Pourquoi un conteneur peut s'arreter ?</h3>
+    <p>
+      Un conteneur reste vivant tant que son processus principal reste vivant.
+      Pour le frontend, le processus principal est Nginx :
+    </p>
+    <pre>CMD ["nginx", "-g", "daemon off;"]</pre>
+    <p>
+      Si Nginx ne parvient pas a charger correctement sa configuration ou a resoudre
+      son upstream backend, il peut quitter, et le conteneur s'arrete.
+    </p>
+    <h3>Les corrections importantes</h3>
+    <table>
+      <tr><th>Correction</th><th>Pourquoi</th></tr>
+      <tr><td><code>--network-alias mongo</code></td><td>Permet au backend de trouver MongoDB avec le nom <code>mongo</code>.</td></tr>
+      <tr><td><code>--network-alias backend</code></td><td>Permet aux autres conteneurs d'utiliser le nom <code>backend</code>.</td></tr>
+      <tr><td><code>resolver 127.0.0.11</code> dans Nginx</td><td>Utilise le DNS interne Docker.</td></tr>
+      <tr><td><code>127.0.0.1</code> au lieu de <code>localhost</code> dans les health checks</td><td>Evite les problemes de resolution IPv6/IPv4 dans certains conteneurs.</td></tr>
+      <tr><td><code>sleep 5</code>, <code>sleep 3</code>, <code>sleep 10</code></td><td>Laisse aux services le temps de demarrer avant les tests.</td></tr>
+    </table>
+    <div class="box warning">
+      <strong>Important :</strong> les messages <code>No such container</code> au debut
+      du deploy ne sont pas forcement graves, car les commandes ont <code>|| true</code>.
+      Jenkins les ignore volontairement pour permettre le premier deploiement.
+    </div>
+  </section>
+
+  <section>
+    <h2>15. Commandes utiles</h2>
+    <h3>Docker Compose</h3>
+    <pre>docker compose up --build
+docker compose up --build -d
+docker compose down
+docker compose down -v</pre>
+    <h3>Images</h3>
+    <pre>docker images
+docker build -t portfolio-frontend ./reactportfolio
+docker build -t portfolio-backend "./EXPRESSJS PORTFOLIO"</pre>
+    <h3>Conteneurs</h3>
+    <pre>docker ps
+docker ps -a
+docker logs portfolio-backend
+docker logs portfolio-frontend
+docker exec -it portfolio-backend sh</pre>
+    <h3>Reseaux et volumes</h3>
+    <pre>docker network ls
+docker network inspect portfolio-net
+docker volume ls
+docker volume inspect reactportfolio_mongo-data</pre>
+    <h3>Tests rapides</h3>
+    <pre>curl http://localhost:3000
+curl http://localhost:5000/api/projects
+docker exec portfolio-frontend wget -qO- http://127.0.0.1:80
+docker exec portfolio-backend node -e "fetch('http://127.0.0.1:5000/api/projects').then(r=>console.log(r.status))"</pre>
+  </section>
+
+  <section>
+    <h2>16. Resume final</h2>
+    <div class="flow">Dockerfile backend
+  -> construit l'image portfolio-backend
+  -> lance Express avec node app.js
+  -> Express ecoute sur 5000
+  -> Express se connecte a mongo:27017
+
+Dockerfile frontend
+  -> construit React avec Node
+  -> genere dist
+  -> copie dist dans Nginx
+  -> Nginx ecoute sur 80
+  -> machine expose le site sur localhost:3000
+
+compose.yaml
+  -> construit frontend et backend
+  -> telecharge mongo:7
+  -> cree les conteneurs
+  -> cree le reseau portfolio-net
+  -> cree le volume mongo-data
+
+Jenkinsfile
+  -> recupere le code
+  -> installe les dependances
+  -> lance les tests
+  -> build le frontend
+  -> construit les images Docker
+  -> deploie les conteneurs
+  -> verifie frontend et backend
+  -> nettoie et envoie un email</div>
+  </section>
+</main>
+</body>
+</html>
+"""
+
+
+def find_chrome() -> Path:
+    candidates = [
+        Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+        Path(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
+        Path(r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"),
+        Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"),
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError("Aucun Chrome ou Edge trouve pour imprimer le PDF.")
+
+
+def main() -> None:
+    DOCS.mkdir(exist_ok=True)
+    HTML_PATH.write_text(HTML, encoding="utf-8")
+
+    chrome = find_chrome()
+    user_data_dir = DOCS / ".chrome-pdf-profile"
+    user_data_dir.mkdir(exist_ok=True)
+    subprocess.run(
+        [
+            str(chrome),
+            "--headless=new",
+            "--disable-gpu",
+            f"--user-data-dir={user_data_dir}",
+            f"--print-to-pdf={PDF_PATH}",
+            str(HTML_PATH.resolve().as_uri()),
+        ],
+        check=True,
+    )
+
+    print(f"HTML genere : {HTML_PATH}")
+    print(f"PDF genere  : {PDF_PATH}")
+
+
+if __name__ == "__main__":
+    main()
