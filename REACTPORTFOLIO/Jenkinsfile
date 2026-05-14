@@ -83,8 +83,9 @@ pipeline {
                 echo '✅ Vérification que les services sont opérationnels...'
                 sh '''
                     sleep 10
-                    curl -f http://localhost:3000 || exit 1
-                    curl -f http://localhost:5000/api/projects || exit 1
+                    docker network connect portfolio-net jenkins-server || true
+                    curl -f http://portfolio-frontend:80 || exit 1
+                    curl -f http://portfolio-backend:5000/api/projects || exit 1
                 '''
                 echo '✅ Tous les services sont UP !'
             }
