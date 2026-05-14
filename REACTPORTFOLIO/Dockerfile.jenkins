@@ -10,4 +10,5 @@ RUN apt-get update && apt-get install -y curl && \
 # Install Docker CLI
 RUN apt-get install -y docker.io
 
-# Jenkins tourne en root pour accéder au socket Docker (contexte démo)
+# Autoriser Git dans tous les répertoires (nécessaire quand root)
+RUN git config --global --add safe.directory '*'
