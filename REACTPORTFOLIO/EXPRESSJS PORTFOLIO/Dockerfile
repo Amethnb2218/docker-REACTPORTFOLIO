@@ -8,6 +8,7 @@ RUN npm ci
 
 COPY app.js ./
 COPY src/ ./src/
+RUN mkdir -p uploads
 
 ENV USE_MEMORY_DB=true
 ENV PORT=5000

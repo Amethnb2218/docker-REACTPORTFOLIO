@@ -2,14 +2,32 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const path = require('path')
+const fs = require('fs')
+const multer = require('multer')
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
+const uploadsDir = path.join(__dirname, 'uploads')
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir)
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadsDir),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/\s/g, '_'))
+})
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } })
+
 app.use(cors())
 app.use(express.json())
+app.use('/uploads', express.static(uploadsDir))
+
+app.post('/api/upload', upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: 'No file uploaded' })
+  res.json({ imageUrl: `/uploads/${req.file.filename}` })
+})
 
 const projectRoutes = require('./src/routes/projectRoutes')
 app.use('/api/projects', projectRoutes)
