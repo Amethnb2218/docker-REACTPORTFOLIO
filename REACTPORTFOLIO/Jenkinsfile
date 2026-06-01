@@ -43,10 +43,17 @@ pipeline {
 
         stage('Tests') {
             steps {
+                sh '''
+                    docker stop test-mongo || true
+                    docker rm test-mongo || true
+                    docker run -d --name test-mongo mongo:7
+                    sleep 5
+                '''
                 dir("${env.BACKEND_DIR}") {
                     echo '🧪 Lancement des tests backend...'
-                    sh 'npm test'
+                    sh 'MONGO_URI=mongodb://$(docker inspect -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}" test-mongo):27017/portfolio-test npm test'
                 }
+                sh 'docker stop test-mongo && docker rm test-mongo || true'
             }
         }
 
