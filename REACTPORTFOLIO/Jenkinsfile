@@ -76,7 +76,7 @@ pipeline {
                     docker stop portfolio-frontend portfolio-backend portfolio-mongo || true
                     docker rm portfolio-frontend portfolio-backend portfolio-mongo || true
                     docker network create portfolio-net || true
-                    docker run -d --name portfolio-mongo --network portfolio-net --network-alias mongo mongo:7
+                    docker run -d --name portfolio-mongo --network portfolio-net --network-alias mongo mongo:4.4
                     sleep 5
                     docker run -d --name portfolio-backend --network portfolio-net --network-alias backend -p 5000:5000 -e PORT=5000 -e MONGO_URI=mongodb://mongo:27017/portfolio -e USE_MEMORY_DB=false portfolio-backend
                     sleep 3
