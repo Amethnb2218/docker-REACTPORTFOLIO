@@ -12,3 +12,6 @@ RUN apt-get install -y docker.io
 
 # Autoriser Git dans tous les répertoires (nécessaire quand root)
 RUN git config --global --add safe.directory '*'
+
+# Pré-télécharger le binaire MongoDB pour les tests
+RUN npx mongodb-memory-server --download

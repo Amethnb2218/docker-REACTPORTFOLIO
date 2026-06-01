@@ -8,7 +8,7 @@ const app = require('../app')
 let mongoServer
 
 before(async () => {
-  mongoServer = await MongoMemoryServer.create()
+  mongoServer = await MongoMemoryServer.create({ instance: { launchTimeout: 60000 } })
   const uri = mongoServer.getUri()
   await mongoose.connect(uri)
 })
