@@ -46,13 +46,12 @@ pipeline {
                 sh '''
                     docker stop test-mongo || true
                     docker rm test-mongo || true
-                    JENKINS_NET=$(docker inspect jenkins-server --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' | head -1)
-                    docker run -d --name test-mongo --network "$JENKINS_NET" mongo:7
+                    docker run -d --name test-mongo -p 27017:27017 mongo:7
                     sleep 5
                 '''
                 dir("${env.BACKEND_DIR}") {
                     echo '🧪 Lancement des tests backend...'
-                    sh 'MONGO_URI=mongodb://test-mongo:27017/portfolio-test npm test'
+                    sh 'MONGO_URI=mongodb://host.docker.internal:27017/portfolio-test npm test'
                 }
                 sh 'docker stop test-mongo && docker rm test-mongo || true'
             }
