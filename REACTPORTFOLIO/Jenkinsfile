@@ -43,21 +43,10 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh '''
-                    docker stop test-mongo || true
-                    docker rm test-mongo || true
-                    docker run -d --name test-mongo --network reactportfolio_default mongo:7
-                    sleep 5
-                '''
                 dir("${env.BACKEND_DIR}") {
                     echo '🧪 Lancement des tests backend...'
-                    sh '''
-                        MONGO_IP=$(docker inspect test-mongo --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
-                        echo "MongoDB IP: $MONGO_IP"
-                        MONGO_URI="mongodb://$MONGO_IP:27017/portfolio-test" npm test
-                    '''
+                    sh 'MONGO_URI=mongodb://mongo-test:27017/portfolio-test npm test'
                 }
-                sh 'docker stop test-mongo && docker rm test-mongo || true'
             }
         }
 

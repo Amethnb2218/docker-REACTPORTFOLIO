@@ -15,5 +15,10 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
     restart: unless-stopped
 
+  mongo-test:
+    image: mongo:7
+    container_name: mongo-test
+    restart: unless-stopped
+
 volumes:
   jenkins_home:
