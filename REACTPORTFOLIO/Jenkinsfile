@@ -136,20 +136,19 @@ pipeline {
             }
         }
 
-        stage('Deploy Kubernetes') {
+        stage('Terraform Init') {
             steps {
-                echo '☸️ Déploiement sur Kubernetes (Minikube)...'
-                dir('REACTPORTFOLIO/kubernetes') {
-                    sh '''
-                        MINIKUBE_IP=$(docker inspect minikube --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 2>/dev/null)
-                        if [ -z "$MINIKUBE_IP" ]; then
-                            MINIKUBE_IP=$(getent hosts minikube | awk '{print $1}')
-                        fi
-                        if [ -z "$MINIKUBE_IP" ]; then
-                            MINIKUBE_IP="172.17.0.3"
-                        fi
-                        echo "Minikube IP: ${MINIKUBE_IP}"
-                        cat > /tmp/kubeconfig <<KEOF
+                echo '🏗️ Initialisation de Terraform...'
+                sh '''
+                    MINIKUBE_IP=$(docker inspect minikube --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 2>/dev/null)
+                    if [ -z "$MINIKUBE_IP" ]; then
+                        MINIKUBE_IP=$(getent hosts minikube | awk '{print $1}')
+                    fi
+                    if [ -z "$MINIKUBE_IP" ]; then
+                        MINIKUBE_IP="172.17.0.3"
+                    fi
+                    echo "Minikube IP: ${MINIKUBE_IP}"
+                    cat > /tmp/kubeconfig <<KEOF
 apiVersion: v1
 clusters:
 - cluster:
@@ -169,23 +168,43 @@ users:
     client-certificate: /root/.minikube/profiles/minikube/client.crt
     client-key: /root/.minikube/profiles/minikube/client.key
 KEOF
+                '''
+                dir('REACTPORTFOLIO/terraform/k8s-local') {
+                    sh 'terraform init -input=false'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                echo '📋 Planification Terraform...'
+                dir('REACTPORTFOLIO/terraform/k8s-local') {
+                    sh '''
+                        terraform plan -out=tfplan \
+                            -var="kubeconfig_path=/tmp/kubeconfig" \
+                            -var="namespace=portfolio" \
+                            -var="frontend_image=portfolio-frontend:latest" \
+                            -var="backend_image=portfolio-backend:latest" \
+                            -var="frontend_replicas=2" \
+                            -var="backend_replicas=2"
+                    '''
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                echo '🚀 Déploiement Terraform sur Kubernetes...'
+                dir('REACTPORTFOLIO/terraform/k8s-local') {
+                    sh 'terraform apply -auto-approve tfplan'
+                    sh '''
                         export KUBECONFIG=/tmp/kubeconfig
-
-                        kubectl apply -f common/
-                        sleep 2
-                        kubectl apply -f common/
-                        kubectl apply -f database/
-                        kubectl apply -f backend/
-                        kubectl apply -f frontend/
-
-                        echo "Redémarrage des deployments pour utiliser les nouvelles images..."
+                        echo "Redémarrage des deployments pour les nouvelles images..."
                         kubectl rollout restart deployment/frontend -n portfolio
                         kubectl rollout restart deployment/backend -n portfolio
-
                         echo "Attente que les pods soient prêts..."
                         kubectl wait --for=condition=ready pod -l app=frontend -n portfolio --timeout=120s
                         kubectl wait --for=condition=ready pod -l app=backend -n portfolio --timeout=120s
-
                         echo "☸️ État du cluster :"
                         kubectl get pods -n portfolio
                     '''
