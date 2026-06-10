@@ -15,6 +15,9 @@ services:
       - ~/.minikube:/root/.minikube:ro
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
+    networks:
+      - default
+      - sonarqube_sonarqube-net
     restart: unless-stopped
 
   mongo-test:
@@ -24,3 +27,7 @@ services:
 
 volumes:
   jenkins_home:
+
+networks:
+  sonarqube_sonarqube-net:
+    external: true

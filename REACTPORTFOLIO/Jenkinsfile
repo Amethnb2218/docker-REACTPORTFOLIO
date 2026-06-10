@@ -88,12 +88,20 @@ pipeline {
             steps {
                 echo '🚦 Vérification du Quality Gate SonarQube...'
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                    sh '''
+                    sh '''#!/bin/bash
+                        set +e
                         echo "Attente du traitement par SonarQube (30s)..."
                         sleep 30
 
-                        RESPONSE=$(curl -s -u ${SONAR_TOKEN}: \
+                        RESPONSE=$(curl -s --max-time 15 -u ${SONAR_TOKEN}: \
                           "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_KEY}")
+                        CURL_EXIT=$?
+
+                        if [ $CURL_EXIT -ne 0 ] || [ -z "$RESPONSE" ]; then
+                            echo "⚠️ Impossible de contacter SonarQube (curl exit: $CURL_EXIT) - Non bloquant"
+                            exit 0
+                        fi
+
                         echo "SonarQube response: ${RESPONSE}"
                         QUALITY_GATE_STATUS=$(echo "${RESPONSE}" | sed -n 's/.*"status":"\\([^"]*\\)".*/\\1/p' | head -1)
 
@@ -105,6 +113,7 @@ pipeline {
                         else
                             echo "✅ Quality Gate PASSÉ !"
                         fi
+                        exit 0
                     '''
                 }
             }
