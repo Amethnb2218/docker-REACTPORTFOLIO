@@ -137,7 +137,7 @@ function Navbar() {
           color: #ffffff;
           background: rgba(59, 130, 246, 0.1);
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .navbar {
             padding: 0.5rem 0.75rem;
             top: 0.75rem;
