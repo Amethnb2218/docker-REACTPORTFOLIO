@@ -107,22 +107,41 @@ function About() {
           margin-bottom: 4rem;
         }
         .about-stat {
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 16px;
           padding: 2rem 1.5rem;
           text-align: center;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        .about-stat::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.04), transparent);
+          transition: left 0.6s;
+        }
+        .about-stat:hover::before {
+          left: 100%;
         }
         .about-stat:hover {
           border-color: rgba(59, 130, 246, 0.2);
-          transform: translateY(-2px);
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.08);
         }
         .about-stat-number {
           display: block;
           font-size: 2.5rem;
           font-weight: 800;
-          color: #3b82f6;
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           letter-spacing: -0.03em;
           line-height: 1;
           margin-bottom: 0.4rem;
@@ -176,14 +195,16 @@ function About() {
           transform: translateX(0.5px);
         }
         .about-timeline-card {
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 12px;
           padding: 1.5rem;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .about-timeline-card:hover {
-          border-color: rgba(255, 255, 255, 0.1);
+          border-color: rgba(59, 130, 246, 0.15);
+          transform: translateX(4px);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
         .about-timeline-period {
           font-family: 'JetBrains Mono', monospace;
@@ -218,14 +239,32 @@ function About() {
           gap: 1.25rem;
         }
         .about-skill-category {
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 12px;
           padding: 1.5rem;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        .about-skill-category::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--cat-color, #3b82f6), transparent);
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .about-skill-category:hover::after {
+          opacity: 1;
         }
         .about-skill-category:hover {
           border-color: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         .about-skill-category-title {
           font-family: 'JetBrains Mono', monospace;

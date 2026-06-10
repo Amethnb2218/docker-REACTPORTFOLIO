@@ -25,54 +25,57 @@ function Navbar() {
       <style>{`
         .navbar {
           position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
+          top: 1rem;
+          left: 50%;
+          transform: translateX(-50%);
           z-index: 1000;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 1rem 2rem;
-          background: rgba(10, 10, 10, 0.85);
+          padding: 0.6rem 1rem;
+          background: rgba(10, 10, 10, 0.7);
           backdrop-filter: blur(20px) saturate(180%);
           -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
         }
         .navbar.scrolled {
-          background: rgba(10, 10, 10, 0.98);
-          border-bottom-color: rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-          padding: 0.75rem 2rem;
+          background: rgba(10, 10, 10, 0.9);
+          border-color: rgba(59, 130, 246, 0.1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+          padding: 0.5rem 0.9rem;
         }
         .nav-links {
           display: flex;
           list-style: none;
-          gap: 0.25rem;
+          gap: 0.2rem;
           margin: 0;
           padding: 0;
           align-items: center;
         }
         .nav-link {
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           font-weight: 500;
           padding: 0.5rem 1.1rem;
           border-radius: 100px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           text-decoration: none;
-          color: #a1a1aa;
+          color: #71717a;
           cursor: pointer;
           position: relative;
           letter-spacing: -0.01em;
         }
         .nav-link:hover {
-          color: #f5f5f5;
+          color: #e4e4e7;
           background: rgba(255, 255, 255, 0.05);
         }
         .nav-link.active {
           color: #ffffff;
-          background: rgba(59, 130, 246, 0.12);
-          box-shadow: 0 0 12px rgba(59, 130, 246, 0.15), inset 0 0 12px rgba(59, 130, 246, 0.05);
+          background: rgba(59, 130, 246, 0.1);
+          box-shadow: 0 0 15px rgba(59, 130, 246, 0.15), inset 0 0 15px rgba(59, 130, 246, 0.05);
+          border: 1px solid rgba(59, 130, 246, 0.2);
         }
         .nav-hamburger {
           display: none;
@@ -103,26 +106,27 @@ function Navbar() {
         }
         .nav-mobile-menu {
           position: fixed;
-          top: 4.5rem;
+          top: 5rem;
           left: 50%;
           transform: translateX(-50%);
-          background: rgba(20, 20, 20, 0.95);
+          background: rgba(15, 15, 15, 0.95);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 20px;
           padding: 1rem;
           display: flex;
           flex-direction: column;
           gap: 0.25rem;
           min-width: 200px;
           z-index: 999;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.05);
         }
         .nav-mobile-link {
           font-size: 0.9rem;
           font-weight: 500;
           padding: 0.75rem 1.25rem;
-          border-radius: 10px;
+          border-radius: 12px;
           color: #a1a1aa;
           text-decoration: none;
           transition: all 0.2s ease;
@@ -136,6 +140,7 @@ function Navbar() {
         @media (max-width: 768px) {
           .navbar {
             padding: 0.5rem 0.75rem;
+            top: 0.75rem;
           }
           .nav-links {
             display: none;

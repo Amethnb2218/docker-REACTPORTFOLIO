@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 function Home() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const canvasRef = useRef(null)
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -11,6 +12,83 @@ function Home() {
     }
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  // Particle animation
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    let animationId
+    let particles = []
+
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    class Particle {
+      constructor() {
+        this.reset()
+      }
+      reset() {
+        this.x = Math.random() * canvas.width
+        this.y = Math.random() * canvas.height
+        this.size = Math.random() * 1.5 + 0.5
+        this.speedX = (Math.random() - 0.5) * 0.4
+        this.speedY = (Math.random() - 0.5) * 0.4
+        this.opacity = Math.random() * 0.5 + 0.1
+      }
+      update() {
+        this.x += this.speedX
+        this.y += this.speedY
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1
+      }
+      draw() {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`
+        ctx.fill()
+      }
+    }
+
+    for (let i = 0; i < 60; i++) {
+      particles.push(new Particle())
+    }
+
+    const drawLines = () => {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 150) {
+            ctx.beginPath()
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.06 * (1 - dist / 150)})`
+            ctx.lineWidth = 0.5
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.stroke()
+          }
+        }
+      }
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      particles.forEach(p => { p.update(); p.draw() })
+      drawLines()
+      animationId = requestAnimationFrame(animate)
+    }
+    animate()
+
+    return () => {
+      cancelAnimationFrame(animationId)
+      window.removeEventListener('resize', resize)
+    }
   }, [])
 
   const nameLetters = 'Mouhamed Sall'.split('')
@@ -44,6 +122,30 @@ function Home() {
   return (
     <>
       <style>{`
+        .home-canvas {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .home-grid-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+          background-image:
+            linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+          background-size: 60px 60px;
+          mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+          -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+        }
         .home-glow {
           position: fixed;
           top: 0;
@@ -52,6 +154,44 @@ function Home() {
           height: 100%;
           pointer-events: none;
           z-index: 0;
+        }
+        .home-orb {
+          position: fixed;
+          border-radius: 50%;
+          filter: blur(80px);
+          pointer-events: none;
+          z-index: 0;
+          animation: orbFloat 8s ease-in-out infinite;
+        }
+        .home-orb-1 {
+          width: 400px;
+          height: 400px;
+          background: rgba(59, 130, 246, 0.08);
+          top: 10%;
+          right: 10%;
+          animation-delay: 0s;
+        }
+        .home-orb-2 {
+          width: 300px;
+          height: 300px;
+          background: rgba(139, 92, 246, 0.06);
+          bottom: 20%;
+          left: 5%;
+          animation-delay: -4s;
+        }
+        .home-orb-3 {
+          width: 200px;
+          height: 200px;
+          background: rgba(16, 185, 129, 0.05);
+          top: 50%;
+          left: 40%;
+          animation-delay: -2s;
+        }
+        @keyframes orbFloat {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(20px, -20px) scale(1.05); }
+          50% { transform: translate(-10px, 15px) scale(0.95); }
+          75% { transform: translate(15px, 10px) scale(1.02); }
         }
         .home-hero {
           position: relative;
@@ -66,16 +206,32 @@ function Home() {
         }
         .home-label {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           font-weight: 500;
           color: #3b82f6;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
           margin-bottom: 1.5rem;
-          padding: 0.4rem 1rem;
-          border: 1px solid rgba(59, 130, 246, 0.2);
+          padding: 0.5rem 1.25rem;
+          border: 1px solid rgba(59, 130, 246, 0.25);
           border-radius: 100px;
-          background: rgba(59, 130, 246, 0.05);
+          background: rgba(59, 130, 246, 0.06);
+          position: relative;
+          overflow: hidden;
+        }
+        .home-label::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+          animation: labelShine 3s infinite;
+        }
+        @keyframes labelShine {
+          0% { left: -100%; }
+          100% { left: 100%; }
         }
         .home-name {
           font-size: clamp(3rem, 8vw, 6rem);
@@ -90,7 +246,16 @@ function Home() {
         }
         .home-name span {
           display: inline-block;
-          color: #ffffff;
+          background: linear-gradient(135deg, #ffffff 0%, #3b82f6 50%, #8b5cf6 100%);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: gradientShift 6s ease infinite;
+        }
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
         .home-subtitle {
           font-size: clamp(1.2rem, 3vw, 2rem);
@@ -99,9 +264,22 @@ function Home() {
           margin-bottom: 1.5rem;
           letter-spacing: -0.02em;
         }
+        .home-subtitle .typing-cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1.2em;
+          background: #3b82f6;
+          margin-left: 4px;
+          animation: blink 1s step-end infinite;
+          vertical-align: text-bottom;
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
         .home-description {
           font-size: 1.05rem;
-          color: #d4d4d8;
+          color: #a1a1aa;
           max-width: 520px;
           line-height: 1.8;
           margin-bottom: 2.5rem;
@@ -118,7 +296,7 @@ function Home() {
           align-items: center;
           gap: 0.6rem;
           padding: 0.9rem 2rem;
-          background: #3b82f6;
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
           color: #ffffff;
           border-radius: 100px;
           font-size: 0.9rem;
@@ -128,11 +306,25 @@ function Home() {
           cursor: pointer;
           text-decoration: none;
           letter-spacing: -0.01em;
+          position: relative;
+          overflow: hidden;
+        }
+        .home-cta-primary::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+        .home-cta-primary:hover::before {
+          left: 100%;
         }
         .home-cta-primary:hover {
-          background: #2563eb;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.15);
         }
         .home-cta-secondary {
           display: inline-flex;
@@ -148,11 +340,28 @@ function Home() {
           cursor: pointer;
           text-decoration: none;
           letter-spacing: -0.01em;
+          position: relative;
+        }
+        .home-cta-secondary::before {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          border-radius: 100px;
+          padding: 1px;
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(139, 92, 246, 0.5));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .home-cta-secondary:hover::before {
+          opacity: 1;
         }
         .home-cta-secondary:hover {
-          border-color: rgba(59, 130, 246, 0.5);
-          background: rgba(59, 130, 246, 0.05);
-          transform: translateY(-2px);
+          border-color: transparent;
+          transform: translateY(-3px);
+          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
         }
         .home-socials {
           display: flex;
@@ -172,13 +381,55 @@ function Home() {
           color: #a1a1aa;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           cursor: pointer;
+          position: relative;
+        }
+        .home-social-link::before {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          border-radius: 50%;
+          padding: 1px;
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .home-social-link:hover::before {
+          opacity: 1;
         }
         .home-social-link:hover {
           color: #3b82f6;
-          border-color: rgba(59, 130, 246, 0.4);
+          border-color: transparent;
           background: rgba(59, 130, 246, 0.08);
-          transform: scale(1.1);
-          box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+          transform: scale(1.15) translateY(-2px);
+          box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+        }
+        .home-tech-stack {
+          display: flex;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin-bottom: 2rem;
+        }
+        .home-tech-badge {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.68rem;
+          font-weight: 500;
+          padding: 0.35rem 0.85rem;
+          border-radius: 6px;
+          border: 1px solid rgba(59, 130, 246, 0.15);
+          background: rgba(59, 130, 246, 0.04);
+          color: #64748b;
+          transition: all 0.3s ease;
+        }
+        .home-tech-badge:hover {
+          border-color: rgba(59, 130, 246, 0.4);
+          color: #3b82f6;
+          background: rgba(59, 130, 246, 0.08);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
         }
         .home-scroll-indicator {
           position: absolute;
@@ -189,19 +440,44 @@ function Home() {
           flex-direction: column;
           align-items: center;
           gap: 0.5rem;
-          color: #71717a;
-          font-size: 0.7rem;
-          letter-spacing: 0.15em;
+          color: #52525b;
+          font-size: 0.65rem;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
           font-family: 'JetBrains Mono', monospace;
         }
-        .home-scroll-chevron {
-          animation: bounceDown 2s infinite;
+        .home-scroll-line {
+          width: 1px;
+          height: 30px;
+          background: linear-gradient(180deg, #3b82f6, transparent);
+          animation: scrollPulse 2s ease-in-out infinite;
         }
-        @keyframes bounceDown {
-          0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-          40% { transform: translateY(6px); }
-          60% { transform: translateY(3px); }
+        @keyframes scrollPulse {
+          0%, 100% { opacity: 0.3; transform: scaleY(1); }
+          50% { opacity: 1; transform: scaleY(1.2); }
+        }
+        .home-status-bar {
+          position: fixed;
+          bottom: 1.5rem;
+          right: 1.5rem;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.6rem;
+          color: #3f3f46;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          z-index: 10;
+        }
+        .home-status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #10b981;
+          animation: statusPulse 2s ease-in-out infinite;
+        }
+        @keyframes statusPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+          50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
         }
         @media (max-width: 640px) {
           .home-actions {
@@ -216,6 +492,12 @@ function Home() {
           .home-hero {
             padding: 5rem 1.5rem 3rem;
           }
+          .home-status-bar {
+            display: none;
+          }
+          .home-orb-1 { width: 200px; height: 200px; }
+          .home-orb-2 { width: 150px; height: 150px; }
+          .home-orb-3 { display: none; }
         }
       `}</style>
 
@@ -225,11 +507,22 @@ function Home() {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
+        {/* Particle canvas */}
+        <canvas ref={canvasRef} className="home-canvas" />
+
+        {/* Tech grid background */}
+        <div className="home-grid-bg" />
+
+        {/* Floating orbs */}
+        <div className="home-orb home-orb-1" />
+        <div className="home-orb home-orb-2" />
+        <div className="home-orb home-orb-3" />
+
         {/* Cursor-following glow */}
         <div
           className="home-glow"
           style={{
-            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.04), transparent 60%)`
+            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.06), transparent 60%)`
           }}
         />
 
@@ -237,8 +530,8 @@ function Home() {
           {/* Label */}
           <motion.span
             className="home-label"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             Full Stack Developer
@@ -258,7 +551,7 @@ function Home() {
             ))}
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with typing cursor */}
           <motion.h2
             className="home-subtitle"
             custom={0}
@@ -266,7 +559,7 @@ function Home() {
             initial="hidden"
             animate="visible"
           >
-            Software Engineer
+            Software Engineer<span className="typing-cursor" />
           </motion.h2>
 
           {/* Description */}
@@ -280,6 +573,19 @@ function Home() {
             Etudiant ingenieur en Genie Logiciel a l'ESP Dakar. Je concois des applications web
             performantes et des architectures scalables. Experience chez Sonatel, certifie AWS & Docker.
           </motion.p>
+
+          {/* Tech Stack Badges */}
+          <motion.div
+            className="home-tech-stack"
+            custom={1.5}
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {['React', 'Node.js', 'Docker', 'AWS', 'Kubernetes', 'MongoDB'].map(tech => (
+              <span key={tech} className="home-tech-badge">{tech}</span>
+            ))}
+          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
@@ -331,14 +637,23 @@ function Home() {
             className="home-scroll-indicator"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
+            transition={{ delay: 2.5, duration: 1 }}
           >
             <span>scroll</span>
-            <svg className="home-scroll-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <div className="home-scroll-line" />
           </motion.div>
         </section>
+
+        {/* Status bar */}
+        <motion.div
+          className="home-status-bar"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3, duration: 1 }}
+        >
+          <span className="home-status-dot" />
+          <span>available for work</span>
+        </motion.div>
       </motion.main>
     </>
   )

@@ -92,15 +92,16 @@ function Contact() {
           display: flex;
           align-items: center;
           gap: 1rem;
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 12px;
           padding: 1.25rem 1.5rem;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .contact-info-card:hover {
-          border-color: rgba(255, 255, 255, 0.1);
-          transform: translateX(4px);
+          border-color: rgba(59, 130, 246, 0.2);
+          transform: translateX(6px);
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.06);
         }
         .contact-info-icon {
           display: flex;
@@ -174,10 +175,28 @@ function Contact() {
           box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
         }
         .contact-form-card {
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 16px;
           padding: 2rem;
+          position: relative;
+        }
+        .contact-form-card::before {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          border-radius: 17px;
+          padding: 1px;
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent, rgba(139, 92, 246, 0.2));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.4s;
+          pointer-events: none;
+        }
+        .contact-form-card:hover::before {
+          opacity: 1;
         }
         .contact-form {
           display: flex;
@@ -246,7 +265,7 @@ function Contact() {
           justify-content: center;
           gap: 0.6rem;
           padding: 0.9rem 2rem;
-          background: #3b82f6;
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
           color: #ffffff;
           border: none;
           border-radius: 100px;
@@ -255,11 +274,25 @@ function Contact() {
           cursor: pointer;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: 'Inter', sans-serif;
+          position: relative;
+          overflow: hidden;
+        }
+        .contact-submit-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+        .contact-submit-btn:hover::before {
+          left: 100%;
         }
         .contact-submit-btn:hover {
-          background: #2563eb;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.15);
         }
         .contact-status {
           text-align: center;

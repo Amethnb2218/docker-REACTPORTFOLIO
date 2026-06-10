@@ -106,13 +106,18 @@ function Projects() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          style={{ width: 32, height: 32, border: '2px solid rgba(59,130,246,0.1)', borderTopColor: '#3b82f6', borderRadius: '50%' }}
+        />
         <motion.div
           animate={{ opacity: [0.3, 1, 0.3] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          style={{ color: '#71717a', fontSize: '0.9rem', fontFamily: "'JetBrains Mono', monospace" }}
+          style={{ color: '#52525b', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.1em' }}
         >
-          Chargement...
+          LOADING PROJECTS...
         </motion.div>
       </div>
     )
@@ -168,7 +173,7 @@ function Projects() {
         }
         .project-card {
           display: block;
-          background: #141414;
+          background: rgba(20, 20, 20, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 16px;
           overflow: hidden;
@@ -176,11 +181,29 @@ function Projects() {
           color: inherit;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           will-change: transform;
+          position: relative;
+        }
+        .project-card::before {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          border-radius: 17px;
+          padding: 1px;
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.4s;
+          pointer-events: none;
+        }
+        .project-card:hover::before {
+          opacity: 1;
         }
         .project-card:hover {
           transform: perspective(800px) scale(1.02) !important;
-          border-color: rgba(59, 130, 246, 0.2);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.05);
+          border-color: transparent;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.08);
         }
         .project-card-image {
           width: 100%;
