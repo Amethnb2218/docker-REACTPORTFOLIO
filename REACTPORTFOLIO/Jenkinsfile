@@ -68,7 +68,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                         sh '''
                             docker run --rm \
-                              --network sonarqube-net \
+                              --network sonarqube_sonarqube-net \
                               -v "$(pwd):/usr/src" \
                               -w /usr/src \
                               sonarsource/sonar-scanner-cli \
