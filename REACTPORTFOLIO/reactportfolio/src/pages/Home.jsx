@@ -101,7 +101,7 @@ function Home() {
         }
         .home-description {
           font-size: 1.05rem;
-          color: #a1a1aa;
+          color: #d4d4d8;
           max-width: 520px;
           line-height: 1.8;
           margin-bottom: 2.5rem;

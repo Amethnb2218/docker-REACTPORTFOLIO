@@ -88,13 +88,13 @@ function About() {
         }
         .about-subtitle {
           font-size: 1.05rem;
-          color: #71717a;
+          color: #a1a1aa;
           font-weight: 400;
         }
         .about-quote {
           font-size: clamp(1.2rem, 2.5vw, 1.6rem);
           font-weight: 400;
-          color: #93c5fd;
+          color: #ffffff;
           line-height: 1.7;
           margin-bottom: 3rem;
           padding-left: 1.5rem;
@@ -202,14 +202,14 @@ function About() {
         }
         .about-timeline-company {
           font-size: 0.85rem;
-          color: #71717a;
+          color: #d4d4d8;
           font-weight: 500;
           display: block;
           margin-bottom: 0.5rem;
         }
         .about-timeline-desc {
           font-size: 0.85rem;
-          color: #a1a1aa;
+          color: #d4d4d8;
           line-height: 1.6;
         }
         .about-skills-grid {
