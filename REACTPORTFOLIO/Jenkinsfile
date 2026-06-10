@@ -69,8 +69,8 @@ pipeline {
                         sh '''
                             docker run --rm \
                               --network sonarqube_sonarqube-net \
-                              -v "$(pwd):/usr/src" \
-                              -w /usr/src \
+                              -v reactportfolio_jenkins_home:/var/jenkins_home \
+                              -w /var/jenkins_home/workspace/portfolio-pipeline/REACTPORTFOLIO \
                               sonarsource/sonar-scanner-cli \
                               -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                               -Dsonar.projectName="Portfolio React Express - Groupe 5" \
