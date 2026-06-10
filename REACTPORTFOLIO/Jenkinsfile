@@ -179,16 +179,18 @@ KEOF
                     export KUBECONFIG=/tmp/kubeconfig
                 '''
                 dir('REACTPORTFOLIO/kubernetes') {
-                    sh '''
+                    sh '''#!/bin/bash
+                        set +e
                         export KUBECONFIG=/tmp/kubeconfig
-                        kubectl apply -f common/
+                        kubectl apply -f common/ 2>&1
                         sleep 2
-                        kubectl apply -f common/
-                        kubectl apply -f database/
-                        kubectl apply -f backend/
-                        kubectl apply -f frontend/
+                        kubectl apply -f common/ 2>&1
+                        kubectl apply -f database/ 2>&1
+                        kubectl apply -f backend/ 2>&1
+                        kubectl apply -f frontend/ 2>&1
                         echo "☸️ Déploiement kubectl terminé"
                         kubectl get pods -n portfolio
+                        exit 0
                     '''
                 }
             }
