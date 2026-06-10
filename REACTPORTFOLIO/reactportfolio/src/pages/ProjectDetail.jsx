@@ -17,7 +17,8 @@ function ProjectDetail() {
     { _id: '7', title: 'Microservices Architecture', description: 'Architecture distribuée avec communication asynchrone et service discovery intégré. Scalabilité horizontale et tolérance aux pannes.', technologies: ['Node.js', 'RabbitMQ', 'Docker'] },
     { _id: '8', title: 'Cloud Migration AWS', description: "Migration infrastructure on-premise vers AWS avec optimisation des coûts et haute disponibilité. Multi-AZ et auto-scaling.", technologies: ['AWS', 'Terraform', 'Linux'] },
     { _id: '9', title: 'Jolofera', description: 'Site e-commerce moderne pour la vente de produits alimentaires et cosmétiques naturels africains. Interface responsive avec panier et paiement intégré.', technologies: ['React', 'Vite', 'CSS'], githubUrl: 'https://github.com/Amethnb2218/flashrv-react', liveUrl: 'https://www.jolofera.com/' },
-    { _id: '10', title: 'Teranga AI Assistant', description: "Assistant intelligent propulsé par l'IA pour répondre aux questions sur le Sénégal. Interface conversationnelle moderne avec historique des échanges.", technologies: ['React', 'Node.js', 'AI/LLM'], githubUrl: 'https://github.com/Amethnb2218/teranga-ai', liveUrl: 'https://teranga-assistant.onrender.com/' }
+    { _id: '10', title: 'Teranga AI Assistant', description: "Assistant intelligent propulsé par l'IA pour répondre aux questions sur le Sénégal. Interface conversationnelle moderne avec historique des échanges.", technologies: ['React', 'Node.js', 'AI/LLM'], githubUrl: 'https://github.com/Amethnb2218/teranga-ai', liveUrl: 'https://teranga-assistant.onrender.com/' },
+    { _id: '11', title: 'Frescoop UEMOA', description: 'Plateforme web collaborative pour les coopératives de la zone UEMOA. Gestion des membres, transactions et reporting.', technologies: ['React', 'Node.js', 'MongoDB'], githubUrl: 'https://github.com/seydinalimamoulayeyade/frescoopuemoa-v2', liveUrl: 'https://frescoop-web-icts-wbfo.onrender.com/' }
   ]
 
   useEffect(() => {
