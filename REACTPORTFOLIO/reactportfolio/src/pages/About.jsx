@@ -92,7 +92,7 @@ function About() {
           font-weight: 400;
         }
         .about-quote {
-          font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+          font-size: clamp(0.9rem, 1.8vw, 1.1rem);
           font-weight: 400;
           color: #ffffff;
           line-height: 1.7;
