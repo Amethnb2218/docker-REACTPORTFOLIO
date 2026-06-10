@@ -100,11 +100,6 @@ function About() {
           padding-left: 1.5rem;
           border-left: 2px solid rgba(59, 130, 246, 0.3);
         }
-        .about-quote em {
-          color: #93c5fd;
-          font-style: normal;
-          font-weight: 400;
-        }
         .about-stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -299,9 +294,9 @@ function About() {
         {/* Bio Quote */}
         <AnimatedSection>
           <blockquote className="about-quote">
-            Developeur Full Stack passionne base a <em>Dakar, Senegal</em>. Je concois des applications robustes avec un focus sur la
-            <em> performance</em>, la <em>qualite du code</em> et l'experience utilisateur. Ancien Pilote Production B2B chez <em>Sonatel</em>,
-            certifie <em>IBM</em>, <em>Microsoft</em> & <em>AWS</em>.
+            Developeur Full Stack passionne base a Dakar, Senegal. Je concois des applications robustes avec un focus sur la
+            performance, la qualite du code et l'experience utilisateur. Ancien Pilote Production B2B chez Sonatel,
+            certifie IBM, Microsoft & AWS.
           </blockquote>
         </AnimatedSection>
 
