@@ -97,7 +97,18 @@ function Projects() {
       .then((res) => res.json())
       .then((data) => {
         clearTimeout(timeout)
-        setProjects(data.length > 0 ? data : defaultProjects)
+        if (data.length > 0) {
+          const merged = data.map(p => {
+            if (!p.imageUrl) {
+              const match = defaultProjects.find(d => d.title === p.title)
+              if (match) return { ...p, imageUrl: match.imageUrl }
+            }
+            return p
+          })
+          setProjects(merged)
+        } else {
+          setProjects(defaultProjects)
+        }
         setLoading(false)
       })
       .catch(() => {
