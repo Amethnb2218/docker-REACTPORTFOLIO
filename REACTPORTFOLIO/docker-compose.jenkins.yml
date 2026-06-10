@@ -18,6 +18,7 @@ services:
     networks:
       - default
       - sonarqube_sonarqube-net
+      - bridge
     restart: unless-stopped
 
   mongo-test:
@@ -30,4 +31,6 @@ volumes:
 
 networks:
   sonarqube_sonarqube-net:
+    external: true
+  bridge:
     external: true
