@@ -10,5 +10,9 @@ RUN apt-get update && apt-get install -y curl && \
 # Install Docker CLI
 RUN apt-get install -y docker.io
 
+# Install kubectl
+RUN curl -LO "https://dl.k8s.io/release/v1.32.2/bin/linux/amd64/kubectl" && \
+    chmod +x kubectl && mv kubectl /usr/local/bin/
+
 # Autoriser Git dans tous les répertoires (nécessaire quand root)
 RUN git config --global --add safe.directory '*'

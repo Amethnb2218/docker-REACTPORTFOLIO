@@ -120,9 +120,9 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Docker') {
             steps {
-                echo '🚀 Déploiement des conteneurs...'
+                echo '🚀 Déploiement des conteneurs Docker...'
                 sh '''
                     docker stop portfolio-frontend portfolio-backend portfolio-mongo || true
                     docker rm portfolio-frontend portfolio-backend portfolio-mongo || true
@@ -136,17 +136,53 @@ pipeline {
             }
         }
 
+        stage('Deploy Kubernetes') {
+            steps {
+                echo '☸️ Déploiement sur Kubernetes...'
+                dir('REACTPORTFOLIO/kubernetes') {
+                    sh '''
+                        kubectl apply -f namespace.yaml
+                        kubectl apply -f configmap.yaml
+                        kubectl apply -f secret.yaml
+                        kubectl apply -f mongo-statefulset.yaml
+                        kubectl apply -f backend-deployment.yaml
+                        kubectl apply -f frontend-deployment.yaml
+                        kubectl apply -f ingress.yaml
+                        kubectl apply -f hpa.yaml
+                        kubectl apply -f networkpolicy.yaml
+
+                        echo "Redémarrage des deployments pour utiliser les nouvelles images..."
+                        kubectl rollout restart deployment/frontend -n portfolio
+                        kubectl rollout restart deployment/backend -n portfolio
+
+                        echo "Attente que les pods soient prêts..."
+                        kubectl wait --for=condition=ready pod -l app=frontend -n portfolio --timeout=120s
+                        kubectl wait --for=condition=ready pod -l app=backend -n portfolio --timeout=120s
+
+                        echo "☸️ État du cluster :"
+                        kubectl get pods -n portfolio
+                    '''
+                }
+            }
+        }
+
         stage('Health Check') {
             steps {
                 echo '✅ Vérification que les services sont opérationnels...'
                 sh '''
                     sleep 10
+                    echo "=== Health Check Docker ==="
                     echo "Vérification frontend (nginx)..."
                     docker exec portfolio-frontend wget -qO- http://127.0.0.1:80 > /dev/null || exit 1
-                    echo "Frontend OK"
+                    echo "Frontend Docker OK"
                     echo "Vérification backend (express)..."
                     docker exec portfolio-backend node -e "fetch('http://127.0.0.1:5000/api/projects').then(r=>{if(!r.ok)process.exit(1);process.exit(0)}).catch(()=>process.exit(1))"
-                    echo "Backend OK"
+                    echo "Backend Docker OK"
+
+                    echo ""
+                    echo "=== Health Check Kubernetes ==="
+                    kubectl get pods -n portfolio
+                    echo "Kubernetes OK"
                 '''
                 echo '✅ Tous les services sont UP !'
             }
