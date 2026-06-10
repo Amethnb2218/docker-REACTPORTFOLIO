@@ -47,7 +47,7 @@ pipeline {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     echo '🧪 Lancement des tests backend...'
-                    sh 'MONGO_URI=mongodb://mongo-test:27017/portfolio-test npm test -- --coverage'
+                    sh 'MONGO_URI=mongodb://mongo-test:27017/portfolio-test npm test'
                 }
             }
         }
