@@ -35,34 +35,34 @@ function About() {
   const experience = [
     {
       period: '2025 - 2026',
-      title: 'Ingenieur Genie Logiciel',
-      company: 'ESP Dakar (Ecole Superieure Polytechnique)',
-      description: 'Formation en genie logiciel, systemes d\'information, bases de donnees, reseaux et architectures distribuees.'
+      title: 'Ingénieur Génie Logiciel',
+      company: 'ESP Dakar (École Supérieure Polytechnique)',
+      description: 'Formation en génie logiciel, systèmes d\'information, bases de données, réseaux et architectures distribuées.'
     },
     {
-      period: 'Nov 2024 - Dec 2025',
+      period: 'Nov 2024 - Déc 2025',
       title: 'Pilote Production B2B',
-      company: 'Sonatel (Orange Senegal)',
-      description: 'Supervision des services Fibre (FTTH/FTTO) et ADSL pour les clients entreprises. Monitoring, resolution d\'incidents et amelioration continue.'
+      company: 'Sonatel (Orange Sénégal)',
+      description: 'Supervision des services Fibre (FTTH/FTTO) et ADSL pour les clients entreprises. Monitoring, résolution d\'incidents et amélioration continue.'
     },
     {
       period: 'Juin 2024 - Nov 2024',
       title: 'Formation Cloud AWS',
       company: 'Orange Digital Center',
-      description: 'Programme intensif sur les services AWS, architecture cloud, et bonnes pratiques de deploiement et securite.'
+      description: 'Programme intensif sur les services AWS, architecture cloud, et bonnes pratiques de déploiement et sécurité.'
     },
     {
       period: 'Mai 2024 - Juin 2024',
-      title: 'Stagiaire Cybersecurite',
+      title: 'Stagiaire Cybersécurité',
       company: 'Atech Cybersecurity',
-      description: 'Initiation aux audits de securite, tests de penetration et mise en place de politiques de securite informatique.'
+      description: 'Initiation aux audits de sécurité, tests de pénétration et mise en place de politiques de sécurité informatique.'
     }
   ]
 
   const stats = [
-    { number: '3+', label: 'ans' },
-    { number: '10+', label: 'projets' },
-    { number: '3', label: 'certifs' }
+    { number: '3+', label: 'Ans' },
+    { number: '10+', label: 'Projets' },
+    { number: '3', label: 'Certifs' }
   ]
 
   return (
@@ -294,9 +294,9 @@ function About() {
         {/* Bio Quote */}
         <AnimatedSection>
           <blockquote className="about-quote">
-            Developeur Full Stack passionne base a Dakar, Senegal. Je concois des applications robustes avec un focus sur la
-            performance, la qualite du code et l'experience utilisateur. Ancien Pilote Production B2B chez Sonatel,
-            certifie IBM, Microsoft & AWS.
+            Développeur Full Stack passionné basé à Dakar, Sénégal. Je conçois des applications robustes avec un focus sur la
+            performance, la qualité du code et l'expérience utilisateur. Ancien Pilote Production B2B chez Sonatel,
+            certifié IBM, Microsoft & AWS.
           </blockquote>
         </AnimatedSection>
 
@@ -349,7 +349,7 @@ function About() {
         {/* Skills Grid */}
         <AnimatedSection delay={0.1}>
           <div className="about-section">
-            <h2 className="about-section-title">Competences</h2>
+            <h2 className="about-section-title">Compétences</h2>
             <div className="about-skills-grid">
               {Object.entries(skills).map(([category, items], catIndex) => {
                 const color = categoryColors[category] || '#3b82f6'
