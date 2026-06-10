@@ -76,7 +76,6 @@ pipeline {
                               -Dsonar.projectName="Portfolio React Express - Groupe 5" \
                               -Dsonar.sources=reactportfolio/src,"EXPRESSJS PORTFOLIO/src","EXPRESSJS PORTFOLIO/app.js" \
                               -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
-                              -Dsonar.javascript.lcov.reportPaths="EXPRESSJS PORTFOLIO/coverage/lcov.info" \
                               -Dsonar.host.url=${SONAR_HOST_URL} \
                               -Dsonar.token=${SONAR_TOKEN}
                         '''
