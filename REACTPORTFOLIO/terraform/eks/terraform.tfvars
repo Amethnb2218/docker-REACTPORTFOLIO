@@ -1,0 +1,10 @@
+aws_region         = "eu-west-3"
+cluster_name       = "portfolio-eks"
+kubernetes_version = "1.29"
+node_instance_type = "t3.medium"
+node_desired_size  = 2
+node_min_size      = 1
+node_max_size      = 3
+frontend_replicas  = 2
+backend_replicas   = 2
+dockerhub_username = "amethnb2218"

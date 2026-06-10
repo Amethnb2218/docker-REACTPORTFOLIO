@@ -1,0 +1,5 @@
+aws_region         = "eu-west-3"
+project_name       = "portfolio"
+instance_type      = "t2.micro"
+dockerhub_username = "amethnb2218"
+ssh_public_key     = "REPLACE_WITH_YOUR_PUBLIC_KEY"
