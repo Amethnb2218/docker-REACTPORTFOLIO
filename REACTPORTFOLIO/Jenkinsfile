@@ -208,7 +208,7 @@ KEOF
                     echo "Frontend Kubernetes OK"
                     echo ""
                     echo "Vérification backend pods..."
-                    kubectl exec deployment/backend -n portfolio -- wget -qO- http://127.0.0.1:5000/api/projects > /dev/null
+                    kubectl exec deployment/backend -n portfolio -- node -e "fetch('http://127.0.0.1:5000/api/projects').then(r=>{console.log('Status:'+r.status);process.exit(r.ok?0:1)}).catch(e=>{console.error(e);process.exit(1)})"
                     echo "Backend Kubernetes OK"
                 '''
                 echo '✅ Tous les services sont UP !'
