@@ -198,20 +198,18 @@ KEOF
             steps {
                 echo '✅ Vérification que les services sont opérationnels...'
                 sh '''
-                    sleep 10
-                    echo "=== Health Check Docker ==="
-                    echo "Vérification frontend (nginx)..."
-                    docker exec portfolio-frontend wget -qO- http://127.0.0.1:80 > /dev/null || exit 1
-                    echo "Frontend Docker OK"
-                    echo "Vérification backend (express)..."
-                    docker exec portfolio-backend node -e "fetch('http://127.0.0.1:5000/api/projects').then(r=>{if(!r.ok)process.exit(1);process.exit(0)}).catch(()=>process.exit(1))"
-                    echo "Backend Docker OK"
-
-                    echo ""
+                    sleep 5
                     echo "=== Health Check Kubernetes ==="
                     export KUBECONFIG=/tmp/kubeconfig
                     kubectl get pods -n portfolio
-                    echo "Kubernetes OK"
+                    echo ""
+                    echo "Vérification frontend pods..."
+                    kubectl exec deployment/frontend -n portfolio -- wget -qO- http://127.0.0.1:80 > /dev/null
+                    echo "Frontend Kubernetes OK"
+                    echo ""
+                    echo "Vérification backend pods..."
+                    kubectl exec deployment/backend -n portfolio -- wget -qO- http://127.0.0.1:5000/api/projects > /dev/null
+                    echo "Backend Kubernetes OK"
                 '''
                 echo '✅ Tous les services sont UP !'
             }
