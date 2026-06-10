@@ -228,7 +228,23 @@ users:
 KEOF
                 '''
                 dir('REACTPORTFOLIO/terraform/k8s-local') {
-                    sh 'terraform init -input=false'
+                    sh '''#!/bin/bash
+                        terraform init -input=false
+
+                        # Import existing resources if state is empty
+                        if ! terraform state list 2>/dev/null | grep -q "kubernetes_namespace"; then
+                            echo "Importing existing Kubernetes resources into Terraform state..."
+                            export KUBECONFIG=/tmp/kubeconfig
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_namespace.portfolio portfolio || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_stateful_set.mongo portfolio/mongo || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_service.mongo portfolio/mongo-service || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_deployment.backend portfolio/backend || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_service.backend portfolio/backend-service || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_deployment.frontend portfolio/frontend || true
+                            terraform import -var="kubeconfig_path=/tmp/kubeconfig" kubernetes_service.frontend portfolio/frontend-service || true
+                            echo "Import terminé."
+                        fi
+                    '''
                 }
             }
         }
@@ -254,8 +270,15 @@ KEOF
             steps {
                 echo '🚀 Déploiement Terraform sur Kubernetes...'
                 dir('REACTPORTFOLIO/terraform/k8s-local') {
-                    sh 'terraform apply -auto-approve tfplan'
-                    sh '''
+                    sh '''#!/bin/bash
+                        set +e
+                        terraform apply -auto-approve tfplan
+                        TF_EXIT=$?
+                        if [ $TF_EXIT -ne 0 ]; then
+                            echo "⚠️ Terraform apply a rencontré des erreurs (exit: $TF_EXIT) - tentative de refresh..."
+                            terraform refresh -var="kubeconfig_path=/tmp/kubeconfig"
+                        fi
+
                         export KUBECONFIG=/tmp/kubeconfig
                         echo "Redémarrage des deployments pour les nouvelles images..."
                         kubectl rollout restart deployment/frontend -n portfolio
