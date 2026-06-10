@@ -15,7 +15,9 @@ function ProjectDetail() {
     { _id: '5', title: 'Pipeline CI/CD', description: 'Automatisation complète du déploiement avec Jenkins, Docker et AWS. Tests automatisés, analyse SonarQube et monitoring.', technologies: ['Jenkins', 'AWS', 'Docker', 'Bash'] },
     { _id: '6', title: 'Dashboard Analytics', description: 'Tableau de bord temps réel avec visualisations interactives pour le suivi des KPI entreprise. Graphiques dynamiques et exports.', technologies: ['React', 'D3.js', 'PostgreSQL'] },
     { _id: '7', title: 'Microservices Architecture', description: 'Architecture distribuée avec communication asynchrone et service discovery intégré. Scalabilité horizontale et tolérance aux pannes.', technologies: ['Node.js', 'RabbitMQ', 'Docker'] },
-    { _id: '8', title: 'Cloud Migration AWS', description: "Migration infrastructure on-premise vers AWS avec optimisation des coûts et haute disponibilité. Multi-AZ et auto-scaling.", technologies: ['AWS', 'Terraform', 'Linux'] }
+    { _id: '8', title: 'Cloud Migration AWS', description: "Migration infrastructure on-premise vers AWS avec optimisation des coûts et haute disponibilité. Multi-AZ et auto-scaling.", technologies: ['AWS', 'Terraform', 'Linux'] },
+    { _id: '9', title: 'Jolofera', description: 'Site e-commerce moderne pour la vente de produits alimentaires et cosmétiques naturels africains. Interface responsive avec panier et paiement intégré.', technologies: ['React', 'Vite', 'CSS'], githubUrl: 'https://github.com/Amethnb2218/flashrv-react', liveUrl: 'https://www.jolofera.com/' },
+    { _id: '10', title: 'Teranga AI Assistant', description: "Assistant intelligent propulsé par l'IA pour répondre aux questions sur le Sénégal. Interface conversationnelle moderne avec historique des échanges.", technologies: ['React', 'Node.js', 'AI/LLM'], githubUrl: 'https://github.com/Amethnb2218/teranga-ai', liveUrl: 'https://teranga-assistant.onrender.com/' }
   ]
 
   useEffect(() => {
