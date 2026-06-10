@@ -142,12 +142,20 @@ pipeline {
                 echo '☸️ Déploiement sur Kubernetes (Minikube)...'
                 dir('REACTPORTFOLIO/kubernetes') {
                     sh '''
+                        MINIKUBE_IP=$(docker inspect minikube --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 2>/dev/null)
+                        if [ -z "$MINIKUBE_IP" ]; then
+                            MINIKUBE_IP=$(getent hosts minikube | awk '{print $1}')
+                        fi
+                        if [ -z "$MINIKUBE_IP" ]; then
+                            MINIKUBE_IP="172.17.0.3"
+                        fi
+                        echo "Minikube IP: ${MINIKUBE_IP}"
                         cat > /tmp/kubeconfig <<KEOF
 apiVersion: v1
 clusters:
 - cluster:
     certificate-authority: /root/.minikube/ca.crt
-    server: https://172.17.0.2:8443
+    server: https://${MINIKUBE_IP}:8443
   name: minikube
 contexts:
 - context:
