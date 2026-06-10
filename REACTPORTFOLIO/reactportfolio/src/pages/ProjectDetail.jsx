@@ -7,14 +7,41 @@ function ProjectDetail() {
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const defaultProjects = [
+    { _id: '1', title: 'Portfolio React', description: 'Application SPA moderne avec React, Vite et animations fluides. Architecture composants réutilisables avec routing dynamique et transitions de page.', technologies: ['React', 'Vite', 'Framer Motion'] },
+    { _id: '2', title: 'API REST Express', description: 'Backend robuste avec Express.js, MongoDB et authentification JWT. Documentation Swagger intégrée. CRUD complet avec validation et gestion des erreurs.', technologies: ['Node.js', 'Express', 'MongoDB'] },
+    { _id: '3', title: 'Infrastructure Docker', description: 'Conteneurisation multi-services avec orchestration Docker Compose et reverse proxy Nginx. Environnements dev/prod isolés.', technologies: ['Docker', 'Docker Compose', 'Nginx'] },
+    { _id: '4', title: 'LigueyFemme', description: "Application mobile React Native pour l'inclusion financière des femmes au Sénégal. Microfinance et formations professionnelles.", technologies: ['React Native', 'Node.js', 'MongoDB'] },
+    { _id: '5', title: 'Pipeline CI/CD', description: 'Automatisation complète du déploiement avec Jenkins, Docker et AWS. Tests automatisés, analyse SonarQube et monitoring.', technologies: ['Jenkins', 'AWS', 'Docker', 'Bash'] },
+    { _id: '6', title: 'Dashboard Analytics', description: 'Tableau de bord temps réel avec visualisations interactives pour le suivi des KPI entreprise. Graphiques dynamiques et exports.', technologies: ['React', 'D3.js', 'PostgreSQL'] },
+    { _id: '7', title: 'Microservices Architecture', description: 'Architecture distribuée avec communication asynchrone et service discovery intégré. Scalabilité horizontale et tolérance aux pannes.', technologies: ['Node.js', 'RabbitMQ', 'Docker'] },
+    { _id: '8', title: 'Cloud Migration AWS', description: "Migration infrastructure on-premise vers AWS avec optimisation des coûts et haute disponibilité. Multi-AZ et auto-scaling.", technologies: ['AWS', 'Terraform', 'Linux'] }
+  ]
+
   useEffect(() => {
-    fetch(`/api/projects/${id}`)
-      .then((res) => res.json())
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 3000)
+    fetch(`/api/projects/${id}`, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error('Not found')
+        return res.json()
+      })
       .then((data) => {
-        setProject(data)
+        clearTimeout(timeout)
+        if (data && data.title) {
+          setProject(data)
+        } else {
+          const fallback = defaultProjects.find(p => p._id === id)
+          setProject(fallback || null)
+        }
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        clearTimeout(timeout)
+        const fallback = defaultProjects.find(p => p._id === id)
+        setProject(fallback || null)
+        setLoading(false)
+      })
   }, [id])
 
   if (loading) {
