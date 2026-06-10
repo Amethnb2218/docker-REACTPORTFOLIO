@@ -93,16 +93,17 @@ function About() {
         }
         .about-quote {
           font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-          font-weight: 500;
-          color: #a1a1aa;
+          font-weight: 400;
+          color: #93c5fd;
           line-height: 1.7;
           margin-bottom: 3rem;
           padding-left: 1.5rem;
           border-left: 2px solid rgba(59, 130, 246, 0.3);
         }
         .about-quote em {
-          color: #f5f5f5;
+          color: #93c5fd;
           font-style: normal;
+          font-weight: 400;
         }
         .about-stats {
           display: grid;

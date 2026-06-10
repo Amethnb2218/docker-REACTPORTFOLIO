@@ -10,47 +10,33 @@ case "$1" in
   up)
     echo "=== Deploiement du portfolio sur Kubernetes ==="
 
-    # 1. Creer le namespace
-    echo "[1/7] Creation du namespace..."
-    kubectl apply -f namespace.yaml
+    # 1. Common (namespace, config, secrets, network)
+    echo "[1/5] Application des ressources communes..."
+    kubectl apply -f common/
 
-    # 2. Configmap et secrets
-    echo "[2/7] Application des ConfigMaps et Secrets..."
-    kubectl apply -f configmap.yaml
-    kubectl apply -f secret.yaml
+    # 2. Database (MongoDB)
+    echo "[2/5] Deploiement de MongoDB..."
+    kubectl apply -f database/
 
-    # 3. Volumes et MongoDB (StatefulSet)
-    echo "[3/7] Deploiement de MongoDB (StatefulSet)..."
-    kubectl apply -f mongo-pv.yaml
-    kubectl apply -f mongo-statefulset.yaml
+    # 3. Backend
+    echo "[3/5] Deploiement du Backend..."
+    kubectl apply -f backend/
 
-    # 4. Backend
-    echo "[4/7] Deploiement du Backend..."
-    kubectl apply -f backend-deployment.yaml
+    # 4. Frontend
+    echo "[4/5] Deploiement du Frontend..."
+    kubectl apply -f frontend/
 
-    # 5. Frontend
-    echo "[5/7] Deploiement du Frontend..."
-    kubectl apply -f frontend-deployment.yaml
-
-    # 6. Ingress
-    echo "[6/7] Configuration de l'Ingress..."
-    kubectl apply -f ingress.yaml
-
-    # 7. HPA et Network Policies
-    echo "[7/7] Application du HPA et des Network Policies..."
-    kubectl apply -f hpa.yaml
-    kubectl apply -f networkpolicy.yaml
+    # 5. Attente
+    echo "[5/5] Attente des pods..."
+    kubectl wait --for=condition=ready pod -l app=frontend -n $NAMESPACE --timeout=120s
+    kubectl wait --for=condition=ready pod -l app=backend -n $NAMESPACE --timeout=120s
 
     echo ""
     echo "=== Deploiement termine ==="
-    echo "Attente des pods..."
-    kubectl wait --for=condition=ready pod -l app=frontend -n $NAMESPACE --timeout=120s
-    kubectl wait --for=condition=ready pod -l app=backend -n $NAMESPACE --timeout=120s
-    echo ""
     kubectl get all -n $NAMESPACE
     echo ""
-    echo "Ajoutez '127.0.0.1 portfolio.local' dans /etc/hosts"
-    echo "Puis accedez a http://portfolio.local"
+    echo "Acces : kubectl port-forward svc/frontend-service 4000:80 -n portfolio"
+    echo "Puis ouvrir http://localhost:4000"
     ;;
 
   down)

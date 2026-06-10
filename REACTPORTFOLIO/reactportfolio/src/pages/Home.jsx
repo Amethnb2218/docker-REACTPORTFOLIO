@@ -95,16 +95,13 @@ function Home() {
         .home-subtitle {
           font-size: clamp(1.2rem, 3vw, 2rem);
           font-weight: 600;
-          background: linear-gradient(180deg, #ffffff 0%, #555555 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #d4d4d8;
           margin-bottom: 1.5rem;
           letter-spacing: -0.02em;
         }
         .home-description {
           font-size: 1.05rem;
-          color: #71717a;
+          color: #a1a1aa;
           max-width: 520px;
           line-height: 1.8;
           margin-bottom: 2.5rem;

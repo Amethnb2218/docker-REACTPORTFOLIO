@@ -16,3 +16,8 @@ RUN curl -LO "https://dl.k8s.io/release/v1.32.2/bin/linux/amd64/kubectl" && \
 
 # Autoriser Git dans tous les répertoires (nécessaire quand root)
 RUN git config --global --add safe.directory '*'
+
+# Script to fix minikube kubeconfig paths inside container
+COPY jenkins-entrypoint.sh /usr/local/bin/jenkins-entrypoint.sh
+RUN chmod +x /usr/local/bin/jenkins-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/jenkins-entrypoint.sh"]

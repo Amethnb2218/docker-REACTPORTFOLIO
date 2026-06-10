@@ -138,18 +138,37 @@ pipeline {
 
         stage('Deploy Kubernetes') {
             steps {
-                echo '☸️ Déploiement sur Kubernetes...'
+                echo '☸️ Déploiement sur Kubernetes (Minikube)...'
                 dir('REACTPORTFOLIO/kubernetes') {
                     sh '''
-                        kubectl apply -f namespace.yaml
-                        kubectl apply -f configmap.yaml
-                        kubectl apply -f secret.yaml
-                        kubectl apply -f mongo-statefulset.yaml
-                        kubectl apply -f backend-deployment.yaml
-                        kubectl apply -f frontend-deployment.yaml
-                        kubectl apply -f ingress.yaml
-                        kubectl apply -f hpa.yaml
-                        kubectl apply -f networkpolicy.yaml
+                        cat > /tmp/kubeconfig <<KEOF
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /root/.minikube/ca.crt
+    server: https://172.17.0.2:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+users:
+- name: minikube
+  user:
+    client-certificate: /root/.minikube/profiles/minikube/client.crt
+    client-key: /root/.minikube/profiles/minikube/client.key
+KEOF
+                        export KUBECONFIG=/tmp/kubeconfig
+
+                        kubectl apply -f common/
+                        sleep 2
+                        kubectl apply -f common/
+                        kubectl apply -f database/
+                        kubectl apply -f backend/
+                        kubectl apply -f frontend/
 
                         echo "Redémarrage des deployments pour utiliser les nouvelles images..."
                         kubectl rollout restart deployment/frontend -n portfolio
@@ -181,6 +200,7 @@ pipeline {
 
                     echo ""
                     echo "=== Health Check Kubernetes ==="
+                    export KUBECONFIG=/tmp/kubeconfig
                     kubectl get pods -n portfolio
                     echo "Kubernetes OK"
                 '''
