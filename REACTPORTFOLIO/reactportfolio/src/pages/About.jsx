@@ -340,7 +340,10 @@ function About() {
         </motion.p>
 
         <motion.a
-          href="#"
+          href="/CV_Mouhamed_SALL.pdf"
+          download="CV_Mouhamed_SALL.pdf"
+          target="_blank"
+          rel="noreferrer"
           className="about-cv-button"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
