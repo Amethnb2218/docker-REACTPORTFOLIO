@@ -48,45 +48,66 @@ function Projects() {
     {
       _id: '1',
       title: 'Jolofera',
-      description: 'Plateforme SaaS multi-tenant avec systeme de reservation et e-commerce. React + Node.js + PostgreSQL + Prisma ORM avec WebSocket realtime et paiement integre.',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Prisma', 'WebSocket'],
+      description: 'Plateforme SaaS multi-tenant avec système de réservation et e-commerce. React + Node.js + PostgreSQL + Prisma ORM avec WebSocket realtime et paiement intégré.',
+      technologies: ['React', 'Node.js', 'PostgreSQL', 'Prisma', 'WebSocket', 'AWS'],
       liveUrl: 'https://jolofera.com',
       githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '2',
-      title: 'Docker React Portfolio',
-      description: 'Ce portfolio avec infrastructure Docker complete. Pipeline CI/CD avec Jenkins, deploiement Kubernetes et infrastructure as code avec Terraform.',
-      technologies: ['React', 'Docker', 'Jenkins', 'Kubernetes', 'Terraform'],
-      githubUrl: 'https://github.com/Amethnb2218/docker-REACTPORTFOLIO'
+      title: 'Teranga AI',
+      description: 'Plateforme d\'intelligence artificielle avec Machine Learning pour l\'analyse de données. Modèles prédictifs et traitement du langage naturel.',
+      technologies: ['Python', 'Machine Learning', 'NLP', 'React', 'API REST'],
+      githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '3',
-      title: 'LigueyFemme',
-      description: 'Application mobile React Native d\'inclusion financiere pour femmes au Senegal. Backend Node.js avec AWS Lambda et base de donnees distribuee.',
-      technologies: ['React Native', 'Node.js', 'AWS Lambda', 'MongoDB'],
+      title: 'FresCOOP',
+      description: 'Application sélectionnée à deux hackathons. Solution coopérative digitale pour la gestion et la mise en réseau de coopératives agricoles.',
+      technologies: ['React', 'Node.js', 'MongoDB', 'Express.js'],
       githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '4',
-      title: 'Wolof ASR Lambda',
-      description: 'Service de reconnaissance vocale wolof deploye sur AWS Lambda avec Docker. Modele ASR pre-inclus dans l\'image Docker pour inference rapide.',
-      technologies: ['Python', 'AWS Lambda', 'Docker', 'Machine Learning'],
+      title: 'LigueyFemme',
+      description: 'Application mobile d\'inclusion financière pour femmes au Sénégal. Backend Node.js avec AWS Lambda et base de données distribuée.',
+      technologies: ['React Native', 'Node.js', 'AWS Lambda', 'MongoDB'],
       githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '5',
-      title: 'API Portfolio Express',
-      description: 'API REST complete avec Express.js, MongoDB, authentification JWT, upload de fichiers avec Multer et suite de tests automatises.',
-      technologies: ['Express.js', 'MongoDB', 'JWT', 'Multer', 'Tests'],
+      title: 'Wolof ASR Lambda',
+      description: 'Service de reconnaissance vocale wolof déployé sur AWS Lambda avec Docker. Modèle ASR pré-inclus dans l\'image Docker pour inférence rapide.',
+      technologies: ['Python', 'AWS Lambda', 'Docker', 'Machine Learning'],
       githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '6',
+      title: 'Docker React Portfolio',
+      description: 'Ce portfolio avec infrastructure Docker complète. Pipeline CI/CD avec Jenkins, déploiement Kubernetes et Infrastructure as Code avec Terraform.',
+      technologies: ['React', 'Docker', 'Jenkins', 'Kubernetes', 'Terraform'],
+      githubUrl: 'https://github.com/Amethnb2218/docker-REACTPORTFOLIO'
+    },
+    {
+      _id: '7',
+      title: 'API Portfolio Express',
+      description: 'API REST complète avec Express.js, MongoDB, authentification JWT, upload de fichiers avec Multer et suite de tests automatisés.',
+      technologies: ['Express.js', 'MongoDB', 'JWT', 'Multer', 'Tests'],
+      githubUrl: 'https://github.com/Amethnb2218'
+    },
+    {
+      _id: '8',
       title: 'Infrastructure Terraform',
-      description: 'Infrastructure as Code pour deploiement cloud multi-environnement. Provisioning AWS avec Terraform, configuration automatisee et monitoring.',
+      description: 'Infrastructure as Code pour déploiement cloud multi-environnement. Provisioning AWS avec Terraform, configuration automatisée et monitoring.',
       technologies: ['Terraform', 'AWS', 'Docker', 'CI/CD'],
       githubUrl: 'https://github.com/Amethnb2218'
+    },
+    {
+      _id: '9',
+      title: '4ura.tech',
+      description: 'Site web de bien-être et développement personnel. Design soigné, expérience utilisateur fluide et contenu orienté santé mentale et physique.',
+      technologies: ['React', 'Tailwind CSS', 'Vite'],
+      liveUrl: 'https://4ura.tech'
     }
   ]
 
@@ -260,7 +281,7 @@ function Projects() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
-            Une selection de projets qui illustrent mes competences en developpement full stack,
+            Une sélection de projets qui illustrent mes compétences en développement full stack,
             DevOps et architecture logicielle.
           </motion.p>
         </div>

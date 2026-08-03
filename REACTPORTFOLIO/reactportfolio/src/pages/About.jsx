@@ -22,7 +22,7 @@ function About() {
     'Frontend': ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Framer Motion'],
     'Backend': ['Node.js', 'Express.js', 'Prisma ORM', 'REST API', 'WebSocket'],
     'Database': ['PostgreSQL', 'MySQL', 'MongoDB'],
-    'Cloud & DevOps': ['AWS', 'Docker', 'Git', 'GitHub Actions', 'CI/CD', 'Linux']
+    'Cloud & DevOps': ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Terraform', 'Git', 'GitHub Actions', 'CI/CD', 'Linux', 'SonarQube', 'Prometheus', 'Grafana', 'Trivy']
   }
 
   const experience = [
@@ -30,19 +30,37 @@ function About() {
       period: '2026 - Present',
       title: 'Fondateur & Dev Full Stack',
       company: 'Jolofera',
-      description: 'Plateforme SaaS multi-tenant avec systeme de reservation et e-commerce. React + Node.js + PostgreSQL + Prisma, WebSocket realtime, paiement integre.'
+      description: 'Plateforme SaaS multi-tenant avec système de réservation et e-commerce. React + Node.js + PostgreSQL + Prisma, WebSocket realtime, paiement intégré.'
     },
     {
       period: 'Nov 2024 - Dec 2025',
       title: 'Pilote Production B2B',
       company: 'Sonatel (Groupe Orange)',
-      description: 'Supervision services B2B fibre FTTH/FTTO et ADSL pour clients entreprises. Management equipes, gestion incidents, suivi QoS.'
+      description: 'Supervision services B2B fibre FTTH/FTTO et ADSL pour clients entreprises. Management équipes, gestion incidents, suivi QoS.'
     },
     {
       period: 'Juin - Nov 2024',
       title: 'Stagiaire Reseaux',
       company: 'Sonatel',
-      description: 'Deploiement FTTO, configuration reseau, installation equipements telecoms.'
+      description: 'Déploiement FTTO, configuration réseau, installation équipements télécoms.'
+    }
+  ]
+
+  const education = [
+    {
+      period: '2025 - 2026 (en cours)',
+      title: 'Ingénieur en Génie Logiciel',
+      school: 'École Supérieure Polytechnique (ESP) Dakar'
+    },
+    {
+      period: '2025 - 2026',
+      title: 'Formation AWS Cloud',
+      school: 'Orange Digital Center'
+    },
+    {
+      period: '2022 - 2024',
+      title: 'DTS Télécommunications et Réseaux',
+      school: 'École Supérieure Polytechnique (ESP) Dakar'
     }
   ]
 
@@ -277,16 +295,16 @@ function About() {
 
         <AnimatedSection>
           <p className="about-bio">
-            Developpeur Full Stack passionne base a Dakar, Senegal. Je concois des applications
-            robustes avec un focus sur la performance, la qualite du code et l'experience utilisateur.
-            Fondateur de Jolofera, ancien Pilote Production B2B chez Sonatel (Orange Senegal),
-            certifie AWS Cloud Practitioner et AWS re/Start Graduate.
+            Développeur Full Stack passionné basé à Dakar, Sénégal. Je conçois des applications
+            robustes avec un focus sur la performance, la qualité du code et l'expérience utilisateur.
+            Fondateur de Jolofera, ancien Pilote Production B2B chez Sonatel (Orange Sénégal),
+            certifié AWS Cloud Practitioner et AWS re/Start Graduate.
           </p>
         </AnimatedSection>
 
         <AnimatedSection delay={0.1}>
           <div className="about-section">
-            <h2 className="about-section-title">Competences</h2>
+            <h2 className="about-section-title">Compétences</h2>
             <div className="about-skills-grid">
               {Object.entries(skills).map(([category, items], catIndex) => (
                 <motion.div
@@ -328,6 +346,31 @@ function About() {
                     <h3 className="about-timeline-title">{exp.title}</h3>
                     <span className="about-timeline-company">{exp.company}</span>
                     <p className="about-timeline-desc">{exp.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.1}>
+          <div className="about-section">
+            <h2 className="about-section-title">Formation</h2>
+            <div className="about-timeline">
+              {education.map((edu, index) => (
+                <motion.div
+                  key={index}
+                  className="about-timeline-item"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <div className="about-timeline-dot" />
+                  <div className="about-timeline-card">
+                    <span className="about-timeline-period">{edu.period}</span>
+                    <h3 className="about-timeline-title">{edu.title}</h3>
+                    <span className="about-timeline-company">{edu.school}</span>
                   </div>
                 </motion.div>
               ))}

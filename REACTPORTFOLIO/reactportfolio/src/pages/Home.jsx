@@ -145,8 +145,8 @@ function Home() {
             initial="hidden"
             animate="visible"
           >
-            Developpeur Full Stack et etudiant ingenieur en Genie Logiciel a l'ESP Dakar.
-            Fondateur de Jolofera, plateforme SaaS multi-tenant. Certifie AWS Cloud Practitioner
+            Développeur Full Stack et étudiant ingénieur en Génie Logiciel à l'ESP Dakar.
+            Fondateur de Jolofera, plateforme SaaS multi-tenant. Certifié AWS Cloud Practitioner
             et AWS re/Start Graduate.
           </motion.p>
 
@@ -172,7 +172,7 @@ function Home() {
           transition={{ delay: 2, duration: 1 }}
         >
           <span className="home-status-dot" />
-          <span>Disponible pour opportunites</span>
+          <span>Disponible pour opportunités</span>
         </motion.div>
       </motion.main>
     </>
