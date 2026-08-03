@@ -78,7 +78,7 @@ function About() {
           font-size: clamp(2rem, 5vw, 3rem);
           font-weight: 400;
           font-style: italic;
-          color: #00473e;
+          color: #00362e;
           letter-spacing: -0.02em;
           line-height: 1.4;
           margin-bottom: 2rem;
@@ -86,7 +86,7 @@ function About() {
         .about-bio {
           font-family: 'Inter', sans-serif;
           font-size: 1.05rem;
-          color: #475d5b;
+          color: #3a5450;
           line-height: 2.0;
           margin-bottom: 3rem;
         }
@@ -108,20 +108,20 @@ function About() {
           background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(0, 71, 62, 0.1);
+          border: 1px solid rgba(0, 54, 46, 0.1);
           border-radius: 16px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .about-stat:hover {
           transform: translateY(-5px);
-          box-shadow: 0 12px 40px rgba(0, 71, 62, 0.12);
+          box-shadow: 0 12px 40px rgba(0, 54, 46, 0.12);
           background: rgba(255, 255, 255, 0.5);
         }
         .about-stat-value {
           font-family: 'Playfair Display', serif;
           font-size: 48px;
           font-weight: 700;
-          color: #faae2b;
+          color: #e8a020;
           line-height: 1;
           margin-bottom: 0.5rem;
         }
@@ -149,7 +149,7 @@ function About() {
         .about-skill-items {
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
-          color: #475d5b;
+          color: #3a5450;
           line-height: 1.8;
         }
         .about-timeline-item {
@@ -166,21 +166,21 @@ function About() {
         .about-timeline-period {
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.85rem;
-          color: #faae2b;
+          color: #e8a020;
           font-weight: 600;
         }
         .about-timeline-title {
           font-family: 'Inter', sans-serif;
           font-size: 1.05rem;
           font-weight: 600;
-          color: #00473e;
+          color: #00362e;
           line-height: 1.4;
           margin-bottom: 0.25rem;
         }
         .about-timeline-company {
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
-          color: #475d5b;
+          color: #3a5450;
         }
         .about-cert-list {
           list-style: none;
@@ -193,14 +193,14 @@ function About() {
           padding: 1rem 0;
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
-          color: #475d5b;
+          color: #3a5450;
           border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         }
         .about-cert-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #faae2b;
+          background: #e8a020;
           flex-shrink: 0;
         }
         @media (max-width: 768px) {

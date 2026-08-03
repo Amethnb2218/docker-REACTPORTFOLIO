@@ -113,10 +113,10 @@ function ProjectRow({ project, index }) {
             background: 'rgba(255, 255, 255, 0.4)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(0, 71, 62, 0.1)',
+            border: '1px solid rgba(0, 54, 46, 0.1)',
             borderRadius: '16px',
             zIndex: 0,
-            boxShadow: '0 8px 32px rgba(0, 71, 62, 0.08)'
+            boxShadow: '0 8px 32px rgba(0, 54, 46, 0.08)'
           }}
         />
       )}
@@ -146,7 +146,7 @@ function ProjectRow({ project, index }) {
             fontFamily: "'Playfair Display', serif",
             fontSize: project.featured ? '4.5rem' : '4rem',
             fontWeight: 700,
-            color: isHovered ? '#faae2b' : '#8a8a8a',
+            color: isHovered ? '#e8a020' : '#8a8a8a',
             letterSpacing: '-0.03em',
             lineHeight: 1,
             transition: 'all 0.4s ease',
@@ -173,7 +173,7 @@ function ProjectRow({ project, index }) {
               fontFamily: "'Playfair Display', serif",
               fontSize: project.featured ? '2.5rem' : '2rem',
               fontWeight: 700,
-              color: '#00473e',
+              color: '#00362e',
               letterSpacing: '-0.03em',
               lineHeight: 1.2,
               margin: 0,
@@ -187,7 +187,7 @@ function ProjectRow({ project, index }) {
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: '1rem',
-              color: isHovered ? '#475d5b' : '#8a8a8a',
+              color: isHovered ? '#3a5450' : '#8a8a8a',
               lineHeight: 1.6,
               margin: 0,
               maxWidth: '600px',
@@ -249,7 +249,7 @@ function ProjectRow({ project, index }) {
           animate={{ x: isHovered ? 10 : 0, opacity: isHovered ? 1 : 0.3 }}
           transition={{ duration: 0.3 }}
         >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#faae2b" strokeWidth="2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e8a020" strokeWidth="2">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </motion.div>
@@ -264,23 +264,23 @@ function Projects() {
       <style>{`
         .projects-page {
           min-height: 100vh;
-          padding: 200px 2rem 150px;
+          padding: 120px 2rem 80px;
           max-width: 1100px;
           margin: 0 auto;
         }
         .projects-hero {
-          margin-bottom: 150px;
+          margin-bottom: 60px;
           text-align: center;
         }
         .projects-title {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(4rem, 10vw, 7rem);
+          font-size: clamp(2.5rem, 6vw, 4rem);
           font-weight: 700;
-          color: #00473e;
+          color: #00362e;
           letter-spacing: '-0.04em';
           line-height: 1;
           margin-bottom: 2rem;
-          background: linear-gradient(90deg, #00473e 0%, #00473e 50%, #faae2b 100%);
+          background: linear-gradient(90deg, #00362e 0%, #00362e 50%, #e8a020 100%);
           background-size: 200% 100%;
           background-clip: text;
           -webkit-background-clip: text;
@@ -298,7 +298,7 @@ function Projects() {
         .projects-subtitle {
           font-family: 'Inter', sans-serif;
           font-size: 1.2rem;
-          color: #475d5b;
+          color: #3a5450;
           line-height: 1.8;
           max-width: 600px;
           margin: 0 auto;

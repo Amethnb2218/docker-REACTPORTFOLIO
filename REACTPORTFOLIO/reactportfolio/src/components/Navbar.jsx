@@ -33,18 +33,18 @@ function Navbar() {
           align-items: center;
           justify-content: center;
           padding: 0.6rem 1rem;
-          background: rgba(242, 247, 245, 0.7);
+          background: rgba(232, 239, 236, 0.7);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(0, 71, 62, 0.08);
+          border: 1px solid rgba(0, 54, 46, 0.08);
           border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 4px 20px rgba(0, 71, 62, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+          box-shadow: 0 4px 20px rgba(0, 54, 46, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
         }
         .navbar.scrolled {
-          background: rgba(242, 247, 245, 0.85);
-          border-color: rgba(0, 71, 62, 0.12);
-          box-shadow: 0 8px 32px rgba(0, 71, 62, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+          background: rgba(232, 239, 236, 0.85);
+          border-color: rgba(0, 54, 46, 0.12);
+          box-shadow: 0 8px 32px rgba(0, 54, 46, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
           padding: 0.5rem 0.9rem;
           top: 0.5rem;
         }
@@ -71,16 +71,16 @@ function Navbar() {
           z-index: 1;
         }
         .nav-link:hover {
-          color: #00473e;
+          color: #00362e;
           background: rgba(0, 0, 0, 0.03);
         }
         .nav-link.active {
-          color: #faae2b;
+          color: #e8a020;
         }
         .nav-active-indicator {
           position: absolute;
-          background: rgba(250, 174, 43, 0.12);
-          border: 1px solid rgba(250, 174, 43, 0.2);
+          background: rgba(232, 160, 32, 0.12);
+          border: 1px solid rgba(232, 160, 32, 0.2);
           border-radius: 100px;
           z-index: 0;
         }
@@ -97,7 +97,7 @@ function Navbar() {
           display: block;
           width: 20px;
           height: 1.5px;
-          background: #00473e;
+          background: #00362e;
           border-radius: 2px;
           transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -141,12 +141,12 @@ function Navbar() {
           text-align: center;
         }
         .nav-mobile-link:hover {
-          color: #00473e;
+          color: #00362e;
           background: rgba(0, 0, 0, 0.03);
         }
         .nav-mobile-link.active {
-          color: #faae2b;
-          background: rgba(250, 174, 43, 0.08);
+          color: #e8a020;
+          background: rgba(232, 160, 32, 0.08);
         }
         @media (max-width: 900px) {
           .navbar {

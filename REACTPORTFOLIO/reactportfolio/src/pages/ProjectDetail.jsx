@@ -101,10 +101,10 @@ function ProjectDetail() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: '3rem', color: '#00473e' }}>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: '3rem', color: '#00362e' }}>
           Projet introuvable
         </h1>
-        <Link to="/projects" style={{ color: '#faae2b', fontSize: '1.1rem', textDecoration: 'none' }}>
+        <Link to="/projects" style={{ color: '#e8a020', fontSize: '1.1rem', textDecoration: 'none' }}>
           Retour aux projets
         </Link>
       </motion.div>
@@ -124,7 +124,7 @@ function ProjectDetail() {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          color: #475d5b;
+          color: #3a5450;
           text-decoration: none;
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
@@ -133,7 +133,7 @@ function ProjectDetail() {
           cursor: pointer;
         }
         .project-detail-back:hover {
-          color: #faae2b;
+          color: #e8a020;
           gap: 0.75rem;
           transform: translateX(-5px);
         }
@@ -143,14 +143,14 @@ function ProjectDetail() {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: #faae2b;
+          color: #e8a020;
           margin-bottom: 2rem;
         }
         .project-detail-title {
           font-family: 'Playfair Display', serif;
           font-size: clamp(3rem, 8vw, 4.5rem);
           font-weight: 700;
-          color: #00473e;
+          color: #00362e;
           letter-spacing: -0.03em;
           line-height: 1.1;
           margin-bottom: 1rem;
@@ -159,7 +159,7 @@ function ProjectDetail() {
           font-family: 'Inter', sans-serif;
           font-size: 1.5rem;
           font-weight: 500;
-          color: #475d5b;
+          color: #3a5450;
           margin-bottom: 3rem;
           letter-spacing: -0.01em;
         }
@@ -173,7 +173,7 @@ function ProjectDetail() {
           font-family: 'Inter', sans-serif;
           font-size: 1.15rem;
           line-height: 2.0;
-          color: #475d5b;
+          color: #3a5450;
           margin-bottom: 3rem;
         }
         .project-detail-section-title {
@@ -194,11 +194,11 @@ function ProjectDetail() {
         .project-detail-tech-tag {
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
-          color: #475d5b;
+          color: #3a5450;
           transition: color 0.3s ease;
         }
         .project-detail-tech-tag:hover {
-          color: #00473e;
+          color: #00362e;
         }
         .project-detail-links {
           display: flex;
@@ -211,7 +211,7 @@ function ProjectDetail() {
           gap: 0.5rem;
           padding: 0.9rem 2rem;
           background: transparent;
-          color: #00473e;
+          color: #00362e;
           border: 1px solid rgba(0, 0, 0, 0.1);
           border-radius: 100px;
           text-decoration: none;
@@ -221,15 +221,15 @@ function ProjectDetail() {
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .project-detail-link:hover {
-          background: #faae2b;
-          color: #f2f7f5;
-          border-color: #faae2b;
+          background: #e8a020;
+          color: #e8efec;
+          border-color: #e8a020;
           transform: translateY(-2px);
         }
         .project-detail-link.primary {
-          background: #faae2b;
-          color: #f2f7f5;
-          border-color: #faae2b;
+          background: #e8a020;
+          color: #e8efec;
+          border-color: #e8a020;
         }
         .project-detail-link.primary:hover {
           background: #e09b1a;

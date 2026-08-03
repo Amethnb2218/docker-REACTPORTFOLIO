@@ -21,7 +21,7 @@ function RotatingTorusKnot({ mousePosition, scrollY }) {
   return (
     <TorusKnot ref={meshRef} args={[1.8, 0.4, 128, 16]}>
       <meshBasicMaterial
-        color="#faae2b"
+        color="#e8a020"
         wireframe
         opacity={0.5}
         transparent
@@ -51,7 +51,7 @@ function OrbitingRing({ mousePosition }) {
   return (
     <Torus ref={meshRef} args={[0.6, 0.15, 16, 32]}>
       <meshBasicMaterial
-        color="#faae2b"
+        color="#e8a020"
         wireframe
         opacity={0.4}
         transparent

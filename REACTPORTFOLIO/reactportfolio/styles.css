@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap');
 
 :root {
-  --bg: #f2f7f5;
-  --bg-elevated: #ffffff;
-  --text: #00473e;
-  --text-secondary: #475d5b;
-  --text-muted: #7a9490;
-  --accent: #faae2b;
-  --accent-light: #ffd803;
-  --accent-dark: #e09b1a;
-  --secondary: #bae8e8;
-  --border: rgba(0, 71, 62, 0.08);
+  --bg: #e8efec;
+  --bg-elevated: #f0f5f3;
+  --text: #00362e;
+  --text-secondary: #3a5450;
+  --text-muted: #6a8a85;
+  --accent: #e8a020;
+  --accent-light: #f5c040;
+  --accent-dark: #c88a15;
+  --secondary: #9dd8d8;
+  --border: rgba(0, 54, 46, 0.1);
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -47,7 +47,7 @@ body {
 }
 
 ::selection {
-  background: rgba(250, 174, 43, 0.25);
+  background: rgba(232, 160, 32, 0.25);
   color: var(--text);
 }
 

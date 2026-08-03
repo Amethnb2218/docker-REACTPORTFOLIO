@@ -99,7 +99,7 @@ function Home() {
           font-weight: 700;
           letter-spacing: -0.03em;
           line-height: 1.1;
-          color: #00473e;
+          color: #00362e;
           margin-bottom: 1rem;
           overflow: hidden;
         }
@@ -107,7 +107,7 @@ function Home() {
           font-family: 'Inter', sans-serif;
           font-size: clamp(1.1rem, 2.5vw, 1.4rem);
           font-weight: 500;
-          color: #475d5b;
+          color: #3a5450;
           margin-bottom: 2.5rem;
           letter-spacing: -0.01em;
         }
@@ -119,7 +119,7 @@ function Home() {
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
           line-height: 1.8;
-          color: #475d5b;
+          color: #3a5450;
           max-width: 600px;
           margin: 0 auto 3rem;
         }
@@ -128,8 +128,8 @@ function Home() {
           align-items: center;
           gap: 0.5rem;
           padding: 0.85rem 2rem;
-          background: #faae2b;
-          color: #f2f7f5;
+          background: #e8a020;
+          color: #e8efec;
           border-radius: 100px;
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
@@ -156,7 +156,7 @@ function Home() {
         .home-cta:hover {
           background: #e09b1a;
           transform: scale(1.02) translateY(-2px);
-          box-shadow: 0 10px 30px rgba(250, 174, 43, 0.3);
+          box-shadow: 0 10px 30px rgba(232, 160, 32, 0.3);
         }
         .home-status {
           position: fixed;
@@ -175,7 +175,7 @@ function Home() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #faae2b;
+          background: #e8a020;
           animation: statusPulse 2s ease-in-out infinite;
         }
         @keyframes statusPulse {

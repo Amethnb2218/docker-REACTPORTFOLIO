@@ -6,18 +6,35 @@ function Contact() {
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
-    setTimeout(() => {
-      const mailtoLink = `mailto:amethsl2218@gmail.com?subject=${encodeURIComponent('Contact Portfolio - ' + form.name)}&body=${encodeURIComponent(`Nom: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`
-      window.open(mailtoLink)
-      setStatus('Message préparé')
-      setLoading(false)
-      setForm({ name: '', email: '', message: '' })
-      setTimeout(() => setStatus(''), 3000)
-    }, 600)
+    try {
+      const res = await fetch('https://formspree.io/f/amethsl2218@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message
+        })
+      })
+      if (res.ok) {
+        setStatus('Message envoyé avec succès')
+        setForm({ name: '', email: '', message: '' })
+      } else {
+        const mailtoLink = `mailto:amethsl2218@gmail.com?subject=${encodeURIComponent('Contact - ' + form.name)}&body=${encodeURIComponent(`De: ${form.name} (${form.email})\n\n${form.message}`)}`
+        window.location.href = mailtoLink
+        setStatus('Redirection vers votre client email')
+      }
+    } catch {
+      const mailtoLink = `mailto:amethsl2218@gmail.com?subject=${encodeURIComponent('Contact - ' + form.name)}&body=${encodeURIComponent(`De: ${form.name} (${form.email})\n\n${form.message}`)}`
+      window.location.href = mailtoLink
+      setStatus('Redirection vers votre client email')
+    }
+    setLoading(false)
+    setTimeout(() => setStatus(''), 4000)
   }
 
   return (
@@ -25,7 +42,7 @@ function Contact() {
       <style>{`
         .contact-page {
           min-height: 100vh;
-          padding: 200px 2rem 150px;
+          padding: 120px 2rem 80px;
           max-width: 800px;
           margin: 0 auto;
         }
@@ -33,7 +50,7 @@ function Contact() {
           font-family: 'Playfair Display', serif;
           font-size: clamp(4rem, 10vw, 6rem);
           font-weight: 700;
-          color: #00473e;
+          color: #00362e;
           letter-spacing: -0.04em;
           line-height: 1;
           margin-bottom: 2rem;
@@ -41,7 +58,7 @@ function Contact() {
         .contact-subtitle {
           font-family: 'Inter', sans-serif;
           font-size: 1.3rem;
-          color: #475d5b;
+          color: #3a5450;
           margin-bottom: 4rem;
         }
         .contact-info {
@@ -53,13 +70,13 @@ function Contact() {
           line-height: 2;
         }
         .contact-info-item a {
-          color: #faae2b;
+          color: #e8a020;
           text-decoration: none;
           border-bottom: 1px solid transparent;
           transition: border-color 0.3s ease;
         }
         .contact-info-item a:hover {
-          border-bottom-color: #faae2b;
+          border-bottom-color: #e8a020;
         }
         .contact-social-links {
           display: flex;
@@ -69,7 +86,7 @@ function Contact() {
         .contact-social-link {
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
-          color: #475d5b;
+          color: #3a5450;
           text-decoration: none;
           display: inline-flex;
           align-items: center;
@@ -79,11 +96,11 @@ function Contact() {
           border-radius: 100px;
         }
         .contact-social-link:hover {
-          color: #faae2b;
+          color: #e8a020;
           gap: 0.75rem;
           transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(250, 174, 43, 0.15);
-          background: rgba(250, 174, 43, 0.05);
+          box-shadow: 0 8px 20px rgba(232, 160, 32, 0.15);
+          background: rgba(232, 160, 32, 0.05);
         }
         .contact-form {
           display: flex;
@@ -93,7 +110,7 @@ function Contact() {
           background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(0, 71, 62, 0.1);
+          border: 1px solid rgba(0, 54, 46, 0.1);
           border-radius: 24px;
           position: relative;
           overflow: hidden;
@@ -105,7 +122,7 @@ function Contact() {
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent, #faae2b, #bae8e8, transparent);
+          background: linear-gradient(90deg, transparent, #e8a020, #9dd8d8, transparent);
           background-size: 200% 100%;
           animation: borderGradient 3s linear infinite;
         }
@@ -126,7 +143,7 @@ function Contact() {
           background: transparent;
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
-          color: #00473e;
+          color: #00362e;
           outline: none;
           transition: border-color 0.3s ease;
           position: relative;
@@ -137,15 +154,15 @@ function Contact() {
         }
         .contact-input:focus,
         .contact-textarea:focus {
-          border-bottom-color: #faae2b;
+          border-bottom-color: #e8a020;
           animation: inputFocusBeam 0.6s ease-out;
         }
         @keyframes inputFocusBeam {
           0% {
-            box-shadow: -100px 0 0 0 rgba(250, 174, 43, 0.3);
+            box-shadow: -100px 0 0 0 rgba(232, 160, 32, 0.3);
           }
           100% {
-            box-shadow: 100px 0 0 0 rgba(250, 174, 43, 0);
+            box-shadow: 100px 0 0 0 rgba(232, 160, 32, 0);
           }
         }
         .contact-textarea {
@@ -156,8 +173,8 @@ function Contact() {
         .contact-submit {
           align-self: flex-start;
           padding: 1rem 3rem;
-          background: #faae2b;
-          color: #f2f7f5;
+          background: #e8a020;
+          color: #e8efec;
           border: none;
           border-radius: 100px;
           font-family: 'Inter', sans-serif;
@@ -184,7 +201,7 @@ function Contact() {
         .contact-submit:hover {
           background: #e09b1a;
           transform: translateY(-2px) scale(1.02);
-          box-shadow: 0 10px 30px rgba(250, 174, 43, 0.3);
+          box-shadow: 0 10px 30px rgba(232, 160, 32, 0.3);
         }
         .contact-submit:active {
           transform: translateY(0) scale(0.98);
@@ -196,7 +213,7 @@ function Contact() {
         .contact-status {
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
-          color: #faae2b;
+          color: #e8a020;
           margin-top: 1rem;
         }
         @media (max-width: 768px) {
