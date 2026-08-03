@@ -11,7 +11,7 @@ function Contact() {
     setLoading(true)
 
     try {
-      const res = await fetch('https://formspree.io/f/amethsl2218@gmail.com', {
+      const res = await fetch('https://formspree.io/f/meeyyldb', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
