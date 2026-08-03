@@ -1,32 +1,44 @@
 import { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { TorusKnot, Torus } from '@react-three/drei'
+import { Text, Torus, Sphere, Box } from '@react-three/drei'
 import { Suspense } from 'react'
 
-function RotatingTorusKnot({ mousePosition, scrollY }) {
-  const meshRef = useRef()
+function Text3DHero({ mousePosition }) {
+  const textRef = useRef()
 
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.1
-      meshRef.current.rotation.y += delta * 0.15
-
-      meshRef.current.rotation.x += (mousePosition.y * 0.5 - meshRef.current.rotation.x) * 0.03
-      meshRef.current.rotation.y += (mousePosition.x * 0.5 - meshRef.current.rotation.y) * 0.03
-
-      meshRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.3
+  useFrame((state) => {
+    if (textRef.current) {
+      const time = state.clock.getElapsedTime()
+      textRef.current.rotation.y = Math.sin(time * 0.15) * 0.05 + mousePosition.x * 0.15
+      textRef.current.rotation.x = Math.cos(time * 0.15) * 0.03 + mousePosition.y * 0.1
+      textRef.current.position.y = Math.sin(time * 0.3) * 0.1
     }
   })
 
   return (
-    <TorusKnot ref={meshRef} args={[1.8, 0.4, 128, 16]}>
-      <meshBasicMaterial
-        color="#e8a020"
-        wireframe
-        opacity={0.5}
-        transparent
+    <Text
+      ref={textRef}
+      position={[0, 0, 0]}
+      fontSize={1.2}
+      maxWidth={12}
+      lineHeight={1}
+      letterSpacing={-0.05}
+      textAlign="center"
+      font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff"
+      anchorX="center"
+      anchorY="middle"
+      outlineWidth={0.03}
+      outlineColor="#e8a020"
+    >
+      Mouhamed Sall
+      <meshStandardMaterial
+        color="#00362e"
+        emissive="#00362e"
+        emissiveIntensity={0.1}
+        metalness={0.3}
+        roughness={0.4}
       />
-    </TorusKnot>
+    </Text>
   )
 }
 
@@ -36,33 +48,58 @@ function OrbitingRing({ mousePosition }) {
   useFrame((state) => {
     if (meshRef.current) {
       const time = state.clock.getElapsedTime()
-      meshRef.current.position.x = Math.cos(time * 0.4) * 3.5
-      meshRef.current.position.y = Math.sin(time * 0.6) * 2.5
-      meshRef.current.position.z = Math.sin(time * 0.4) * 2
+      meshRef.current.position.x = Math.cos(time * 0.5) * 4
+      meshRef.current.position.y = Math.sin(time * 0.3) * 2
+      meshRef.current.position.z = Math.sin(time * 0.5) * 2 - 3
 
-      meshRef.current.rotation.x = time * 0.5
+      meshRef.current.rotation.x = time * 0.4
       meshRef.current.rotation.y = time * 0.3
 
-      meshRef.current.position.x += mousePosition.x * 0.4
-      meshRef.current.position.y += mousePosition.y * 0.4
+      meshRef.current.position.x += mousePosition.x * 0.5
+      meshRef.current.position.y += mousePosition.y * 0.5
     }
   })
 
   return (
-    <Torus ref={meshRef} args={[0.6, 0.15, 16, 32]}>
+    <Torus ref={meshRef} args={[0.8, 0.15, 16, 32]}>
       <meshBasicMaterial
         color="#e8a020"
         wireframe
-        opacity={0.4}
+        opacity={0.3}
         transparent
       />
     </Torus>
   )
 }
 
+function FloatingShape({ position, type, delay }) {
+  const meshRef = useRef()
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      const time = state.clock.getElapsedTime() + delay
+      meshRef.current.position.y = position[1] + Math.sin(time * 0.4) * 0.5
+      meshRef.current.rotation.x = time * 0.2
+      meshRef.current.rotation.y = time * 0.3
+    }
+  })
+
+  const Component = type === 'sphere' ? Sphere : Box
+
+  return (
+    <Component ref={meshRef} position={position} args={type === 'sphere' ? [0.15, 16, 16] : [0.25, 0.25, 0.25]}>
+      <meshBasicMaterial
+        color="#e8a020"
+        wireframe
+        opacity={0.15}
+        transparent
+      />
+    </Component>
+  )
+}
+
 function Scene3D() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -72,35 +109,43 @@ function Scene3D() {
       })
     }
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
-
     window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('scroll', handleScroll)
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
+  const floatingShapes = [
+    { position: [-3, 1, -2], type: 'sphere', delay: 0 },
+    { position: [3, -1, -1], type: 'box', delay: 2 },
+    { position: [-2, -2, -3], type: 'sphere', delay: 4 },
+    { position: [4, 2, -2], type: 'box', delay: 1 },
+    { position: [0, 3, -4], type: 'sphere', delay: 3 }
+  ]
+
   return (
     <div style={{
-      position: 'fixed',
-      top: '20%',
-      right: '5%',
-      width: '600px',
-      height: '600px',
+      position: 'relative',
+      width: '100%',
+      height: '60vh',
+      minHeight: '400px',
       pointerEvents: 'none',
-      opacity: 0.35,
-      zIndex: 0,
-      transform: `translateY(${scrollY * 0.3}px)`
+      margin: '0 auto',
+      maxWidth: '1400px'
     }}>
-      <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
+      <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <RotatingTorusKnot mousePosition={mousePosition} scrollY={scrollY} />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
+          <directionalLight position={[-5, -5, -5]} intensity={0.3} />
+          <pointLight position={[0, 0, 5]} intensity={0.5} color="#e8a020" />
+
+          <Text3DHero mousePosition={mousePosition} />
           <OrbitingRing mousePosition={mousePosition} />
+
+          {floatingShapes.map((shape, i) => (
+            <FloatingShape key={i} {...shape} />
+          ))}
         </Suspense>
       </Canvas>
     </div>

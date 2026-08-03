@@ -1,10 +1,33 @@
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useState } from 'react'
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [5, -5])
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-5, 5])
+
+  const springConfig = { damping: 20, stiffness: 150 }
+  const rotateXSpring = useSpring(rotateX, springConfig)
+  const rotateYSpring = useSpring(rotateY, springConfig)
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    mouseX.set((e.clientX - centerX) / rect.width)
+    mouseY.set((e.clientY - centerY) / rect.height)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -54,12 +77,38 @@ function Contact() {
           letter-spacing: -0.04em;
           line-height: 1;
           margin-bottom: 2rem;
+          text-shadow:
+            1px 1px 0 rgba(0,54,46,0.1),
+            2px 2px 0 rgba(0,54,46,0.08),
+            3px 3px 0 rgba(0,54,46,0.06),
+            4px 4px 0 rgba(0,54,46,0.04),
+            5px 5px 0 rgba(0,54,46,0.02);
         }
         .contact-subtitle {
           font-family: 'Inter', sans-serif;
           font-size: 1.3rem;
           color: #3a5450;
-          margin-bottom: 4rem;
+          margin-bottom: 1.5rem;
+        }
+        .contact-response-time {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.85rem;
+          color: #e8a020;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 3rem;
+        }
+        .contact-response-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #e8a020;
+          animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.9); }
         }
         .contact-info {
           margin-bottom: 4rem;
@@ -72,11 +121,16 @@ function Contact() {
         .contact-info-item a {
           color: #e8a020;
           text-decoration: none;
-          border-bottom: 1px solid transparent;
-          transition: border-color 0.3s ease;
+          border-bottom: 2px solid #e8a020;
+          font-weight: 600;
+          font-size: 1.3rem;
+          transition: all 0.3s ease;
+          padding-bottom: 2px;
         }
         .contact-info-item a:hover {
-          border-bottom-color: #e8a020;
+          color: #e09b1a;
+          border-bottom-color: #e09b1a;
+          letter-spacing: 0.02em;
         }
         .contact-social-links {
           display: flex;
@@ -200,8 +254,8 @@ function Contact() {
         }
         .contact-submit:hover {
           background: #e09b1a;
-          transform: translateY(-2px) scale(1.02);
-          box-shadow: 0 10px 30px rgba(232, 160, 32, 0.3);
+          transform: translateY(-4px) translateZ(10px) scale(1.02);
+          box-shadow: 0 16px 40px rgba(232, 160, 32, 0.4);
         }
         .contact-submit:active {
           transform: translateY(0) scale(0.98);
@@ -235,7 +289,7 @@ function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
-          Contact
+          Discutons de votre prochain projet
         </motion.h1>
 
         <motion.p
@@ -244,8 +298,18 @@ function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          Un projet en tête ? Écrivez-moi.
+          Que vous ayez une idée précise ou juste une question, je suis là pour vous aider.
         </motion.p>
+
+        <motion.div
+          className="contact-response-time"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="contact-response-dot"></div>
+          Réponse sous 24h
+        </motion.div>
 
         <motion.div
           className="contact-info"
@@ -300,6 +364,14 @@ function Contact() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            rotateX: rotateXSpring,
+            rotateY: rotateYSpring,
+            transformStyle: 'preserve-3d',
+            perspective: 1000
+          }}
         >
           <input
             type="text"

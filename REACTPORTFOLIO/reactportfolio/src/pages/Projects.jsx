@@ -13,19 +13,21 @@ const projects = [
     githubUrl: 'https://github.com/Amethnb2218/flashrv-react',
     category: 'Full Stack',
     featured: true,
-    number: '01'
+    number: '01',
+    mtcorporate: true
   },
   {
     slug: 'teranga-ai',
     title: 'Teranga AI',
-    subtitle: "Aide à la décision agricole par IA",
-    description: "Système d'aide à la décision agricole propulsé par l'IA pour les agriculteurs ouest-africains. Prédiction de rendement par Machine Learning.",
+    subtitle: "Aide à la décision agricole par IA - 9 langues supportées dont le wolof",
+    description: "Système d'aide à la décision agricole propulsé par l'IA pour les agriculteurs ouest-africains. Prédiction de rendement par Machine Learning. Support multilingue innovant avec 9 langues africaines.",
     technologies: ['Python', 'Machine Learning', 'NLP', 'React', 'API REST', 'Groq', 'HuggingFace'],
     liveUrl: 'https://teranga-assistant.onrender.com',
     githubUrl: 'https://github.com/Amethnb2218/teranga-ai',
     category: 'IA',
     featured: true,
-    number: '02'
+    number: '02',
+    mtcorporate: true
   },
   {
     slug: 'frescoop',
@@ -36,7 +38,8 @@ const projects = [
     githubUrl: 'https://github.com/Amethnb2218',
     category: 'Full Stack',
     featured: true,
-    number: '03'
+    number: '03',
+    mtcorporate: true
   },
   {
     slug: 'ligueyfemme',
@@ -168,20 +171,42 @@ function ProjectRow({ project, index }) {
           transform: isHovered ? 'translateX(10px)' : 'translateX(0)',
           transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
         }}>
-          <motion.h3
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: project.featured ? '2.5rem' : '2rem',
-              fontWeight: 700,
-              color: '#00362e',
-              letterSpacing: '-0.03em',
-              lineHeight: 1.2,
-              margin: 0,
-              transition: 'color 0.3s ease'
-            }}
-          >
-            {project.title}
-          </motion.h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <motion.h3
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: project.featured ? '2.5rem' : '2rem',
+                fontWeight: 700,
+                color: '#00362e',
+                letterSpacing: '-0.03em',
+                lineHeight: 1.2,
+                margin: 0,
+                transition: 'all 0.3s ease',
+                transform: isHovered ? 'perspective(800px) rotateX(-3deg) translateZ(20px)' : 'perspective(800px) rotateX(0deg) translateZ(0px)',
+                textShadow: isHovered ? '0 8px 16px rgba(0, 54, 46, 0.15)' : 'none'
+              }}
+            >
+              {project.title}
+            </motion.h3>
+            {project.mtcorporate && (
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '0.65rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: '#e8a020',
+                  padding: '0.35rem 0.75rem',
+                  background: 'rgba(232, 160, 32, 0.1)',
+                  border: '1px solid rgba(232, 160, 32, 0.3)',
+                  borderRadius: '100px',
+                  fontWeight: 600
+                }}
+              >
+                MTCorporate
+              </span>
+            )}
+          </div>
 
           <motion.p
             style={{
@@ -259,6 +284,9 @@ function ProjectRow({ project, index }) {
 }
 
 function Projects() {
+  const featuredProject = projects[0]
+  const otherProjects = projects.slice(1)
+
   return (
     <>
       <style>{`
@@ -286,6 +314,12 @@ function Projects() {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: textFillAnimation 1.5s ease-in-out forwards;
+          text-shadow:
+            1px 1px 0 rgba(0,54,46,0.1),
+            2px 2px 0 rgba(0,54,46,0.08),
+            3px 3px 0 rgba(0,54,46,0.06),
+            4px 4px 0 rgba(0,54,46,0.04),
+            5px 5px 0 rgba(0,54,46,0.02);
         }
         @keyframes textFillAnimation {
           0% {
@@ -306,6 +340,105 @@ function Projects() {
         .projects-list {
           display: flex;
           flex-direction: column;
+        }
+        .projects-featured {
+          margin-bottom: 4rem;
+          padding: 3rem;
+          background: rgba(255, 255, 255, 0.5);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(0, 54, 46, 0.1);
+          border-radius: 24px;
+          transition: all 0.4s ease;
+        }
+        .projects-featured:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 60px rgba(0, 54, 46, 0.12);
+        }
+        .projects-featured-badge {
+          display: inline-block;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: #e8a020;
+          padding: 0.5rem 1rem;
+          background: rgba(232, 160, 32, 0.1);
+          border: 1px solid rgba(232, 160, 32, 0.3);
+          border-radius: 100px;
+          margin-bottom: 1.5rem;
+        }
+        .projects-featured-title {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
+          font-weight: 700;
+          color: #00362e;
+          letter-spacing: -0.03em;
+          margin-bottom: 1rem;
+        }
+        .projects-featured-desc {
+          font-family: 'Inter', sans-serif;
+          font-size: 1.1rem;
+          color: #3a5450;
+          line-height: 1.8;
+          margin-bottom: 2rem;
+        }
+        .projects-featured-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin-bottom: 2rem;
+        }
+        .projects-featured-tech-item {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.8rem;
+          padding: 0.5rem 1rem;
+          background: rgba(0, 54, 46, 0.05);
+          border: 1px solid rgba(0, 54, 46, 0.1);
+          border-radius: 8px;
+          color: #3a5450;
+        }
+        .projects-featured-links {
+          display: flex;
+          gap: 1rem;
+        }
+        .projects-featured-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.85rem 2rem;
+          background: #e8a020;
+          color: #e8efec;
+          border-radius: 100px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.4s ease;
+        }
+        .projects-featured-link:hover {
+          background: #e09b1a;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(232, 160, 32, 0.3);
+        }
+        .projects-featured-link.secondary {
+          background: transparent;
+          color: #e8a020;
+          border: 2px solid #e8a020;
+        }
+        .projects-featured-link.secondary:hover {
+          background: rgba(232, 160, 32, 0.1);
+        }
+        .projects-github-stats {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.8rem;
+          color: #8a8a8a;
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+        .projects-github-highlight {
+          color: #e8a020;
+          font-weight: 600;
         }
         @media (max-width: 768px) {
           .projects-page {
@@ -340,10 +473,48 @@ function Projects() {
           >
             Une sélection de solutions Full Stack, DevOps, Mobile et IA qui illustrent mon expertise technique et ma passion pour l'innovation.
           </motion.p>
+          <motion.div
+            className="projects-github-stats"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="projects-github-highlight">30+ repositories</span> sur GitHub
+          </motion.div>
         </div>
 
+        <motion.div
+          className="projects-featured"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="projects-featured-badge">Projet en vedette</div>
+          <h2 className="projects-featured-title">{featuredProject.title}</h2>
+          <p className="projects-featured-desc">{featuredProject.description}</p>
+          <div className="projects-featured-tech">
+            {featuredProject.technologies.map((tech, i) => (
+              <span key={i} className="projects-featured-tech-item">{tech}</span>
+            ))}
+          </div>
+          <div className="projects-featured-links">
+            <a href={featuredProject.liveUrl} target="_blank" rel="noreferrer" className="projects-featured-link">
+              Voir le site
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 4L4 12M12 4v6M12 4H6" />
+              </svg>
+            </a>
+            <a href={featuredProject.githubUrl} target="_blank" rel="noreferrer" className="projects-featured-link secondary">
+              Code source
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+            </a>
+          </div>
+        </motion.div>
+
         <div className="projects-list">
-          {projects.map((project, index) => (
+          {otherProjects.map((project, index) => (
             <ProjectRow key={project.slug} project={project} index={index} />
           ))}
         </div>

@@ -27,26 +27,27 @@ function Navbar() {
           position: fixed;
           top: 1rem;
           left: 50%;
-          transform: translateX(-50%);
+          transform: translateX(-50%) perspective(1000px) translateZ(20px);
           z-index: 1000;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 0.6rem 1rem;
-          background: rgba(232, 239, 236, 0.7);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          background: rgba(232, 239, 236, 0.75);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
           border: 1px solid rgba(0, 54, 46, 0.08);
           border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 4px 20px rgba(0, 54, 46, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+          box-shadow: 0 8px 24px rgba(0, 54, 46, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
         }
         .navbar.scrolled {
-          background: rgba(232, 239, 236, 0.85);
+          background: rgba(232, 239, 236, 0.9);
           border-color: rgba(0, 54, 46, 0.12);
-          box-shadow: 0 8px 32px rgba(0, 54, 46, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+          box-shadow: 0 12px 40px rgba(0, 54, 46, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
           padding: 0.5rem 0.9rem;
           top: 0.5rem;
+          transform: translateX(-50%) perspective(1000px) translateZ(10px);
         }
         .nav-links {
           display: flex;

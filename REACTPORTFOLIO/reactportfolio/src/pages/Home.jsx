@@ -1,9 +1,44 @@
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import Scene3D from '../components/Scene3D.jsx'
 
 function Home() {
   const [hoveredButton, setHoveredButton] = useState(false)
+  const [typedRole, setTypedRole] = useState('')
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [charIndex, setCharIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const roles = [
+    'Full Stack Developer',
+    'DevOps Engineer',
+    'Founder @ MTCorporate',
+    'Cloud Architect'
+  ]
+
+  useEffect(() => {
+    const currentRole = roles[roleIndex]
+    const typingSpeed = isDeleting ? 50 : 100
+    const pauseDuration = isDeleting ? 1000 : 2000
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && charIndex < currentRole.length) {
+        setTypedRole(currentRole.substring(0, charIndex + 1))
+        setCharIndex(charIndex + 1)
+      } else if (isDeleting && charIndex > 0) {
+        setTypedRole(currentRole.substring(0, charIndex - 1))
+        setCharIndex(charIndex - 1)
+      } else if (!isDeleting && charIndex === currentRole.length) {
+        setTimeout(() => setIsDeleting(true), pauseDuration)
+      } else if (isDeleting && charIndex === 0) {
+        setIsDeleting(false)
+        setRoleIndex((roleIndex + 1) % roles.length)
+      }
+    }, typingSpeed)
+
+    return () => clearTimeout(timer)
+  }, [charIndex, isDeleting, roleIndex, roles])
   const cursorX = useMotionValue(0)
   const cursorY = useMotionValue(0)
 
@@ -62,11 +97,11 @@ function Home() {
       <motion.span
         key={i}
         style={{ display: 'inline-block', marginRight: '0.3em' }}
-        initial={{ opacity: 0, x: 30, filter: 'blur(10px)' }}
-        animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+        initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         transition={{
-          duration: 0.6,
-          delay: 0.8 + i * 0.08,
+          duration: 0.7,
+          delay: 1.2 + i * 0.06,
           ease: [0.22, 1, 0.36, 1]
         }}
       >
@@ -82,10 +117,16 @@ function Home() {
           position: relative;
           min-height: 100vh;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
           padding: 2rem;
           overflow: hidden;
+          perspective: 1200px;
+        }
+        .home-3d-hero {
+          width: 100%;
+          margin-bottom: 2rem;
         }
         .home-content {
           position: relative;
@@ -102,6 +143,7 @@ function Home() {
           color: #00362e;
           margin-bottom: 1rem;
           overflow: hidden;
+          display: none;
         }
         .home-subtitle {
           font-family: 'Inter', sans-serif;
@@ -110,6 +152,86 @@ function Home() {
           color: #3a5450;
           margin-bottom: 2.5rem;
           letter-spacing: -0.01em;
+          min-height: 2.5rem;
+        }
+        .home-typing-cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1.2em;
+          background: #e8a020;
+          margin-left: 4px;
+          animation: blink 1s step-end infinite;
+          vertical-align: middle;
+        }
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+        .home-trusted {
+          margin-top: 4rem;
+          text-align: center;
+        }
+        .home-trusted-title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: #8a8a8a;
+          margin-bottom: 1.5rem;
+        }
+        .home-trusted-logos {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 2.5rem;
+          flex-wrap: wrap;
+        }
+        .home-trusted-logo {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #8a8a8a;
+          transition: all 0.3s ease;
+        }
+        .home-trusted-logo:hover {
+          color: #e8a020;
+          transform: translateY(-3px);
+        }
+        .home-scroll-indicator {
+          position: fixed;
+          bottom: 3rem;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          z-index: 10;
+        }
+        .home-scroll-text {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
+          color: #8a8a8a;
+          letter-spacing: 0.1em;
+        }
+        .home-scroll-chevron {
+          width: 24px;
+          height: 24px;
+          border-left: 2px solid #e8a020;
+          border-bottom: 2px solid #e8a020;
+          transform: rotate(-45deg);
+          animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0) rotate(-45deg);
+          }
+          40% {
+            transform: translateY(-10px) rotate(-45deg);
+          }
+          60% {
+            transform: translateY(-5px) rotate(-45deg);
+          }
         }
         .home-subtitle-word {
           display: inline-block;
@@ -199,6 +321,15 @@ function Home() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{ opacity, scale }}
       >
+        <motion.div
+          className="home-3d-hero"
+          initial={{ opacity: 0, scale: 0.9, rotateX: -20 }}
+          animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Scene3D />
+        </motion.div>
+
         <div className="home-content">
           <h1 className="home-hero-title">
             {splitTextToLetters('Mouhamed Sall')}
@@ -208,16 +339,16 @@ function Home() {
             className="home-subtitle"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
           >
-            {splitTextToWords('Full Stack Developer & DevOps Engineer')}
+            {typedRole}<span className="home-typing-cursor"></span>
           </motion.p>
 
           <motion.p
             className="home-description"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
           >
             Développeur Full Stack et étudiant ingénieur en Génie Logiciel à l'ESP Dakar.
             Fondateur de Jolof'Era, plateforme SaaS multi-tenant. Certifié AWS Cloud Practitioner
@@ -227,7 +358,7 @@ function Home() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div
               style={{ x: cursorXSpring, y: cursorYSpring }}
@@ -251,16 +382,42 @@ function Home() {
               </Link>
             </motion.div>
           </motion.div>
+
+          <motion.div
+            className="home-trusted"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="home-trusted-title">Expérience avec</div>
+            <div className="home-trusted-logos">
+              <div className="home-trusted-logo">MTCorporate</div>
+              <div className="home-trusted-logo">Sonatel (Orange)</div>
+              <div className="home-trusted-logo">AWS</div>
+              <div className="home-trusted-logo">Orange Digital Center</div>
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
           className="home-status"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 2.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="home-status-dot" />
           <span>Disponible pour opportunités</span>
+        </motion.div>
+
+        <motion.div
+          className="home-scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3, duration: 1 }}
+          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        >
+          <span className="home-scroll-text">SCROLL</span>
+          <div className="home-scroll-chevron"></div>
         </motion.div>
       </motion.main>
     </>
