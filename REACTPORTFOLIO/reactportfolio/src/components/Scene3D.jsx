@@ -1,44 +1,29 @@
 import { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Text, Torus, Sphere, Box } from '@react-three/drei'
+import { Torus, TorusKnot, Sphere, Box, Icosahedron } from '@react-three/drei'
 import { Suspense } from 'react'
 
-function Text3DHero({ mousePosition }) {
-  const textRef = useRef()
+function MainShape({ mousePosition }) {
+  const meshRef = useRef()
 
   useFrame((state) => {
-    if (textRef.current) {
+    if (meshRef.current) {
       const time = state.clock.getElapsedTime()
-      textRef.current.rotation.y = Math.sin(time * 0.15) * 0.05 + mousePosition.x * 0.15
-      textRef.current.rotation.x = Math.cos(time * 0.15) * 0.03 + mousePosition.y * 0.1
-      textRef.current.position.y = Math.sin(time * 0.3) * 0.1
+      meshRef.current.rotation.y = time * 0.1 + mousePosition.x * 0.2
+      meshRef.current.rotation.x = Math.sin(time * 0.05) * 0.2 + mousePosition.y * 0.15
+      meshRef.current.position.y = Math.sin(time * 0.2) * 0.3
     }
   })
 
   return (
-    <Text
-      ref={textRef}
-      position={[0, 0, 0]}
-      fontSize={1.2}
-      maxWidth={12}
-      lineHeight={1}
-      letterSpacing={-0.05}
-      textAlign="center"
-      font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff"
-      anchorX="center"
-      anchorY="middle"
-      outlineWidth={0.03}
-      outlineColor="#e8a020"
-    >
-      Mouhamed Sall
-      <meshStandardMaterial
-        color="#00362e"
-        emissive="#00362e"
-        emissiveIntensity={0.1}
-        metalness={0.3}
-        roughness={0.4}
+    <TorusKnot ref={meshRef} args={[2.5, 0.6, 200, 32]}>
+      <meshBasicMaterial
+        color="#e8a020"
+        wireframe
+        opacity={0.35}
+        transparent
       />
-    </Text>
+    </TorusKnot>
   )
 }
 
@@ -125,13 +110,14 @@ function Scene3D() {
 
   return (
     <div style={{
-      position: 'relative',
+      position: 'fixed',
+      top: 0,
+      left: 0,
       width: '100%',
-      height: '60vh',
-      minHeight: '400px',
+      height: '100vh',
       pointerEvents: 'none',
-      margin: '0 auto',
-      maxWidth: '1400px'
+      zIndex: 0,
+      opacity: 0.4
     }}>
       <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
         <Suspense fallback={null}>
@@ -140,7 +126,7 @@ function Scene3D() {
           <directionalLight position={[-5, -5, -5]} intensity={0.3} />
           <pointLight position={[0, 0, 5]} intensity={0.5} color="#e8a020" />
 
-          <Text3DHero mousePosition={mousePosition} />
+          <MainShape mousePosition={mousePosition} />
           <OrbitingRing mousePosition={mousePosition} />
 
           {floatingShapes.map((shape, i) => (

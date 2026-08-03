@@ -1,7 +1,6 @@
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Scene3D from '../components/Scene3D.jsx'
 
 function Home() {
   const [hoveredButton, setHoveredButton] = useState(false)
@@ -321,15 +320,6 @@ function Home() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{ opacity, scale }}
       >
-        <motion.div
-          className="home-3d-hero"
-          initial={{ opacity: 0, scale: 0.9, rotateX: -20 }}
-          animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <Scene3D />
-        </motion.div>
-
         <div className="home-content">
           <h1 className="home-hero-title">
             {splitTextToLetters('Mouhamed Sall')}

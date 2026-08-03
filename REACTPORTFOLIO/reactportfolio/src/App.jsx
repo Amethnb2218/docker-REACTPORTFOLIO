@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import Scene3D from './components/Scene3D.jsx'
 import Home from './pages/Home.jsx'
 import Projects from './pages/Projects.jsx'
 import ProjectDetail from './pages/ProjectDetail.jsx'
@@ -145,6 +146,7 @@ function App() {
         <div className="gradient-blob gradient-blob-3" />
       </div>
 
+      <Scene3D />
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

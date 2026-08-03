@@ -116,7 +116,7 @@ function ProjectDetail() {
       <style>{`
         .project-detail-page {
           min-height: 100vh;
-          padding: 200px 2rem 150px;
+          padding: 120px 2rem 80px;
           max-width: 900px;
           margin: 0 auto;
         }
