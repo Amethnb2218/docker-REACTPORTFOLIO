@@ -1,21 +1,23 @@
 {
-  "name": "mouhamed-sall-portfolio-spa",
-  "version": "1.0.0",
+  "name": "mouhamed-sall-portfolio",
+  "version": "2.0.0",
   "private": true,
-  "description": "SPA portfolio en React connectee a une API Express et MongoDB",
+  "description": "Portfolio professionnel - Mouhamed Sall",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "check": "vite build"
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
     "@vitejs/plugin-react": "^6.0.1",
     "framer-motion": "^12.12.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.1",
+    "three": "^0.172.0",
     "vite": "^8.0.8"
   }
 }

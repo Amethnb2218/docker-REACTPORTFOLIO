@@ -33,18 +33,18 @@ function Navbar() {
           align-items: center;
           justify-content: center;
           padding: 0.6rem 1rem;
-          background: rgba(10, 10, 10, 0.7);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          background: rgba(12, 12, 12, 0.7);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 100px;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         .navbar.scrolled {
-          background: rgba(10, 10, 10, 0.9);
-          border-color: rgba(59, 130, 246, 0.1);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+          background: rgba(12, 12, 12, 0.9);
+          border-color: rgba(200, 121, 65, 0.15);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
           padding: 0.5rem 0.9rem;
         }
         .nav-links {
@@ -56,26 +56,24 @@ function Navbar() {
           align-items: center;
         }
         .nav-link {
-          font-size: 0.8rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.875rem;
           font-weight: 500;
           padding: 0.5rem 1.1rem;
           border-radius: 100px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
           text-decoration: none;
-          color: #71717a;
+          color: #8a8a8a;
           cursor: pointer;
           position: relative;
           letter-spacing: -0.01em;
         }
         .nav-link:hover {
-          color: #e4e4e7;
-          background: rgba(255, 255, 255, 0.05);
+          color: #e8e8e8;
+          background: rgba(255, 255, 255, 0.03);
         }
         .nav-link.active {
-          color: #ffffff;
-          background: rgba(59, 130, 246, 0.1);
-          box-shadow: 0 0 15px rgba(59, 130, 246, 0.15), inset 0 0 15px rgba(59, 130, 246, 0.05);
-          border: 1px solid rgba(59, 130, 246, 0.2);
+          color: #c87941;
         }
         .nav-hamburger {
           display: none;
@@ -90,9 +88,9 @@ function Navbar() {
           display: block;
           width: 20px;
           height: 1.5px;
-          background: #f5f5f5;
+          background: #e8e8e8;
           border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .nav-hamburger.open span:nth-child(1) {
           transform: rotate(45deg) translate(4px, 4px);
@@ -109,33 +107,37 @@ function Navbar() {
           top: 5rem;
           left: 50%;
           transform: translateX(-50%);
-          background: rgba(15, 15, 15, 0.95);
+          background: rgba(20, 20, 20, 0.95);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 16px;
           padding: 1rem;
           display: flex;
           flex-direction: column;
           gap: 0.25rem;
           min-width: 200px;
           z-index: 999;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.05);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
         }
         .nav-mobile-link {
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           font-weight: 500;
           padding: 0.75rem 1.25rem;
           border-radius: 12px;
-          color: #a1a1aa;
+          color: #8a8a8a;
           text-decoration: none;
           transition: all 0.2s ease;
           text-align: center;
         }
-        .nav-mobile-link:hover,
+        .nav-mobile-link:hover {
+          color: #e8e8e8;
+          background: rgba(255, 255, 255, 0.03);
+        }
         .nav-mobile-link.active {
-          color: #ffffff;
-          background: rgba(59, 130, 246, 0.1);
+          color: #c87941;
+          background: rgba(200, 121, 65, 0.08);
         }
         @media (max-width: 900px) {
           .navbar {
@@ -154,7 +156,7 @@ function Navbar() {
         className={`navbar ${scrolled ? 'scrolled' : ''}`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
         <ul className="nav-links">
           {links.map((link) => (

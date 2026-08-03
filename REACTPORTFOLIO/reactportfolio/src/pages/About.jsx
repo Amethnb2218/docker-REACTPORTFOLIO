@@ -10,7 +10,7 @@ function AnimatedSection({ children, delay = 0 }) {
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -19,50 +19,38 @@ function AnimatedSection({ children, delay = 0 }) {
 
 function About() {
   const skills = {
-    'Frontend': ['JavaScript', 'React', 'Next.js', 'HTML/CSS', 'Tailwind'],
-    'Backend & DB': ['Node.js', 'Express', 'REST API', 'PostgreSQL', 'MySQL', 'MongoDB'],
-    'DevOps & Cloud': ['Docker', 'Jenkins', 'AWS', 'CI/CD', 'Git/GitHub', 'Linux'],
-    'Other': ['Agile/Scrum', 'Data Engineering', 'React Native']
-  }
-
-  const categoryColors = {
-    'Frontend': '#3b82f6',
-    'Backend & DB': '#10b981',
-    'DevOps & Cloud': '#f59e0b',
-    'Other': '#8b5cf6'
+    'Frontend': ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Framer Motion'],
+    'Backend': ['Node.js', 'Express.js', 'Prisma ORM', 'REST API', 'WebSocket'],
+    'Database': ['PostgreSQL', 'MySQL', 'MongoDB'],
+    'Cloud & DevOps': ['AWS', 'Docker', 'Git', 'GitHub Actions', 'CI/CD', 'Linux']
   }
 
   const experience = [
     {
-      period: '2025 - 2026',
-      title: 'Ingénieur Génie Logiciel',
-      company: 'ESP Dakar (École Supérieure Polytechnique)',
-      description: 'Formation en génie logiciel, systèmes d\'information, bases de données, réseaux et architectures distribuées.'
+      period: '2026 - Present',
+      title: 'Fondateur & Dev Full Stack',
+      company: 'Jolofera',
+      description: 'Plateforme SaaS multi-tenant avec systeme de reservation et e-commerce. React + Node.js + PostgreSQL + Prisma, WebSocket realtime, paiement integre.'
     },
     {
-      period: 'Nov 2024 - Déc 2025',
+      period: 'Nov 2024 - Dec 2025',
       title: 'Pilote Production B2B',
-      company: 'Sonatel (Orange Sénégal)',
-      description: 'Supervision des services Fibre (FTTH/FTTO) et ADSL pour les clients entreprises. Monitoring, résolution d\'incidents et amélioration continue.'
+      company: 'Sonatel (Groupe Orange)',
+      description: 'Supervision services B2B fibre FTTH/FTTO et ADSL pour clients entreprises. Management equipes, gestion incidents, suivi QoS.'
     },
     {
-      period: 'Juin 2024 - Nov 2024',
-      title: 'Formation Cloud AWS',
-      company: 'Orange Digital Center',
-      description: 'Programme intensif sur les services AWS, architecture cloud, et bonnes pratiques de déploiement et sécurité.'
-    },
-    {
-      period: 'Mai 2024 - Juin 2024',
-      title: 'Stagiaire Cybersécurité',
-      company: 'Atech Cybersecurity',
-      description: 'Initiation aux audits de sécurité, tests de pénétration et mise en place de politiques de sécurité informatique.'
+      period: 'Juin - Nov 2024',
+      title: 'Stagiaire Reseaux',
+      company: 'Sonatel',
+      description: 'Deploiement FTTO, configuration reseau, installation equipements telecoms.'
     }
   ]
 
-  const stats = [
-    { number: '3+', label: 'Ans' },
-    { number: '10+', label: 'Projets' },
-    { number: '3', label: 'Certifs' }
+  const certifications = [
+    'AWS Certified Cloud Practitioner (CLF-C02)',
+    'AWS re/Start Graduate',
+    'Foundations of Project Management (Google)',
+    'Introduction to Data Engineering (IBM)'
   ]
 
   return (
@@ -77,91 +65,88 @@ function About() {
           z-index: 1;
         }
         .about-header {
-          margin-bottom: 3.5rem;
+          margin-bottom: 4rem;
         }
         .about-title {
-          font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 800;
-          color: #ffffff;
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
+          font-weight: 700;
+          color: #e8e8e8;
           letter-spacing: -0.03em;
           margin-bottom: 0.5rem;
         }
         .about-subtitle {
+          font-family: 'Inter', sans-serif;
           font-size: 1.05rem;
-          color: #a1a1aa;
+          color: #8a8a8a;
           font-weight: 400;
         }
-        .about-quote {
-          font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+        .about-bio {
+          font-family: 'Inter', sans-serif;
+          font-size: 1.05rem;
           font-weight: 400;
-          color: #ffffff;
-          line-height: 1.7;
-          margin-bottom: 3rem;
-          padding-left: 1.5rem;
-          border-left: 2px solid rgba(59, 130, 246, 0.3);
-        }
-        .about-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.25rem;
+          color: #8a8a8a;
+          line-height: 1.8;
           margin-bottom: 4rem;
-        }
-        .about-stat {
-          background: rgba(20, 20, 20, 0.8);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 16px;
-          padding: 2rem 1.5rem;
-          text-align: center;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          position: relative;
-          overflow: hidden;
-        }
-        .about-stat::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.04), transparent);
-          transition: left 0.6s;
-        }
-        .about-stat:hover::before {
-          left: 100%;
-        }
-        .about-stat:hover {
-          border-color: rgba(59, 130, 246, 0.2);
-          transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.08);
-        }
-        .about-stat-number {
-          display: block;
-          font-size: 2.5rem;
-          font-weight: 800;
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          letter-spacing: -0.03em;
-          line-height: 1;
-          margin-bottom: 0.4rem;
-        }
-        .about-stat-label {
-          font-size: 0.82rem;
-          color: #71717a;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          padding-left: 1.5rem;
+          border-left: 2px solid rgba(200, 121, 65, 0.3);
         }
         .about-section {
           margin-bottom: 4rem;
         }
         .about-section-title {
-          font-size: 1.4rem;
-          font-weight: 700;
-          color: #f5f5f5;
+          font-family: 'Inter', sans-serif;
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #e8e8e8;
           letter-spacing: -0.02em;
           margin-bottom: 2rem;
+        }
+        .about-skills-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+        .about-skill-category {
+          background: #141414;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 12px;
+          padding: 1.5rem;
+          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .about-skill-category:hover {
+          border-color: rgba(200, 121, 65, 0.2);
+          transform: translateY(-2px);
+        }
+        .about-skill-category-title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 1rem;
+          color: #c87941;
+        }
+        .about-skills-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+        .about-skill-chip {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          font-weight: 500;
+          padding: 0.4rem 0.8rem;
+          border-radius: 6px;
+          color: #8a8a8a;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          background: rgba(255, 255, 255, 0.02);
+          transition: all 0.2s ease;
+        }
+        .about-skill-chip:hover {
+          color: #e8e8e8;
+          border-color: rgba(200, 121, 65, 0.2);
+          background: rgba(200, 121, 65, 0.05);
         }
         .about-timeline {
           position: relative;
@@ -174,11 +159,11 @@ function About() {
           top: 8px;
           bottom: 8px;
           width: 1px;
-          background: linear-gradient(180deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.05));
+          background: linear-gradient(180deg, rgba(200, 121, 65, 0.3), rgba(200, 121, 65, 0.05));
         }
         .about-timeline-item {
           position: relative;
-          padding-bottom: 2rem;
+          padding-bottom: 2.5rem;
         }
         .about-timeline-item:last-child {
           padding-bottom: 0;
@@ -190,113 +175,74 @@ function About() {
           width: 9px;
           height: 9px;
           border-radius: 50%;
-          background: #3b82f6;
-          box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+          background: #c87941;
+          box-shadow: 0 0 8px rgba(200, 121, 65, 0.4);
           transform: translateX(0.5px);
         }
         .about-timeline-card {
-          background: rgba(20, 20, 20, 0.8);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          background: #141414;
+          border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 12px;
           padding: 1.5rem;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .about-timeline-card:hover {
-          border-color: rgba(59, 130, 246, 0.15);
+          border-color: rgba(200, 121, 65, 0.2);
           transform: translateX(4px);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
         .about-timeline-period {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 0.72rem;
+          font-size: 0.75rem;
           font-weight: 600;
-          color: #3b82f6;
+          color: #c87941;
           letter-spacing: 0.05em;
           text-transform: uppercase;
         }
         .about-timeline-title {
-          font-size: 1.05rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1.1rem;
           font-weight: 600;
-          color: #f5f5f5;
-          margin: 0.4rem 0 0.25rem;
+          color: #e8e8e8;
+          margin: 0.5rem 0 0.25rem;
           line-height: 1.3;
         }
         .about-timeline-company {
-          font-size: 0.85rem;
-          color: #d4d4d8;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9rem;
+          color: #8a8a8a;
           font-weight: 500;
           display: block;
           margin-bottom: 0.5rem;
         }
         .about-timeline-desc {
-          font-size: 0.85rem;
-          color: #d4d4d8;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9rem;
+          color: #8a8a8a;
           line-height: 1.6;
         }
-        .about-skills-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.25rem;
-        }
-        .about-skill-category {
-          background: rgba(20, 20, 20, 0.8);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 12px;
-          padding: 1.5rem;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          position: relative;
-          overflow: hidden;
-        }
-        .about-skill-category::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, var(--cat-color, #3b82f6), transparent);
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
-        .about-skill-category:hover::after {
-          opacity: 1;
-        }
-        .about-skill-category:hover {
-          border-color: rgba(255, 255, 255, 0.1);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        .about-skill-category-title {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.72rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          margin-bottom: 0.75rem;
-        }
-        .about-skills-list {
+        .about-certifications {
           display: flex;
-          flex-wrap: wrap;
-          gap: 0.4rem;
+          flex-direction: column;
+          gap: 0.75rem;
         }
-        .about-skill-chip {
-          font-size: 0.78rem;
-          font-weight: 500;
-          padding: 0.35rem 0.75rem;
-          border-radius: 6px;
-          border: 1px solid;
-          transition: all 0.2s ease;
+        .about-cert-item {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.95rem;
+          color: #8a8a8a;
+          padding: 1rem 1.5rem;
+          background: #141414;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          transition: all 0.3s ease;
         }
-        .about-skill-chip:hover {
-          transform: translateY(-1px);
+        .about-cert-item:hover {
+          color: #e8e8e8;
+          border-color: rgba(200, 121, 65, 0.2);
+          transform: translateX(4px);
         }
         @media (max-width: 640px) {
           .about-page {
             padding: 7rem 1.5rem 3rem;
-          }
-          .about-stats {
-            grid-template-columns: 1fr;
-            gap: 1rem;
           }
           .about-skills-grid {
             grid-template-columns: 1fr;
@@ -310,7 +256,6 @@ function About() {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <div className="about-header">
           <motion.h1
             className="about-title"
@@ -326,39 +271,44 @@ function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Full Stack Developer & Software Engineering Student
+            Full Stack Developer & DevOps Engineer
           </motion.p>
         </div>
 
-        {/* Bio Quote */}
         <AnimatedSection>
-          <blockquote className="about-quote">
-            Développeur Full Stack passionné basé à Dakar, Sénégal. Je conçois des applications robustes avec un focus sur la
-            performance, la qualité du code et l'expérience utilisateur. Ancien Pilote Production B2B chez Sonatel,
-            certifié IBM, Microsoft & AWS.
-          </blockquote>
+          <p className="about-bio">
+            Developpeur Full Stack passionne base a Dakar, Senegal. Je concois des applications
+            robustes avec un focus sur la performance, la qualite du code et l'experience utilisateur.
+            Fondateur de Jolofera, ancien Pilote Production B2B chez Sonatel (Orange Senegal),
+            certifie AWS Cloud Practitioner et AWS re/Start Graduate.
+          </p>
         </AnimatedSection>
 
-        {/* Stats */}
         <AnimatedSection delay={0.1}>
-          <div className="about-stats">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                className="about-stat"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 + 0.2, duration: 0.4 }}
-              >
-                <span className="about-stat-number">{stat.number}</span>
-                <span className="about-stat-label">{stat.label}</span>
-              </motion.div>
-            ))}
+          <div className="about-section">
+            <h2 className="about-section-title">Competences</h2>
+            <div className="about-skills-grid">
+              {Object.entries(skills).map(([category, items], catIndex) => (
+                <motion.div
+                  key={category}
+                  className="about-skill-category"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: catIndex * 0.1, duration: 0.5 }}
+                >
+                  <h4 className="about-skill-category-title">{category}</h4>
+                  <div className="about-skills-list">
+                    {items.map((skill) => (
+                      <span key={skill} className="about-skill-chip">{skill}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </AnimatedSection>
 
-        {/* Experience Timeline */}
         <AnimatedSection delay={0.1}>
           <div className="about-section">
             <h2 className="about-section-title">Parcours</h2>
@@ -385,46 +335,22 @@ function About() {
           </div>
         </AnimatedSection>
 
-        {/* Skills Grid */}
         <AnimatedSection delay={0.1}>
           <div className="about-section">
-            <h2 className="about-section-title">Compétences</h2>
-            <div className="about-skills-grid">
-              {Object.entries(skills).map(([category, items], catIndex) => {
-                const color = categoryColors[category] || '#3b82f6'
-                return (
-                  <motion.div
-                    key={category}
-                    className="about-skill-category"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: catIndex * 0.1, duration: 0.5 }}
-                  >
-                    <h4
-                      className="about-skill-category-title"
-                      style={{ color }}
-                    >
-                      {category}
-                    </h4>
-                    <div className="about-skills-list">
-                      {items.map((skill) => (
-                        <span
-                          key={skill}
-                          className="about-skill-chip"
-                          style={{
-                            color,
-                            borderColor: `${color}22`,
-                            background: `${color}08`
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
-                )
-              })}
+            <h2 className="about-section-title">Certifications</h2>
+            <div className="about-certifications">
+              {certifications.map((cert, index) => (
+                <motion.div
+                  key={index}
+                  className="about-cert-item"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05, duration: 0.4 }}
+                >
+                  {cert}
+                </motion.div>
+              ))}
             </div>
           </div>
         </AnimatedSection>
