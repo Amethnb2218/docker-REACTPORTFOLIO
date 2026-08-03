@@ -12,7 +12,7 @@ function Home() {
   const roles = [
     'Full Stack Developer',
     'DevOps Engineer',
-    'Founder @ MTCorporate',
+    'Co-Founder @ MTCorporate',
     'Cloud Architect'
   ]
 

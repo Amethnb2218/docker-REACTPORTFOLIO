@@ -46,7 +46,7 @@ function About() {
   ]
 
   const experience = [
-    { period: '2024 — Présent', title: 'Fondateur & CEO', company: 'MTCorporate', description: 'Startup de services numériques : développement web, architecture cloud, pipelines CI/CD et déploiement. Conception et livraison de Jolof\'Era, Teranga AI, FresCOOP et autres solutions.' },
+    { period: '2024 — Présent', title: 'Co-Fondateur', company: 'MTCorporate', description: 'Startup de services numériques : développement web, architecture cloud, pipelines CI/CD et déploiement. Conception et livraison de Jolof\'Era, Teranga AI, FresCOOP et autres solutions.' },
     { period: '2026 — Présent', title: 'Fondateur & Dev Full Stack', company: 'Jolof\'Era' },
     { period: '2024 — 2025', title: 'Pilote Production B2B', company: 'Sonatel (Orange)' },
     { period: '2024', title: 'Stagiaire Réseaux', company: 'Sonatel' }
@@ -336,7 +336,7 @@ function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          Fondateur de MTCorporate, startup spécialisée en développement web, cloud et déploiement CI/CD. À travers MTCorporate, j'ai conçu et livré des solutions comme Jolof'Era, Teranga AI et FresCOOP. Ancien Pilote Production B2B chez Sonatel, je combine expertise technique et vision entrepreneuriale pour créer des produits qui ont un impact réel.
+          Co-fondateur de MTCorporate, startup spécialisée en développement web, cloud et déploiement CI/CD. À travers MTCorporate, j'ai conçu et livré des solutions comme Jolof'Era, Teranga AI et FresCOOP. Ancien Pilote Production B2B chez Sonatel, je combine expertise technique et vision entrepreneuriale pour créer des produits qui ont un impact réel.
         </motion.p>
 
         <motion.a
