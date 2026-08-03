@@ -33,34 +33,20 @@ function Navbar() {
           align-items: center;
           justify-content: center;
           padding: 0.6rem 1rem;
-          background: rgba(12, 12, 12, 0.7);
+          background: rgba(248, 246, 243, 0.85);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(0, 0, 0, 0.06);
           border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
         .navbar.scrolled {
-          background: rgba(12, 12, 12, 0.9);
-          border-color: rgba(200, 121, 65, 0.15);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+          background: rgba(248, 246, 243, 0.95);
+          border-color: rgba(0, 0, 0, 0.08);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
           padding: 0.5rem 0.9rem;
           top: 0.5rem;
-        }
-        .navbar::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.2), transparent);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-        }
-        .navbar.scrolled::after {
-          opacity: 1;
         }
         .nav-links {
           display: flex;
@@ -78,23 +64,23 @@ function Navbar() {
           border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
           text-decoration: none;
-          color: #8a8a8a;
+          color: #5c5c5c;
           cursor: pointer;
           position: relative;
           letter-spacing: -0.01em;
           z-index: 1;
         }
         .nav-link:hover {
-          color: #e8e8e8;
-          background: rgba(255, 255, 255, 0.03);
+          color: #00473e;
+          background: rgba(0, 0, 0, 0.03);
         }
         .nav-link.active {
-          color: #c87941;
+          color: #faae2b;
         }
         .nav-active-indicator {
           position: absolute;
-          background: rgba(200, 121, 65, 0.12);
-          border: 1px solid rgba(200, 121, 65, 0.2);
+          background: rgba(250, 174, 43, 0.12);
+          border: 1px solid rgba(250, 174, 43, 0.2);
           border-radius: 100px;
           z-index: 0;
         }
@@ -111,7 +97,7 @@ function Navbar() {
           display: block;
           width: 20px;
           height: 1.5px;
-          background: #e8e8e8;
+          background: #00473e;
           border-radius: 2px;
           transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -130,10 +116,10 @@ function Navbar() {
           top: 5rem;
           left: 50%;
           transform: translateX(-50%);
-          background: rgba(20, 20, 20, 0.95);
+          background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(0, 0, 0, 0.06);
           border-radius: 16px;
           padding: 1rem;
           display: flex;
@@ -141,7 +127,7 @@ function Navbar() {
           gap: 0.25rem;
           min-width: 200px;
           z-index: 999;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
         }
         .nav-mobile-link {
           font-family: 'Inter', sans-serif;
@@ -149,18 +135,18 @@ function Navbar() {
           font-weight: 500;
           padding: 0.75rem 1.25rem;
           border-radius: 12px;
-          color: #8a8a8a;
+          color: #5c5c5c;
           text-decoration: none;
           transition: all 0.2s ease;
           text-align: center;
         }
         .nav-mobile-link:hover {
-          color: #e8e8e8;
-          background: rgba(255, 255, 255, 0.03);
+          color: #00473e;
+          background: rgba(0, 0, 0, 0.03);
         }
         .nav-mobile-link.active {
-          color: #c87941;
-          background: rgba(200, 121, 65, 0.08);
+          color: #faae2b;
+          background: rgba(250, 174, 43, 0.08);
         }
         @media (max-width: 900px) {
           .navbar {

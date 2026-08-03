@@ -19,7 +19,7 @@ function RotatingIcosahedron({ mousePosition }) {
   return (
     <Icosahedron ref={meshRef} args={[1.2, 1]}>
       <meshBasicMaterial
-        color="#c87941"
+        color="#faae2b"
         wireframe
         opacity={0.35}
         transparent
@@ -46,7 +46,7 @@ function OrbitingSphere({ mousePosition }) {
   return (
     <Sphere ref={meshRef} args={[0.15, 16, 16]}>
       <meshBasicMaterial
-        color="#c87941"
+        color="#faae2b"
         opacity={0.5}
         transparent
       />
@@ -76,7 +76,7 @@ function Scene3D() {
       width: '400px',
       height: '400px',
       pointerEvents: 'none',
-      opacity: 0.6,
+      opacity: 0.25,
       zIndex: 0
     }}>
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>

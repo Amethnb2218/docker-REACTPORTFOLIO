@@ -1,26 +1,16 @@
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Scene3D from '../components/Scene3D'
 
 function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [hoveredButton, setHoveredButton] = useState(false)
-
   const cursorX = useMotionValue(0)
   const cursorY = useMotionValue(0)
 
   const springConfig = { damping: 25, stiffness: 150 }
   const cursorXSpring = useSpring(cursorX, springConfig)
   const cursorYSpring = useSpring(cursorY, springConfig)
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   const handleButtonMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -64,32 +54,6 @@ function Home() {
           justify-content: center;
           padding: 2rem;
           overflow: hidden;
-          background: radial-gradient(ellipse at 50% 20%, rgba(200, 121, 65, 0.03), transparent 60%);
-        }
-        .home-bg-gradient {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-          pointer-events: none;
-          background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(200, 121, 65, 0.04), transparent 40%);
-        }
-        .home-page:hover .home-bg-gradient {
-          opacity: 1;
-        }
-        .home-geometric-line {
-          position: absolute;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.3), transparent);
-          width: 100%;
-          top: 20%;
-        }
-        .home-geometric-line-bottom {
-          position: absolute;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.2), transparent);
-          width: 100%;
-          bottom: 25%;
         }
         .home-content {
           position: relative;
@@ -103,7 +67,7 @@ function Home() {
           font-weight: 700;
           letter-spacing: -0.03em;
           line-height: 1.1;
-          color: #e8e8e8;
+          color: #00473e;
           margin-bottom: 1rem;
           overflow: hidden;
         }
@@ -111,7 +75,7 @@ function Home() {
           font-family: 'Inter', sans-serif;
           font-size: clamp(1.1rem, 2.5vw, 1.4rem);
           font-weight: 500;
-          color: #8a8a8a;
+          color: #475d5b;
           margin-bottom: 2.5rem;
           letter-spacing: -0.01em;
         }
@@ -123,7 +87,7 @@ function Home() {
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
           line-height: 1.8;
-          color: #8a8a8a;
+          color: #475d5b;
           max-width: 600px;
           margin: 0 auto 3rem;
         }
@@ -132,8 +96,8 @@ function Home() {
           align-items: center;
           gap: 0.5rem;
           padding: 0.85rem 2rem;
-          background: #c87941;
-          color: #0c0c0c;
+          background: #faae2b;
+          color: #f2f7f5;
           border-radius: 100px;
           font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
@@ -141,24 +105,10 @@ function Home() {
           text-decoration: none;
           transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
           letter-spacing: -0.01em;
-          position: relative;
-          overflow: hidden;
-        }
-        .home-cta::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-          transform: translateX(-100%);
-          transition: transform 0.6s ease;
-        }
-        .home-cta:hover::before {
-          transform: translateX(100%);
         }
         .home-cta:hover {
-          background: #d4956a;
-          transform: scale(1.02);
-          box-shadow: 0 12px 32px rgba(200, 121, 65, 0.4);
+          background: #e09b1a;
+          transform: scale(1.02) translateY(-2px);
         }
         .home-status {
           position: fixed;
@@ -170,66 +120,25 @@ function Home() {
           gap: 0.5rem;
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.75rem;
-          color: #555;
+          color: #8a8a8a;
           z-index: 10;
         }
         .home-status-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #c87941;
+          background: #faae2b;
           animation: statusPulse 2s ease-in-out infinite;
-        }
-        .home-status-text {
-          overflow: hidden;
-          white-space: nowrap;
-          border-right: 2px solid rgba(200, 121, 65, 0.5);
-          animation: typewriter 2s steps(30) 2s 1 normal both, blink 1s steps(1) infinite;
         }
         @keyframes statusPulse {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.4; transform: scale(0.95); }
         }
-        @keyframes typewriter {
-          from { width: 0; }
-          to { width: 100%; }
-        }
-        @keyframes blink {
-          50% { border-color: transparent; }
-        }
-        .home-scroll-indicator {
-          position: fixed;
-          bottom: 4rem;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.5rem;
-          z-index: 10;
-          cursor: pointer;
-        }
-        .home-scroll-line {
-          width: 1px;
-          height: 40px;
-          background: linear-gradient(180deg, rgba(200, 121, 65, 0.4), transparent);
-        }
-        .home-scroll-dot {
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          background: #c87941;
-          animation: scrollBounce 2s ease-in-out infinite;
-        }
-        @keyframes scrollBounce {
-          0%, 100% { transform: translateY(0); opacity: 1; }
-          50% { transform: translateY(10px); opacity: 0.4; }
-        }
         @media (max-width: 640px) {
           .home-page {
             padding: 1.5rem;
           }
-          .home-status, .home-scroll-indicator {
+          .home-status {
             display: none;
           }
         }
@@ -240,27 +149,7 @@ function Home() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        style={{
-          '--mouse-x': `${mousePosition.x}px`,
-          '--mouse-y': `${mousePosition.y}px`
-        }}
       >
-        <div className="home-bg-gradient" />
-
-        <motion.div
-          className="home-geometric-line"
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        />
-
-        <motion.div
-          className="home-geometric-line-bottom"
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        />
-
         <Scene3D />
 
         <div className="home-content">
@@ -298,7 +187,7 @@ function Home() {
             transition={{ duration: 0.8, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
             Développeur Full Stack et étudiant ingénieur en Génie Logiciel à l'ESP Dakar.
-            Fondateur de Jolofera, plateforme SaaS multi-tenant. Certifié AWS Cloud Practitioner
+            Fondateur de Jolof'Era, plateforme SaaS multi-tenant. Certifié AWS Cloud Practitioner
             et AWS re/Start Graduate.
           </motion.p>
 
@@ -338,17 +227,7 @@ function Home() {
           transition={{ delay: 2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="home-status-dot" />
-          <span className="home-status-text">Disponible pour opportunités</span>
-        </motion.div>
-
-        <motion.div
-          className="home-scroll-indicator"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 1 }}
-        >
-          <div className="home-scroll-line" />
-          <div className="home-scroll-dot" />
+          <span>Disponible pour opportunités</span>
         </motion.div>
       </motion.main>
     </>
