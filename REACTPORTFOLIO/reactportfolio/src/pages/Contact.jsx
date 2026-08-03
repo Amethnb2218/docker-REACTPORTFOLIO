@@ -272,7 +272,92 @@ function Contact() {
         }
         @media (max-width: 768px) {
           .contact-page {
-            padding: 160px 1.5rem 100px;
+            padding: 120px 1.5rem 80px;
+          }
+          .contact-title {
+            font-size: clamp(2.5rem, 10vw, 4rem);
+            margin-bottom: 1.5rem;
+          }
+          .contact-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+          }
+          .contact-response-time {
+            font-size: 0.8rem;
+            margin-bottom: 2.5rem;
+          }
+          .contact-info {
+            margin-bottom: 3rem;
+          }
+          .contact-info-item {
+            font-size: 1.1rem;
+            line-height: 1.8;
+          }
+          .contact-info-item a {
+            font-size: 1.15rem;
+          }
+          .contact-social-links {
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            align-items: flex-start;
+          }
+          .contact-social-link {
+            width: 100%;
+            padding: 0.75rem 1rem;
+          }
+          .contact-form {
+            padding: 2rem 1.5rem;
+            gap: 1.75rem;
+          }
+          .contact-input,
+          .contact-textarea {
+            padding: 0.9rem 0;
+            font-size: 0.95rem;
+            min-height: 48px;
+          }
+          .contact-textarea {
+            min-height: 120px;
+          }
+          .contact-submit {
+            width: 100%;
+            justify-content: center;
+            align-self: stretch;
+            padding: 1rem 2rem;
+            font-size: 0.95rem;
+            min-height: 52px;
+          }
+          .contact-status {
+            font-size: 0.9rem;
+            text-align: center;
+          }
+        }
+        @media (max-width: 480px) {
+          .contact-page {
+            padding: 100px 1rem 60px;
+          }
+          .contact-title {
+            font-size: clamp(2rem, 12vw, 3rem);
+          }
+          .contact-subtitle {
+            font-size: 1rem;
+          }
+          .contact-info-item {
+            font-size: 1rem;
+          }
+          .contact-info-item a {
+            font-size: 1.05rem;
+          }
+          .contact-form {
+            padding: 1.5rem 1rem;
+          }
+          .contact-input,
+          .contact-textarea {
+            font-size: 0.9rem;
+          }
+          .contact-submit {
+            padding: 0.95rem 1.5rem;
+            font-size: 0.9rem;
           }
         }
       `}</style>

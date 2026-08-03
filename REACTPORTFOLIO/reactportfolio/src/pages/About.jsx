@@ -302,15 +302,111 @@ function About() {
         }
         @media (max-width: 768px) {
           .about-page {
-            padding: 160px 1.5rem 100px;
+            padding: 120px 1.5rem 80px;
+          }
+          .about-intro-statement {
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            margin-bottom: 1.5rem;
+          }
+          .about-bio {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+          }
+          .about-cv-button {
+            width: 100%;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            font-size: 0.95rem;
+          }
+          .about-availability-tags {
+            justify-content: center;
+          }
+          .about-availability-tag {
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+          }
+          .about-location {
+            font-size: 1rem;
+            padding: 1.25rem;
           }
           .about-stats {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
+            margin: 2rem 0;
+          }
+          .about-stat {
+            padding: 1.5rem;
+          }
+          .about-stat-value {
+            font-size: 40px;
+          }
+          .about-stat-label {
+            font-size: 0.85rem;
+          }
+          .about-skill-category-title {
+            font-size: 0.7rem;
+          }
+          .about-skill-items {
+            font-size: 0.95rem;
           }
           .about-timeline-item {
             grid-template-columns: 1fr;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            padding: 1.25rem 0;
+          }
+          .about-timeline-item:hover {
+            padding-left: 0;
+          }
+          .about-timeline-period {
+            font-size: 0.8rem;
+          }
+          .about-timeline-title {
+            font-size: 1rem;
+          }
+          .about-timeline-company {
+            font-size: 0.9rem;
+          }
+          .about-timeline-description {
+            font-size: 0.85rem;
+          }
+          .about-cert-item {
+            font-size: 0.95rem;
+            padding: 0.9rem 0;
+          }
+          .about-cert-issuer {
+            font-size: 0.8rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .about-page {
+            padding: 100px 1rem 60px;
+          }
+          .about-intro-statement {
+            font-size: clamp(1.3rem, 7vw, 1.8rem);
+          }
+          .about-bio {
+            font-size: 0.95rem;
+          }
+          .about-cv-button {
+            padding: 0.85rem 1.5rem;
+            font-size: 0.9rem;
+          }
+          .about-availability-tag {
+            font-size: 0.8rem;
+          }
+          .about-location {
+            font-size: 0.95rem;
+            padding: 1rem;
+          }
+          .about-stat {
+            padding: 1.25rem;
+          }
+          .about-stat-value {
+            font-size: 36px;
+          }
+          .about-stats {
+            gap: 1.25rem;
           }
         }
       `}</style>

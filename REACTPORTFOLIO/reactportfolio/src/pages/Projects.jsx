@@ -125,6 +125,7 @@ function ProjectRow({ project, index }) {
       )}
       <Link
         to={`/projects/${project.slug}`}
+        className="project-row-link"
         style={{
           display: 'grid',
           gridTemplateColumns: '140px 1fr auto',
@@ -145,6 +146,7 @@ function ProjectRow({ project, index }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
+          className="project-row-number"
           style={{
             fontFamily: "'Playfair Display', serif",
             fontSize: project.featured ? '4.5rem' : '4rem',
@@ -164,15 +166,16 @@ function ProjectRow({ project, index }) {
           {project.number}
         </motion.div>
 
-        <div style={{
+        <div className="project-row-content" style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '0.75rem',
           transform: isHovered ? 'translateX(10px)' : 'translateX(0)',
           transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <motion.h3
+              className="project-row-title"
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontSize: project.featured ? '2.5rem' : '2rem',
@@ -271,6 +274,7 @@ function ProjectRow({ project, index }) {
         </div>
 
         <motion.div
+          className="project-row-arrow"
           animate={{ x: isHovered ? 10 : 0, opacity: isHovered ? 1 : 0.3 }}
           transition={{ duration: 0.3 }}
         >
@@ -442,10 +446,97 @@ function Projects() {
         }
         @media (max-width: 768px) {
           .projects-page {
-            padding: 160px 1.5rem 100px;
+            padding: 120px 1.5rem 80px;
           }
           .projects-hero {
-            margin-bottom: 100px;
+            margin-bottom: 3rem;
+          }
+          .projects-title {
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            margin-bottom: 1.5rem;
+          }
+          .projects-subtitle {
+            font-size: 1rem;
+          }
+          .projects-github-stats {
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+          }
+          .projects-featured {
+            padding: 2rem;
+            margin-bottom: 3rem;
+          }
+          .projects-featured-badge {
+            font-size: 0.65rem;
+            padding: 0.4rem 0.9rem;
+          }
+          .projects-featured-title {
+            font-size: clamp(2rem, 8vw, 2.5rem);
+          }
+          .projects-featured-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+          }
+          .projects-featured-tech {
+            gap: 0.6rem;
+          }
+          .projects-featured-tech-item {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+          }
+          .projects-featured-links {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .projects-featured-link {
+            width: 100%;
+            justify-content: center;
+            padding: 0.9rem 1.5rem;
+          }
+          .project-row-link {
+            grid-template-columns: 60px 1fr !important;
+            gap: 1.5rem !important;
+            padding: 2rem 0 !important;
+          }
+          .project-row-number {
+            font-size: 2.5rem !important;
+          }
+          .project-row-title {
+            font-size: 1.5rem !important;
+          }
+          .project-row-arrow {
+            display: none !important;
+          }
+          .project-row-content {
+            transform: translateX(0) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .projects-page {
+            padding: 100px 1rem 60px;
+          }
+          .projects-title {
+            font-size: clamp(2rem, 12vw, 3rem);
+          }
+          .projects-subtitle {
+            font-size: 0.95rem;
+          }
+          .projects-featured {
+            padding: 1.5rem;
+          }
+          .projects-featured-title {
+            font-size: clamp(1.8rem, 10vw, 2.2rem);
+          }
+          .project-row-link {
+            grid-template-columns: 50px 1fr !important;
+            gap: 1rem !important;
+            padding: 1.5rem 0 !important;
+          }
+          .project-row-number {
+            font-size: 2rem !important;
+          }
+          .project-row-title {
+            font-size: 1.3rem !important;
           }
         }
       `}</style>

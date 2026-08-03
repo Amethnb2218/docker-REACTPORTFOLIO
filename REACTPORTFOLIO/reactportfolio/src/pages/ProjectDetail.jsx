@@ -235,6 +235,70 @@ function ProjectDetail() {
           background: #e09b1a;
           border-color: #e09b1a;
         }
+        @media (max-width: 768px) {
+          .project-detail-page {
+            padding: 120px 1.5rem 80px;
+          }
+          .project-detail-back {
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+          }
+          .project-detail-category {
+            font-size: 0.7rem;
+            margin-bottom: 1.5rem;
+          }
+          .project-detail-title {
+            font-size: clamp(2rem, 8vw, 3rem);
+            margin-bottom: 1rem;
+          }
+          .project-detail-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+          }
+          .project-detail-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+          }
+          .project-detail-section-title {
+            font-size: 0.8rem;
+            margin-bottom: 1.25rem;
+          }
+          .project-detail-tech-list {
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+          }
+          .project-detail-tech-tag {
+            font-size: 0.9rem;
+          }
+          .project-detail-links {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .project-detail-link {
+            width: 100%;
+            justify-content: center;
+            padding: 0.85rem 1.5rem;
+            font-size: 0.9rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .project-detail-page {
+            padding: 100px 1rem 60px;
+          }
+          .project-detail-title {
+            font-size: clamp(1.8rem, 10vw, 2.5rem);
+          }
+          .project-detail-subtitle {
+            font-size: 1.1rem;
+          }
+          .project-detail-description {
+            font-size: 0.95rem;
+          }
+          .project-detail-tech-tag {
+            font-size: 0.85rem;
+          }
+        }
       `}</style>
       <motion.main
         className="project-detail-page"

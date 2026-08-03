@@ -64,14 +64,38 @@ function Footer() {
           font-weight: 600;
         }
         @media (max-width: 768px) {
+          .footer {
+            padding: 2rem 1.5rem 2rem;
+            margin-top: 4rem;
+          }
           .footer-top {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+          }
+          .footer-copyright {
+            font-size: 0.85rem;
           }
           .footer-links {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             gap: 1rem;
+          }
+          .footer-tech {
+            font-size: 0.7rem;
+            line-height: 1.6;
+          }
+        }
+        @media (max-width: 480px) {
+          .footer {
+            padding: 2rem 1rem 2rem;
+          }
+          .footer-copyright {
+            font-size: 0.8rem;
+          }
+          .footer-tech {
+            font-size: 0.65rem;
           }
         }
       `}</style>

@@ -303,12 +303,79 @@ function Home() {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.4; transform: scale(0.95); }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
           .home-page {
-            padding: 1.5rem;
+            padding: 100px 1.5rem 80px;
+            min-height: 100vh;
+          }
+          .home-hero-title {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 1.5rem;
+          }
+          .home-subtitle {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            min-height: 2rem;
+          }
+          .home-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+          }
+          .home-cta {
+            width: 100%;
+            max-width: 100%;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+          }
+          .home-trusted {
+            margin-top: 3rem;
+          }
+          .home-trusted-title {
+            font-size: 0.65rem;
+          }
+          .home-trusted-logos {
+            gap: 1.5rem;
+            justify-content: center;
+          }
+          .home-trusted-logo {
+            font-size: 0.85rem;
+          }
+          .home-scroll-indicator {
+            display: none;
           }
           .home-status {
             display: none;
+          }
+        }
+        @media (max-width: 480px) {
+          .home-page {
+            padding: 100px 1rem 60px;
+          }
+          .home-hero-title {
+            font-size: clamp(1.8rem, 10vw, 2.5rem);
+          }
+          .home-subtitle {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            margin-bottom: 2rem;
+          }
+          .home-description {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+          }
+          .home-cta {
+            padding: 0.9rem 1.25rem;
+            font-size: 0.9rem;
+          }
+          .home-trusted {
+            margin-top: 2.5rem;
+          }
+          .home-trusted-logos {
+            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+            display: grid;
+          }
+          .home-trusted-logo {
+            font-size: 0.8rem;
           }
         }
       `}</style>

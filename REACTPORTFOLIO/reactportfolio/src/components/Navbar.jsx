@@ -149,16 +149,59 @@ function Navbar() {
           color: #e8a020;
           background: rgba(232, 160, 32, 0.08);
         }
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
           .navbar {
             padding: 0.5rem 0.75rem;
             top: 0.75rem;
+            width: calc(100% - 2rem);
+            max-width: calc(100% - 2rem);
           }
           .nav-links {
             display: none;
           }
           .nav-hamburger {
             display: flex;
+          }
+          .nav-mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transform: translateX(0);
+            background: rgba(232, 239, 236, 0.98);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: none;
+            border-radius: 0;
+            padding: 5rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 100%;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            z-index: 998;
+          }
+          .nav-mobile-link {
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            min-height: 60px;
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        @media (max-width: 480px) {
+          .navbar {
+            width: calc(100% - 1.5rem);
+            max-width: calc(100% - 1.5rem);
+          }
+          .nav-mobile-link {
+            font-size: 1.3rem;
           }
         }
       `}</style>
