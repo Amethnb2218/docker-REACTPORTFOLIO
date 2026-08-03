@@ -46,6 +46,21 @@ function Navbar() {
           border-color: rgba(200, 121, 65, 0.15);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
           padding: 0.5rem 0.9rem;
+          top: 0.5rem;
+        }
+        .navbar::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.2), transparent);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+        }
+        .navbar.scrolled::after {
+          opacity: 1;
         }
         .nav-links {
           display: flex;
@@ -61,12 +76,13 @@ function Navbar() {
           font-weight: 500;
           padding: 0.5rem 1.1rem;
           border-radius: 100px;
-          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
           text-decoration: none;
           color: #8a8a8a;
           cursor: pointer;
           position: relative;
           letter-spacing: -0.01em;
+          z-index: 1;
         }
         .nav-link:hover {
           color: #e8e8e8;
@@ -74,6 +90,13 @@ function Navbar() {
         }
         .nav-link.active {
           color: #c87941;
+        }
+        .nav-active-indicator {
+          position: absolute;
+          background: rgba(200, 121, 65, 0.12);
+          border: 1px solid rgba(200, 121, 65, 0.2);
+          border-radius: 100px;
+          z-index: 0;
         }
         .nav-hamburger {
           display: none;
@@ -158,15 +181,30 @@ function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        <ul className="nav-links">
+        <ul className="nav-links" style={{ position: 'relative' }}>
           {links.map((link) => (
-            <li key={link.path} style={{ listStyle: 'none' }}>
+            <li key={link.path} style={{ listStyle: 'none', position: 'relative' }}>
               <Link
                 to={link.path}
                 className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
               >
                 {link.label}
               </Link>
+              {location.pathname === link.path && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="nav-active-indicator"
+                  style={{
+                    position: 'absolute',
+                    inset: 0
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 30
+                  }}
+                />
+              )}
             </li>
           ))}
         </ul>

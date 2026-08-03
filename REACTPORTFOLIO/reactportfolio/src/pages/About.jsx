@@ -1,9 +1,14 @@
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 
-function AnimatedSection({ children, delay = 0 }) {
+function AnimatedSection({ children, delay = 0, parallax = false }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start']
+  })
+  const y = useTransform(scrollYProgress, [0, 1], parallax ? [50, -50] : [0, 0])
 
   return (
     <motion.div
@@ -11,9 +16,25 @@ function AnimatedSection({ children, delay = 0 }) {
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      style={{ y: parallax ? y : 0 }}
     >
       {children}
     </motion.div>
+  )
+}
+
+function TimelineLine() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  return (
+    <motion.div
+      ref={ref}
+      className="about-timeline-line"
+      initial={{ scaleY: 0 }}
+      animate={isInView ? { scaleY: 1 } : {}}
+      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+    />
   )
 }
 
@@ -119,6 +140,21 @@ function About() {
           color: #e8e8e8;
           letter-spacing: -0.02em;
           margin-bottom: 2rem;
+          position: relative;
+          display: inline-block;
+        }
+        .about-section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          height: 2px;
+          background: linear-gradient(90deg, #c87941, transparent);
+          width: 0;
+          animation: underlineSlide 0.8s ease forwards;
+        }
+        @keyframes underlineSlide {
+          to { width: 100%; }
         }
         .about-skills-grid {
           display: grid;
@@ -159,25 +195,27 @@ function About() {
           color: #8a8a8a;
           border: 1px solid rgba(255, 255, 255, 0.05);
           background: rgba(255, 255, 255, 0.02);
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          cursor: default;
         }
         .about-skill-chip:hover {
           color: #e8e8e8;
-          border-color: rgba(200, 121, 65, 0.2);
-          background: rgba(200, 121, 65, 0.05);
+          border-color: rgba(200, 121, 65, 0.3);
+          background: rgba(200, 121, 65, 0.08);
+          transform: translateY(-2px);
         }
         .about-timeline {
           position: relative;
           padding-left: 2rem;
         }
-        .about-timeline::before {
-          content: '';
+        .about-timeline-line {
           position: absolute;
           left: 4px;
           top: 8px;
           bottom: 8px;
           width: 1px;
-          background: linear-gradient(180deg, rgba(200, 121, 65, 0.3), rgba(200, 121, 65, 0.05));
+          background: linear-gradient(180deg, rgba(200, 121, 65, 0.4), rgba(200, 121, 65, 0.05));
+          transform-origin: top;
         }
         .about-timeline-item {
           position: relative;
@@ -194,8 +232,13 @@ function About() {
           height: 9px;
           border-radius: 50%;
           background: #c87941;
-          box-shadow: 0 0 8px rgba(200, 121, 65, 0.4);
+          box-shadow: 0 0 12px rgba(200, 121, 65, 0.6);
           transform: translateX(0.5px);
+          animation: timelinePulse 2s ease-in-out infinite;
+        }
+        @keyframes timelinePulse {
+          0%, 100% { transform: translateX(0.5px) scale(1); box-shadow: 0 0 12px rgba(200, 121, 65, 0.6); }
+          50% { transform: translateX(0.5px) scale(1.1); box-shadow: 0 0 20px rgba(200, 121, 65, 0.8); }
         }
         .about-timeline-card {
           background: #141414;
@@ -239,24 +282,39 @@ function About() {
           line-height: 1.6;
         }
         .about-certifications {
+          overflow: hidden;
+          position: relative;
+          padding: 1rem 0;
+        }
+        .about-certifications-track {
           display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
+          gap: 1rem;
+          animation: marqueeScroll 30s linear infinite;
+          width: max-content;
+        }
+        .about-certifications-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marqueeScroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
         }
         .about-cert-item {
           font-family: 'Inter', sans-serif;
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           color: #8a8a8a;
           padding: 1rem 1.5rem;
           background: #141414;
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 8px;
           transition: all 0.3s ease;
+          white-space: nowrap;
+          flex-shrink: 0;
         }
         .about-cert-item:hover {
           color: #e8e8e8;
-          border-color: rgba(200, 121, 65, 0.2);
-          transform: translateX(4px);
+          border-color: rgba(200, 121, 65, 0.3);
+          transform: scale(1.05);
         }
         @media (max-width: 640px) {
           .about-page {
@@ -302,24 +360,48 @@ function About() {
           </p>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.1}>
+        <AnimatedSection delay={0.1} parallax={true}>
           <div className="about-section">
-            <h2 className="about-section-title">Compétences</h2>
+            <motion.h2
+              className="about-section-title"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Compétences
+            </motion.h2>
             <div className="about-skills-grid">
               {Object.entries(skills).map(([category, items], catIndex) => (
                 <motion.div
                   key={category}
                   className="about-skill-category"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 30, rotateX: -10 }}
+                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: catIndex * 0.1, duration: 0.5 }}
+                  transition={{ delay: catIndex * 0.15, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
                 >
                   <h4 className="about-skill-category-title">{category}</h4>
                   <div className="about-skills-list">
-                    {items.map((skill) => (
-                      <span key={skill} className="about-skill-chip">{skill}</span>
-                    ))}
+                    {items.map((skill, skillIndex) => {
+                      const angle = (skillIndex % 2 === 0 ? -1 : 1) * (20 + skillIndex * 5)
+                      return (
+                        <motion.span
+                          key={skill}
+                          className="about-skill-chip"
+                          initial={{ opacity: 0, x: angle, y: -20, scale: 0.8 }}
+                          whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{
+                            delay: catIndex * 0.15 + skillIndex * 0.05,
+                            duration: 0.5,
+                            ease: [0.22, 1, 0.36, 1]
+                          }}
+                        >
+                          {skill}
+                        </motion.span>
+                      )
+                    })}
                   </div>
                 </motion.div>
               ))}
@@ -329,18 +411,33 @@ function About() {
 
         <AnimatedSection delay={0.1}>
           <div className="about-section">
-            <h2 className="about-section-title">Parcours</h2>
+            <motion.h2
+              className="about-section-title"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Parcours
+            </motion.h2>
             <div className="about-timeline">
+              <TimelineLine />
               {experience.map((exp, index) => (
                 <motion.div
                   key={index}
                   className="about-timeline-item"
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -40 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ delay: index * 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="about-timeline-dot" />
+                  <motion.div
+                    className="about-timeline-dot"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15 + 0.3, duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                  />
                   <div className="about-timeline-card">
                     <span className="about-timeline-period">{exp.period}</span>
                     <h3 className="about-timeline-title">{exp.title}</h3>
@@ -353,20 +450,35 @@ function About() {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.1}>
+        <AnimatedSection delay={0.1} parallax={true}>
           <div className="about-section">
-            <h2 className="about-section-title">Formation</h2>
+            <motion.h2
+              className="about-section-title"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Formation
+            </motion.h2>
             <div className="about-timeline">
+              <TimelineLine />
               {education.map((edu, index) => (
                 <motion.div
                   key={index}
                   className="about-timeline-item"
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -40 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ delay: index * 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="about-timeline-dot" />
+                  <motion.div
+                    className="about-timeline-dot"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15 + 0.3, duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                  />
                   <div className="about-timeline-card">
                     <span className="about-timeline-period">{edu.period}</span>
                     <h3 className="about-timeline-title">{edu.title}</h3>
@@ -380,20 +492,23 @@ function About() {
 
         <AnimatedSection delay={0.1}>
           <div className="about-section">
-            <h2 className="about-section-title">Certifications</h2>
+            <motion.h2
+              className="about-section-title"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Certifications
+            </motion.h2>
             <div className="about-certifications">
-              {certifications.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  className="about-cert-item"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.4 }}
-                >
-                  {cert}
-                </motion.div>
-              ))}
+              <div className="about-certifications-track">
+                {[...certifications, ...certifications].map((cert, index) => (
+                  <div key={index} className="about-cert-item">
+                    {cert}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </AnimatedSection>

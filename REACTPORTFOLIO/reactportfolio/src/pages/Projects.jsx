@@ -1,41 +1,140 @@
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useMotionValue, useTransform } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index, totalProjects }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const [isHovered, setIsHovered] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [8, -8])
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-8, 8])
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    const mouseXRelative = (e.clientX - centerX) / (rect.width / 2)
+    const mouseYRelative = (e.clientY - centerY) / (rect.height / 2)
+    mouseX.set(mouseXRelative)
+    mouseY.set(mouseYRelative)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+    setIsHovered(false)
+  }
+
+  const truncateText = (text, maxLength = 150) => {
+    if (text.length <= maxLength) return text
+    return text.substring(0, maxLength) + '...'
+  }
+
+  const displayDesc = expanded ? project.description : truncateText(project.description)
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 60, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.12,
+        ease: [0.76, 0, 0.24, 1]
+      }}
+      style={{
+        perspective: 1000,
+        transformStyle: 'preserve-3d'
+      }}
     >
-      <a
+      <motion.a
         href={project.liveUrl || project.githubUrl || '#'}
         target={project.liveUrl || project.githubUrl ? '_blank' : '_self'}
         rel="noreferrer"
         className="project-card"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        onClick={(e) => {
+          if (project.description.length > 150 && !expanded) {
+            e.preventDefault()
+            setExpanded(true)
+          }
+        }}
+        style={{
+          rotateX: rotateX,
+          rotateY: rotateY,
+          transformStyle: 'preserve-3d'
+        }}
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
       >
-        <h3 className="project-card-title">{project.title}</h3>
-        <p className="project-card-desc">{project.description}</p>
-
-        <div className="project-card-tags">
-          {project.technologies && project.technologies.map((tech) => (
-            <span key={tech} className="project-tag">{tech}</span>
-          ))}
+        <div className="project-card-number">
+          {String(index + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')}
         </div>
 
-        <div className="project-card-footer">
+        <motion.div
+          style={{ transform: isHovered ? 'translateZ(20px)' : 'translateZ(0px)' }}
+          transition={{ duration: 0.3 }}
+        >
+          <h3 className="project-card-title">{project.title}</h3>
+        </motion.div>
+
+        <motion.p
+          className="project-card-desc"
+          style={{ transform: isHovered ? 'translateZ(10px)' : 'translateZ(0px)' }}
+          transition={{ duration: 0.3 }}
+        >
+          {displayDesc}
+          {project.description.length > 150 && !expanded && (
+            <span className="project-expand-hint"> Cliquer pour plus</span>
+          )}
+        </motion.p>
+
+        <motion.div
+          className="project-card-tags"
+          style={{ transform: isHovered ? 'translateZ(15px)' : 'translateZ(0px)' }}
+        >
+          {project.technologies && project.technologies.map((tech, techIndex) => (
+            <motion.span
+              key={tech}
+              className="project-tag"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.12 + techIndex * 0.05,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+            >
+              {tech}
+            </motion.span>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className="project-card-footer"
+          style={{ transform: isHovered ? 'translateZ(25px)' : 'translateZ(0px)' }}
+        >
           <span className="project-view-link">
             {project.liveUrl ? 'Voir en ligne' : 'En savoir plus'}
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <motion.svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              animate={{ x: isHovered ? 3 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            </motion.svg>
           </span>
-        </div>
-      </a>
+        </motion.div>
+      </motion.a>
     </motion.div>
   )
 }
@@ -84,9 +183,16 @@ function Projects() {
     {
       _id: '6',
       title: 'Docker React Portfolio',
-      description: 'Ce portfolio avec infrastructure Docker complète. Pipeline CI/CD avec Jenkins, déploiement Kubernetes et Infrastructure as Code avec Terraform.',
-      technologies: ['React', 'Docker', 'Jenkins', 'Kubernetes', 'Terraform'],
+      description: 'Pipeline DevOps complète : conteneurisation Docker multi-stage, CI/CD Jenkins, analyse qualité SonarQube, orchestration Kubernetes, Infrastructure as Code Terraform, monitoring Prometheus/Grafana et scan de sécurité Trivy.',
+      technologies: ['React', 'Docker', 'Jenkins', 'Kubernetes', 'Terraform', 'SonarQube', 'Prometheus', 'Grafana', 'Trivy'],
       githubUrl: 'https://github.com/Amethnb2218/docker-REACTPORTFOLIO'
+    },
+    {
+      _id: '10',
+      title: 'Pipeline DevOps Orange Digital Center',
+      description: 'Projet fil rouge de la formation DevOps : pipeline end-to-end avec Docker, Jenkins, SonarQube, Kubernetes, Terraform, Prometheus/Grafana et Trivy. Déploiement d\'une app Full Stack sur cluster K8s et AWS EKS.',
+      technologies: ['Docker', 'Jenkins', 'Kubernetes', 'Terraform', 'SonarQube', 'Prometheus', 'Grafana', 'Trivy'],
+      githubUrl: 'https://github.com/Amethnb2218'
     },
     {
       _id: '7',
@@ -194,11 +300,34 @@ function Projects() {
           text-decoration: none;
           color: inherit;
           transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        .project-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 50% 50%, rgba(200, 121, 65, 0.04), transparent 70%);
+          opacity: 0;
+          transition: opacity 0.6s ease;
+        }
+        .project-card:hover::before {
+          opacity: 1;
         }
         .project-card:hover {
-          transform: translateY(-2px);
           border-color: rgba(200, 121, 65, 0.3);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+        }
+        .project-card-number {
+          position: absolute;
+          top: 1.5rem;
+          right: 1.5rem;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: #555;
+          letter-spacing: 0.05em;
+          z-index: 1;
         }
         .project-card-title {
           font-family: 'Inter', sans-serif;
@@ -208,6 +337,8 @@ function Projects() {
           margin-bottom: 0.75rem;
           letter-spacing: -0.02em;
           line-height: 1.3;
+          position: relative;
+          z-index: 1;
         }
         .project-card-desc {
           font-family: 'Inter', sans-serif;
@@ -215,6 +346,15 @@ function Projects() {
           color: #8a8a8a;
           line-height: 1.7;
           margin-bottom: 1.5rem;
+          position: relative;
+          z-index: 1;
+          transition: all 0.4s ease;
+        }
+        .project-expand-hint {
+          font-size: 0.8rem;
+          color: #c87941;
+          font-style: italic;
+          cursor: pointer;
         }
         .project-card-tags {
           display: flex;
@@ -294,7 +434,7 @@ function Projects() {
 
         <div className="projects-grid">
           {projects.map((project, index) => (
-            <ProjectCard key={project._id} project={project} index={index} />
+            <ProjectCard key={project._id} project={project} index={index} totalProjects={projects.length} />
           ))}
         </div>
       </motion.main>
