@@ -33,18 +33,18 @@ function Navbar() {
           align-items: center;
           justify-content: center;
           padding: 0.6rem 1rem;
-          background: rgba(248, 246, 243, 0.85);
+          background: rgba(242, 247, 245, 0.7);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(0, 0, 0, 0.06);
+          border: 1px solid rgba(0, 71, 62, 0.08);
           border-radius: 100px;
           transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 4px 20px rgba(0, 71, 62, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
         }
         .navbar.scrolled {
-          background: rgba(248, 246, 243, 0.95);
-          border-color: rgba(0, 0, 0, 0.08);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+          background: rgba(242, 247, 245, 0.85);
+          border-color: rgba(0, 71, 62, 0.12);
+          box-shadow: 0 8px 32px rgba(0, 71, 62, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
           padding: 0.5rem 0.9rem;
           top: 0.5rem;
         }

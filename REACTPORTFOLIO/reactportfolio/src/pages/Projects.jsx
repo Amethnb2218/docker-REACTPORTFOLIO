@@ -95,11 +95,31 @@ function ProjectRow({ project, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: -60 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.8, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      style={{ position: 'relative' }}
     >
+      {isHovered && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            position: 'absolute',
+            inset: '-1rem',
+            background: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(0, 71, 62, 0.1)',
+            borderRadius: '16px',
+            zIndex: 0,
+            boxShadow: '0 8px 32px rgba(0, 71, 62, 0.08)'
+          }}
+        />
+      )}
       <Link
         to={`/projects/${project.slug}`}
         style={{
@@ -111,7 +131,12 @@ function ProjectRow({ project, index }) {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
           textDecoration: 'none',
           color: 'inherit',
-          transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+          transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+          position: 'relative',
+          zIndex: 1,
+          transform: isHovered ? 'scale(1.01)' : 'scale(1)',
+          transformStyle: 'preserve-3d',
+          perspective: '1000px'
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -124,15 +149,25 @@ function ProjectRow({ project, index }) {
             color: isHovered ? '#faae2b' : '#8a8a8a',
             letterSpacing: '-0.03em',
             lineHeight: 1,
-            transition: 'color 0.4s ease'
+            transition: 'all 0.4s ease',
+            transform: isHovered ? 'scale(1.1)' : 'scale(1)'
           }}
-          animate={{ x: isHovered ? 10 : 0 }}
+          animate={{
+            x: isHovered ? 10 : 0,
+            rotateY: isHovered ? -10 : 0
+          }}
           transition={{ duration: 0.3 }}
         >
           {project.number}
         </motion.div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.75rem',
+          transform: isHovered ? 'translateX(10px)' : 'translateX(0)',
+          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+        }}>
           <motion.h3
             style={{
               fontFamily: "'Playfair Display', serif",
@@ -245,6 +280,20 @@ function Projects() {
           letter-spacing: '-0.04em';
           line-height: 1;
           margin-bottom: 2rem;
+          background: linear-gradient(90deg, #00473e 0%, #00473e 50%, #faae2b 100%);
+          background-size: 200% 100%;
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: textFillAnimation 1.5s ease-in-out forwards;
+        }
+        @keyframes textFillAnimation {
+          0% {
+            background-position: 100% 0;
+          }
+          100% {
+            background-position: 0 0;
+          }
         }
         .projects-subtitle {
           font-family: 'Inter', sans-serif;
@@ -271,8 +320,8 @@ function Projects() {
         className="projects-page"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="projects-hero">
           <motion.h1

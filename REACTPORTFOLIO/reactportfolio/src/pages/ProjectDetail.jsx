@@ -130,10 +130,12 @@ function ProjectDetail() {
           font-size: 0.95rem;
           margin-bottom: 3rem;
           transition: all 0.3s ease;
+          cursor: pointer;
         }
         .project-detail-back:hover {
           color: #faae2b;
           gap: 0.75rem;
+          transform: translateX(-5px);
         }
         .project-detail-category {
           font-family: 'JetBrains Mono', monospace;
@@ -236,10 +238,10 @@ function ProjectDetail() {
       `}</style>
       <motion.main
         className="project-detail-page"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, x: 50, scale: 0.98 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{ opacity: 0, x: -50, scale: 0.98 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -308,9 +310,15 @@ function ProjectDetail() {
               <motion.span
                 key={tech}
                 className="project-detail-tech-tag"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.6 + index * 0.03 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: 0.6 + index * 0.05,
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 15
+                }}
               >
                 {tech}
                 {index < project.technologies.length - 1 && ','}

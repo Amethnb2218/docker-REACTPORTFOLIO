@@ -1,7 +1,6 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Scene3D from '../components/Scene3D'
 
 function Home() {
   const [hoveredButton, setHoveredButton] = useState(false)
@@ -11,6 +10,10 @@ function Home() {
   const springConfig = { damping: 25, stiffness: 150 }
   const cursorXSpring = useSpring(cursorX, springConfig)
   const cursorYSpring = useSpring(cursorY, springConfig)
+
+  const { scrollY } = useScroll()
+  const opacity = useTransform(scrollY, [0, 300], [1, 0])
+  const scale = useTransform(scrollY, [0, 300], [1, 0.95])
 
   const handleButtonMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -25,17 +28,46 @@ function Home() {
     cursorY.set(0)
   }
 
-  const splitText = (text) => {
+  const splitTextToLetters = (text) => {
+    return text.split('').map((char, i) => (
+      <motion.span
+        key={i}
+        style={{
+          display: 'inline-block',
+          marginRight: char === ' ' ? '0.3em' : '0'
+        }}
+        initial={{
+          opacity: 0,
+          rotateX: -90,
+          y: 50
+        }}
+        animate={{
+          opacity: 1,
+          rotateX: 0,
+          y: 0
+        }}
+        transition={{
+          duration: 0.6,
+          delay: i * 0.03,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+      >
+        {char === ' ' ? ' ' : char}
+      </motion.span>
+    ))
+  }
+
+  const splitTextToWords = (text) => {
     return text.split(' ').map((word, i) => (
       <motion.span
         key={i}
         style={{ display: 'inline-block', marginRight: '0.3em' }}
-        initial={{ opacity: 0, y: 60, clipPath: 'inset(0 0 100% 0)' }}
-        animate={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
+        initial={{ opacity: 0, x: 30, filter: 'blur(10px)' }}
+        animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
         transition={{
-          duration: 0.8,
-          delay: i * 0.15,
-          ease: [0.76, 0, 0.24, 1]
+          duration: 0.6,
+          delay: 0.8 + i * 0.08,
+          ease: [0.22, 1, 0.36, 1]
         }}
       >
         {word}
@@ -105,10 +137,26 @@ function Home() {
           text-decoration: none;
           transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
           letter-spacing: -0.01em;
+          position: relative;
+          overflow: hidden;
+        }
+        .home-cta::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+          transition: left 0.6s ease;
+        }
+        .home-cta:hover::before {
+          left: 100%;
         }
         .home-cta:hover {
           background: #e09b1a;
           transform: scale(1.02) translateY(-2px);
+          box-shadow: 0 10px 30px rgba(250, 174, 43, 0.3);
         }
         .home-status {
           position: fixed;
@@ -147,37 +195,22 @@ function Home() {
         className="home-page"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        style={{ opacity, scale }}
       >
-        <Scene3D />
-
         <div className="home-content">
           <h1 className="home-hero-title">
-            {splitText('Mouhamed Sall')}
+            {splitTextToLetters('Mouhamed Sall')}
           </h1>
 
           <motion.p
             className="home-subtitle"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
           >
-            {['Full', 'Stack', 'Developer', '&', 'DevOps', 'Engineer'].map((word, i) => (
-              <motion.span
-                key={i}
-                className="home-subtitle-word"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.6 + i * 0.08,
-                  ease: [0.22, 1, 0.36, 1]
-                }}
-              >
-                {word}
-              </motion.span>
-            ))}
+            {splitTextToWords('Full Stack Developer & DevOps Engineer')}
           </motion.p>
 
           <motion.p

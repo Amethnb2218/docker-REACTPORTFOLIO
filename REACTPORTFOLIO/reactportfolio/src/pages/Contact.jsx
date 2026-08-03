@@ -74,16 +74,48 @@ function Contact() {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          padding: 0.5rem 1rem;
+          border-radius: 100px;
         }
         .contact-social-link:hover {
           color: #faae2b;
           gap: 0.75rem;
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(250, 174, 43, 0.15);
+          background: rgba(250, 174, 43, 0.05);
         }
         .contact-form {
           display: flex;
           flex-direction: column;
           gap: 2rem;
+          padding: 3rem;
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(0, 71, 62, 0.1);
+          border-radius: 24px;
+          position: relative;
+          overflow: hidden;
+        }
+        .contact-form::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #faae2b, #bae8e8, transparent);
+          background-size: 200% 100%;
+          animation: borderGradient 3s linear infinite;
+        }
+        @keyframes borderGradient {
+          0% {
+            background-position: 200% 0;
+          }
+          100% {
+            background-position: -200% 0;
+          }
         }
         .contact-input,
         .contact-textarea {
@@ -97,6 +129,7 @@ function Contact() {
           color: #00473e;
           outline: none;
           transition: border-color 0.3s ease;
+          position: relative;
         }
         .contact-input::placeholder,
         .contact-textarea::placeholder {
@@ -105,6 +138,15 @@ function Contact() {
         .contact-input:focus,
         .contact-textarea:focus {
           border-bottom-color: #faae2b;
+          animation: inputFocusBeam 0.6s ease-out;
+        }
+        @keyframes inputFocusBeam {
+          0% {
+            box-shadow: -100px 0 0 0 rgba(250, 174, 43, 0.3);
+          }
+          100% {
+            box-shadow: 100px 0 0 0 rgba(250, 174, 43, 0);
+          }
         }
         .contact-textarea {
           min-height: 120px;
@@ -122,11 +164,30 @@ function Contact() {
           font-size: 1rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        .contact-submit::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+          transition: left 0.6s ease;
+        }
+        .contact-submit:hover::before {
+          left: 100%;
         }
         .contact-submit:hover {
           background: #e09b1a;
-          transform: translateY(-2px);
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 10px 30px rgba(250, 174, 43, 0.3);
+        }
+        .contact-submit:active {
+          transform: translateY(0) scale(0.98);
         }
         .contact-submit:disabled {
           opacity: 0.6;
@@ -148,8 +209,8 @@ function Contact() {
         className="contact-page"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.h1
           className="contact-title"

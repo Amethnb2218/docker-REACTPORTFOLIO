@@ -1,4 +1,35 @@
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+
+function CountUpStat({ end, duration = 2 }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (!isInView) return
+
+    let startTime
+    let animationFrame
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime
+      const progress = Math.min((currentTime - startTime) / (duration * 1000), 1)
+
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+      setCount(Math.floor(easeOutQuart * end))
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate)
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [isInView, end, duration])
+
+  return <span ref={ref}>{count}</span>
+}
 
 function About() {
   const skills = {
@@ -73,6 +104,18 @@ function About() {
         }
         .about-stat {
           text-align: center;
+          padding: 2rem;
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(0, 71, 62, 0.1);
+          border-radius: 16px;
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .about-stat:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(0, 71, 62, 0.12);
+          background: rgba(255, 255, 255, 0.5);
         }
         .about-stat-value {
           font-family: 'Playfair Display', serif;
@@ -178,8 +221,8 @@ function About() {
         className="about-page"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.p
           className="about-intro-statement"
@@ -215,10 +258,23 @@ function About() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           {stats.map((stat, index) => (
-            <div key={index} className="about-stat">
-              <div className="about-stat-value">{stat.value}+</div>
+            <motion.div
+              key={index}
+              className="about-stat"
+              initial={{ opacity: 0, y: 30, rotateX: -30 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+            >
+              <div className="about-stat-value">
+                <CountUpStat end={parseInt(stat.value)} />+
+              </div>
               <div className="about-stat-label">{stat.label}</div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
@@ -230,18 +286,23 @@ function About() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        <motion.div
-          className="about-skills-section"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {Object.entries(skills).map(([category, items]) => (
-            <div key={category} className="about-skill-category">
+        <motion.div className="about-skills-section">
+          {Object.entries(skills).map(([category, items], index) => (
+            <motion.div
+              key={category}
+              className="about-skill-category"
+              initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+            >
               <div className="about-skill-category-title">{category}</div>
               <div className="about-skill-items">{items.join(', ')}</div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
@@ -253,22 +314,28 @@ function About() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div>
           {experience.map((exp, index) => (
-            <div key={index} className="about-timeline-item">
+            <motion.div
+              key={index}
+              className="about-timeline-item"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+            >
               <div className="about-timeline-period">{exp.period}</div>
               <div>
                 <div className="about-timeline-title">{exp.title}</div>
                 <div className="about-timeline-company">{exp.company}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         <motion.div
           className="about-divider"
@@ -278,22 +345,28 @@ function About() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div>
           {education.map((edu, index) => (
-            <div key={index} className="about-timeline-item">
+            <motion.div
+              key={index}
+              className="about-timeline-item"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+            >
               <div className="about-timeline-period">{edu.period}</div>
               <div>
                 <div className="about-timeline-title">{edu.title}</div>
                 <div className="about-timeline-company">{edu.school}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         <motion.div
           className="about-divider"
