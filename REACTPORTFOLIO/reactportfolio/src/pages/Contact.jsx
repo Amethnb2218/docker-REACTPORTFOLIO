@@ -29,12 +29,14 @@ function Contact() {
     mouseY.set(0)
   }
 
+  const API_URL = import.meta.env.VITE_API_URL || ''
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const res = await fetch('https://formspree.io/f/meeyyldb', {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -44,20 +46,16 @@ function Contact() {
         })
       })
       if (res.ok) {
-        setStatus('Message envoyé avec succès')
+        setStatus('Message envoyé avec succès !')
         setForm({ name: '', email: '', message: '' })
       } else {
-        const mailtoLink = `mailto:amethsl2218@gmail.com?subject=${encodeURIComponent('Contact - ' + form.name)}&body=${encodeURIComponent(`De: ${form.name} (${form.email})\n\n${form.message}`)}`
-        window.location.href = mailtoLink
-        setStatus('Redirection vers votre client email')
+        setStatus("Erreur lors de l'envoi. Réessayez.")
       }
     } catch {
-      const mailtoLink = `mailto:amethsl2218@gmail.com?subject=${encodeURIComponent('Contact - ' + form.name)}&body=${encodeURIComponent(`De: ${form.name} (${form.email})\n\n${form.message}`)}`
-      window.location.href = mailtoLink
-      setStatus('Redirection vers votre client email')
+      setStatus("Erreur réseau. Réessayez plus tard.")
     }
     setLoading(false)
-    setTimeout(() => setStatus(''), 4000)
+    setTimeout(() => setStatus(''), 5000)
   }
 
   return (

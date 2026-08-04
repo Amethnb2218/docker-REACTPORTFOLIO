@@ -30,7 +30,9 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 })
 
 const projectRoutes = require('./src/routes/projectRoutes')
+const contactRoutes = require('./src/routes/contactRoutes')
 app.use('/api/projects', projectRoutes)
+app.use('/api/contact', contactRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'API Portfolio - Mouhamed Sall' })
