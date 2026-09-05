@@ -25,9 +25,6 @@ function App() {
     return (
       <>
         <style>{`
-          body {
-            perspective: 1200px;
-          }
           .loading-screen {
             position: fixed;
             top: 0;
@@ -83,9 +80,6 @@ function App() {
   return (
     <>
       <style>{`
-        body {
-          perspective: 1200px;
-        }
         .animated-background {
           position: fixed;
           top: 0;
@@ -95,7 +89,6 @@ function App() {
           z-index: -1;
           overflow: hidden;
           pointer-events: none;
-          transform: translateZ(-50px);
         }
         .gradient-blob {
           position: absolute;
@@ -129,13 +122,13 @@ function App() {
         }
         @keyframes float {
           0%, 100% {
-            transform: translate(0, 0) scale(1) translateZ(-50px);
+            transform: translate(0, 0) scale(1);
           }
           33% {
-            transform: translate(80px, -80px) scale(1.15) translateZ(-50px);
+            transform: translate(80px, -80px) scale(1.15);
           }
           66% {
-            transform: translate(-80px, 80px) scale(0.85) translateZ(-50px);
+            transform: translate(-80px, 80px) scale(0.85);
           }
         }
       `}</style>
