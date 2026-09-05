@@ -33,39 +33,91 @@ function CountUpStat({ end, duration = 2 }) {
 
 function About() {
   const skills = {
-    'FRONTEND': ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Framer Motion'],
-    'BACKEND': ['Node.js', 'Express.js', 'Prisma ORM', 'REST API', 'WebSocket'],
-    'CLOUD & DEVOPS': ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Terraform', 'CI/CD', 'Linux', 'SonarQube', 'Prometheus', 'Grafana', 'Trivy'],
-    'DATA': ['PostgreSQL', 'MySQL', 'MongoDB']
+    'CI/CD & AUTOMATISATION': ['Jenkins', 'GitHub Actions', 'Pipelines CI/CD', 'Git', 'GitHub', 'Builds et tests automatisés', 'Déploiement automatisé'],
+    'CONTENEURISATION & ORCHESTRATION': ['Docker', 'Docker Compose', 'Builds multi-stage', 'Kubernetes'],
+    'INFRASTRUCTURE AS CODE': ['Terraform', 'AWS CloudFormation', 'Automatisation des infrastructures'],
+    'CLOUD': ['AWS', 'EC2', 'S3', 'VPC', 'IAM', 'RDS', 'Lambda', 'Architecture cloud', 'Well-Architected Framework'],
+    'SUPERVISION & OBSERVABILITÉ': ['Prometheus', 'Grafana', 'PromQL', 'Alertmanager', 'Tableaux de bord', 'Alerting', 'Suivi des SLA'],
+    'SÉCURITÉ & QUALITÉ': ['Trivy', 'SonarQube', 'OWASP ZAP', 'IAM', 'OAuth 2.0', 'Analyse de vulnérabilités'],
+    'SYSTÈMES & SCRIPTING': ['Linux', 'Bash', 'Python', 'Administration système'],
+    'DÉVELOPPEMENT': ['JavaScript', 'React', 'Next.js', 'Node.js', 'Express', 'API REST', 'PostgreSQL', 'Prisma ORM', 'MongoDB', 'C'],
+    'RÉSEAUX': ['TCP/IP', 'DNS', 'VLAN', 'Adressage IP', 'Fibre optique', 'SMTP', 'IMAP']
   }
 
   const stats = [
-    { value: '8', label: 'Projets livrés' },
-    { value: '2', label: 'Années d\'expérience' },
-    { value: '5', label: 'Certifications AWS & Cloud' }
+    { value: '13', label: 'Projets livrés' },
+    { value: '3', label: 'Finales de hackathons', suffix: '' },
+    { value: '5', label: 'Certifications Cloud & IT' },
+    { value: '2', label: "Années d'expérience" }
   ]
 
   const experience = [
-    { period: '2024 — Présent', title: 'Co-Fondateur', company: 'MTCorporate', description: 'Startup de services numériques : développement web, architecture cloud, pipelines CI/CD et déploiement. Conception et livraison de Jolof\'Era, Teranga AI, FresCOOP et autres solutions.' },
-    { period: '2026 — Présent', title: 'Fondateur & Dev Full Stack', company: 'Jolof\'Era' },
-    { period: '2024 — 2025', title: 'Pilote Production B2B', company: 'Sonatel (Orange)' },
-    { period: '2024', title: 'Stagiaire Réseaux', company: 'Sonatel' }
+    {
+      period: 'Janv. 2026 — Présent',
+      title: 'Co-fondateur',
+      company: 'MTCorporate',
+      description: "Startup de services numériques : développement logiciel, architecture cloud, pipelines CI/CD et déploiement. Conception et livraison de Jolof'Era, Teranga AI, FresCOOP et autres solutions."
+    },
+    {
+      period: '2026 — Présent',
+      title: 'Fondateur & Développeur Full Stack',
+      company: "Jolof'Era",
+      description: "Plateforme SaaS multi-tenant : API REST Node.js / Express, PostgreSQL et Prisma ORM, paiement et notifications en temps réel, déploiement et maintenance de la production."
+    },
+    {
+      period: 'Nov. 2024 — Déc. 2025',
+      title: 'Ingénieur Exploitation Production B2B',
+      company: 'Sonatel Group (Orange) — Dakar',
+      description: "Supervision de services B2B critiques sur accès fibre et cuivre/ADSL. Analyse des incidents de la détection à la résolution, respect des SLA, coordination des équipes d'intervention terrain, rapports opérationnels et amélioration continue en environnement Agile/Scrum."
+    },
+    {
+      period: 'Juin 2024 — Nov. 2024',
+      title: 'Stagiaire Cybersécurité & Réseaux',
+      company: 'ATECH Cybersecurity — Dakar',
+      description: "Configuration de VLAN et d'équipements réseau, déploiement de vidéosurveillance IP et d'un serveur de messagerie sécurisé, tests de sécurité applicative et analyses de vulnérabilités avec OWASP ZAP."
+    },
+    {
+      period: 'Mai 2024 — Juin 2024',
+      title: 'Stagiaire Ingénierie Réseau',
+      company: 'Sonatel Group — DRPS Sablux — Dakar',
+      description: "Études réseau FTTO et projets de connectivité d'entreprise, activités de déploiement fibre et relevés d'infrastructures réseau."
+    }
   ]
 
   const education = [
-    { period: '2025 — 2026 (en cours)', title: 'Ingénieur en Génie Logiciel', school: 'École Supérieure Polytechnique (ESP) Dakar' },
-    { period: '2025 — 2026', title: 'Formation AWS Cloud', school: 'Orange Digital Center' },
-    { period: '2022 — 2024', title: 'DTS Télécommunications et Réseaux', school: 'École Supérieure Polytechnique (ESP) Dakar' }
+    {
+      period: '2024 — 2026',
+      title: "Diplôme d'Ingénieur Technologue (DIT) — Génie Logiciel et Systèmes d'Information",
+      school: 'École Supérieure Polytechnique (ESP) de Dakar',
+      description: 'Dernière année en cours. Soutenance de mémoire prévue en octobre 2026.'
+    },
+    {
+      period: 'Fév. 2026 — Juil. 2026',
+      title: 'AWS re/Start — Cloud Computing',
+      school: 'Orange Digital Center Sénégal'
+    },
+    {
+      period: '2022 — 2024',
+      title: 'Diplôme de Technicien Supérieur (DST) — Télécommunications et Réseaux',
+      school: 'École Supérieure Polytechnique (ESP) de Dakar'
+    }
   ]
 
   const certifications = [
-    { name: 'AWS Certified Cloud Practitioner (CLF-C02)', issuer: 'Amazon Web Services' },
-    { name: 'AWS re/Start Graduate', issuer: 'Amazon Web Services' },
-    { name: 'Foundations of Project Management', issuer: 'Google' },
-    { name: 'Introduction to Data Engineering', issuer: 'IBM' }
+    { name: 'AWS Certified Cloud Practitioner (CLF-C02)', issuer: 'Amazon Web Services', date: 'Juillet 2026' },
+    { name: 'AWS re/Start Graduate', issuer: 'Orange Digital Center Sénégal', date: '2026' },
+    { name: 'Foundations of Project Management', issuer: 'Google', date: 'Juin 2026' },
+    { name: 'Foundational C#', issuer: 'Microsoft / freeCodeCamp', date: 'Mars 2026' },
+    { name: 'Introduction to Data Engineering', issuer: 'IBM', date: 'Mars 2026' }
   ]
 
-  const availability = ['CDI', 'Freelance', 'Mission', 'Collaboration']
+  const languages = [
+    { name: 'Français', level: 'Courant' },
+    { name: 'Anglais', level: 'Professionnel' },
+    { name: 'Wolof', level: 'Langue maternelle' }
+  ]
+
+  const availability = ['CDI', 'Alternance', 'Freelance', 'Mission', 'Collaboration']
 
   return (
     <>
@@ -101,8 +153,8 @@ function About() {
         }
         .about-stats {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 3rem;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 1.5rem;
           margin: 3rem 0;
         }
         .about-stat {
@@ -409,6 +461,58 @@ function About() {
             gap: 1.25rem;
           }
         }
+        .about-section-title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: #e8a020;
+          margin-bottom: 1.5rem;
+        }
+        .about-languages {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 1rem;
+        }
+        .about-language {
+          padding: 1.25rem 1.5rem;
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(0, 54, 46, 0.1);
+          border-radius: 12px;
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .about-language:hover {
+          transform: translateY(-3px);
+          border-color: rgba(232, 160, 32, 0.35);
+        }
+        .about-language-name {
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #00362e;
+          margin-bottom: 0.25rem;
+        }
+        .about-language-level {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          color: #e8a020;
+          font-weight: 500;
+        }
+        @media (max-width: 768px) {
+          .about-section-title {
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+          }
+          .about-languages {
+            grid-template-columns: 1fr;
+          }
+          .about-language {
+            padding: 1rem 1.25rem;
+          }
+        }
       `}</style>
       <motion.main
         className="about-page"
@@ -423,7 +527,7 @@ function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          Développeur Full Stack et DevOps passionné, basé à Dakar.
+          Ingénieur Cloud & DevOps et développeur Full Stack, basé à Dakar.
         </motion.p>
 
         <motion.p
@@ -432,7 +536,9 @@ function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          Co-fondateur de MTCorporate, startup spécialisée en développement web, cloud et déploiement CI/CD. À travers MTCorporate, j'ai conçu et livré des solutions comme Jolof'Era, Teranga AI et FresCOOP. Ancien Pilote Production B2B chez Sonatel, je combine expertise technique et vision entrepreneuriale pour créer des produits qui ont un impact réel.
+          Ingénieur Cloud et DevOps junior, certifié AWS Certified Cloud Practitioner et diplômé du programme AWS re/Start. Je conçois des chaînes CI/CD de bout en bout : builds Docker multi-étapes, automatisation Jenkins, orchestration Kubernetes, Infrastructure as Code avec Terraform, qualité de code SonarQube, scan de sécurité Trivy et observabilité Prometheus / Grafana.
+          <br /><br />
+          Côté production, j'ai supervisé des services B2B critiques chez Sonatel : suivi des incidents de la détection à la résolution, respect des SLA et coordination des équipes d'intervention. Co-fondateur de MTCorporate, j'y ai conçu et livré Jolof'Era, Teranga AI et FresCOOP. Trois fois finaliste Top 10 de challenges d'innovation (GIM-UEMOA, POESAM Orange, CIF DigiCoop-WA+).
         </motion.p>
 
         <motion.a
@@ -503,7 +609,7 @@ function About() {
               }}
             >
               <div className="about-stat-value">
-                <CountUpStat end={parseInt(stat.value)} />+
+                <CountUpStat end={parseInt(stat.value)} />{stat.suffix ?? '+'}
               </div>
               <div className="about-stat-label">{stat.label}</div>
             </motion.div>
@@ -517,6 +623,16 @@ function About() {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
+
+        <motion.div
+          className="about-section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Compétences techniques
+        </motion.div>
 
         <motion.div className="about-skills-section">
           {Object.entries(skills).map(([category, items], index) => (
@@ -545,6 +661,16 @@ function About() {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
+
+        <motion.div
+          className="about-section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Expérience professionnelle
+        </motion.div>
 
         <div>
           {experience.map((exp, index) => (
@@ -580,6 +706,16 @@ function About() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
+        <motion.div
+          className="about-section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Formation
+        </motion.div>
+
         <div>
           {education.map((edu, index) => (
             <motion.div
@@ -598,6 +734,9 @@ function About() {
               <div>
                 <div className="about-timeline-title">{edu.title}</div>
                 <div className="about-timeline-company">{edu.school}</div>
+                {edu.description && (
+                  <div className="about-timeline-description">{edu.description}</div>
+                )}
               </div>
             </motion.div>
           ))}
@@ -611,6 +750,16 @@ function About() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
+        <motion.div
+          className="about-section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Certifications
+        </motion.div>
+
         <motion.ul
           className="about-cert-list"
           initial={{ opacity: 0, y: 30 }}
@@ -623,11 +772,47 @@ function About() {
               <div className="about-cert-dot" />
               <div>
                 <div>{cert.name}</div>
-                <div className="about-cert-issuer">{cert.issuer}</div>
+                <div className="about-cert-issuer">
+                  {cert.issuer}{cert.date ? ' · ' + cert.date : ''}
+                </div>
               </div>
             </li>
           ))}
         </motion.ul>
+
+        <motion.div
+          className="about-divider"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        <motion.div
+          className="about-section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Langues
+        </motion.div>
+
+        <div className="about-languages">
+          {languages.map((language, index) => (
+            <motion.div
+              key={language.name}
+              className="about-language"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="about-language-name">{language.name}</div>
+              <div className="about-language-level">{language.level}</div>
+            </motion.div>
+          ))}
+        </div>
       </motion.main>
     </>
   )

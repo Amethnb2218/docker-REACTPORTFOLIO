@@ -116,10 +116,13 @@ function Scene3D() {
       width: '100%',
       height: '100vh',
       pointerEvents: 'none',
-      zIndex: 0,
+      zIndex: -1,
       opacity: 0.4
     }}>
-      <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
+      <Canvas
+        camera={{ position: [0, 0, 8], fov: 50 }}
+        style={{ pointerEvents: 'none' }}
+      >
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />

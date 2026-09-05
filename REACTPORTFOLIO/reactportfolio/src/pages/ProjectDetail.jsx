@@ -1,85 +1,6 @@
 import { motion } from 'framer-motion'
 import { useParams, Link } from 'react-router-dom'
-
-const projects = [
-  {
-    slug: 'jolof-era',
-    title: "Jolof'Era",
-    subtitle: 'Plateforme SaaS de réservation',
-    description: "Plateforme SaaS multi-tenant permettant aux commerçants et prestataires de gérer leurs réservations en ligne, leur catalogue produits et leurs paiements. Notifications en temps réel et gestion multi-boutiques.",
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'Prisma', 'WebSocket', 'AWS'],
-    liveUrl: 'https://jolofera.com',
-    githubUrl: 'https://github.com/Amethnb2218/flashrv-react',
-    category: 'Full Stack',
-    featured: true
-  },
-  {
-    slug: 'teranga-ai',
-    title: 'Teranga AI',
-    subtitle: "Aide à la décision agricole par IA",
-    description: "Système d'aide à la décision agricole propulsé par l'IA pour les agriculteurs ouest-africains. Prédiction de rendement par Machine Learning, optimisation de calendrier cultural, évaluation des risques et support vocal multilingue en 9 langues dont le wolof, le pulaar et le sérère.",
-    technologies: ['Python', 'Machine Learning', 'NLP', 'React', 'API REST', 'Groq', 'HuggingFace'],
-    liveUrl: 'https://teranga-assistant.onrender.com',
-    githubUrl: 'https://github.com/Amethnb2218/teranga-ai',
-    category: 'IA',
-    featured: true
-  },
-  {
-    slug: 'frescoop',
-    title: 'FresCOOP',
-    subtitle: 'Gestion de coopératives agricoles',
-    description: "Solution digitale permettant aux coopératives agricoles de gérer leurs membres, mutualiser les achats et accéder à de nouveaux marchés. Tableau de bord collaboratif et suivi en temps réel.",
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express.js'],
-    githubUrl: 'https://github.com/Amethnb2218',
-    category: 'Full Stack',
-    featured: true
-  },
-  {
-    slug: 'ligueyfemme',
-    title: 'LigueyFemme',
-    subtitle: "Inclusion financière féminine",
-    description: "Application mobile d'inclusion financière dédiée aux femmes au Sénégal. Accès micro-crédits, tontines digitales, éducation financière et mise en réseau de femmes entrepreneures.",
-    technologies: ['React Native', 'Node.js', 'AWS Lambda', 'MongoDB'],
-    githubUrl: 'https://github.com/Amethnb2218',
-    category: 'Mobile'
-  },
-  {
-    slug: 'wolof-asr',
-    title: 'Wolof ASR',
-    subtitle: 'Transcription vocale wolof',
-    description: "Service cloud de transcription automatique de la parole en wolof. API serverless sur AWS Lambda avec modèle ASR pré-inclus dans l'image Docker pour inférence rapide.",
-    technologies: ['Python', 'AWS Lambda', 'Docker', 'Machine Learning'],
-    githubUrl: 'https://github.com/Amethnb2218/wolof-transcribe',
-    category: 'IA'
-  },
-  {
-    slug: 'devops-pipeline',
-    title: 'Pipeline DevOps',
-    subtitle: 'CI/CD end-to-end',
-    description: "Pipeline DevOps complète : conteneurisation Docker multi-stage, CI/CD Jenkins, analyse qualité SonarQube, orchestration Kubernetes, IaC Terraform, monitoring Prometheus/Grafana et scan sécurité Trivy.",
-    technologies: ['Docker', 'Jenkins', 'Kubernetes', 'Terraform', 'SonarQube', 'Prometheus', 'Grafana', 'Trivy'],
-    githubUrl: 'https://github.com/Amethnb2218/docker-REACTPORTFOLIO',
-    category: 'DevOps'
-  },
-  {
-    slug: '4ura',
-    title: '4ura.tech',
-    subtitle: 'Bien-être et développement personnel',
-    description: "Site web dédié au bien-être et développement personnel avec interface apaisante et contenu orienté santé mentale et physique.",
-    technologies: ['React', 'Tailwind CSS', 'Vite'],
-    liveUrl: 'https://4ura.tech',
-    category: 'Full Stack'
-  },
-  {
-    slug: 'infra-terraform',
-    title: 'Infrastructure Terraform',
-    subtitle: 'IaC multi-environnement',
-    description: "Provisioning automatisé d'infrastructure AWS : VPC, sous-réseaux, instances EC2, load balancers et déploiement EKS. Gestion multi-environnement dev/staging/prod.",
-    technologies: ['Terraform', 'AWS', 'Docker', 'CI/CD'],
-    githubUrl: 'https://github.com/Amethnb2218',
-    category: 'DevOps'
-  }
-]
+import { projects } from '../data/projects.js'
 
 function ProjectDetail() {
   const { slug } = useParams()
@@ -299,6 +220,35 @@ function ProjectDetail() {
             font-size: 0.85rem;
           }
         }
+        .project-detail-highlights {
+          list-style: none;
+          padding: 0;
+          margin: 0 0 1rem;
+        }
+        .project-detail-highlight {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.85rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #3a5450;
+          line-height: 1.8;
+          padding: 0.45rem 0;
+        }
+        .project-detail-highlight-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #e8a020;
+          flex-shrink: 0;
+          margin-top: 0.7rem;
+        }
+        @media (max-width: 768px) {
+          .project-detail-highlight {
+            font-size: 0.95rem;
+            line-height: 1.7;
+          }
+        }
       `}</style>
       <motion.main
         className="project-detail-page"
@@ -326,7 +276,7 @@ function ProjectDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         >
-          {project.category}
+          {project.category}{project.period ? ' · ' + project.period : ''}
         </motion.div>
 
         <motion.h1
@@ -360,8 +310,32 @@ function ProjectDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          {project.description}
+          {project.longDescription || project.description}
         </motion.p>
+
+        {project.highlights && project.highlights.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="project-detail-section-title">Réalisations</div>
+            <ul className="project-detail-highlights">
+              {project.highlights.map((highlight, index) => (
+                <motion.li
+                  key={highlight}
+                  className="project-detail-highlight"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <span className="project-detail-highlight-dot" />
+                  <span>{highlight}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -10,10 +10,10 @@ function Home() {
   const [isDeleting, setIsDeleting] = useState(false)
 
   const roles = [
-    'Full Stack Developer',
-    'DevOps Engineer',
-    'Co-Founder @ MTCorporate',
-    'Cloud Architect'
+    'Ingénieur DevOps',
+    'Cloud & CI/CD',
+    'Développeur Full Stack',
+    'Co-fondateur @ MTCorporate'
   ]
 
   useEffect(() => {
@@ -407,9 +407,10 @@ function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            Développeur Full Stack et étudiant ingénieur en Génie Logiciel à l'ESP Dakar.
-            Fondateur de Jolof'Era, plateforme SaaS multi-tenant. Certifié AWS Cloud Practitioner
-            et AWS re/Start Graduate.
+            Ingénieur Cloud & DevOps junior : CI/CD, conteneurisation, Infrastructure as Code
+            et observabilité. Étudiant ingénieur en Génie Logiciel à l'ESP Dakar, certifié AWS
+            Cloud Practitioner et diplômé AWS re/Start. Co-fondateur de MTCorporate et fondateur
+            de Jolof'Era.
           </motion.p>
 
           <motion.div
@@ -452,6 +453,7 @@ function Home() {
               <div className="home-trusted-logo">Sonatel (Orange)</div>
               <div className="home-trusted-logo">AWS</div>
               <div className="home-trusted-logo">Orange Digital Center</div>
+              <div className="home-trusted-logo">ATECH Cybersecurity</div>
             </div>
           </motion.div>
         </div>
