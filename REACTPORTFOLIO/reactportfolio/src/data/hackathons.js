@@ -39,7 +39,7 @@ export const hackathons = [
     event: 'Challenge scoring microcrédit et inclusion financière',
     award: 'Finaliste — Top 10 national',
     year: '2026',
-    status: 'Sélection nationale du 9 au 11 septembre 2026',
+    status: 'Sélection nationale · 9 au 11 septembre 2026',
     description: "Challenge autour du scoring microcrédit, de l'analyse des clients et de l'inclusion financière. Classé dans le Top 10 national sénégalais, avec participation à la sélection nationale du 9 au 11 septembre 2026.",
     role: 'Full Stack Developer / DevOps',
     contributions: [

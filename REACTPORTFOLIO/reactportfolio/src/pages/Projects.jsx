@@ -118,12 +118,9 @@ function HackathonCard({ hackathon, index }) {
       <p className="hackathon-desc">{hackathon.description}</p>
 
       {hackathon.status && (
-        <div className="hackathon-status">
-          <span className="hackathon-status-dot" />
-          <span>
-            <span className="hackathon-status-label">Prochaine étape</span>
-            {hackathon.status}
-          </span>
+        <div className="hackathon-next">
+          <span className="hackathon-next-label">Prochaine étape</span>
+          <span className="hackathon-next-value">{hackathon.status}</span>
         </div>
       )}
 
@@ -471,11 +468,6 @@ function Projects() {
           height: 6px;
           border-radius: 50%;
           background: #2fa37c;
-          animation: liveDot 2s ease-in-out infinite;
-        }
-        @keyframes liveDot {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.35; }
         }
         .project-card-flag { color: #b8760a; }
         .project-card-period { color: #a5a5a5; }
@@ -591,43 +583,28 @@ function Projects() {
           -webkit-line-clamp: unset;
           overflow: visible;
         }
-        .hackathon-status {
+        .hackathon-next {
           display: flex;
-          align-items: flex-start;
-          gap: 0.6rem;
-          padding: 0.7rem 0.85rem;
-          background: rgba(157, 216, 216, 0.18);
-          border: 1px solid rgba(157, 216, 216, 0.6);
-          border-radius: 10px;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.85rem;
-          font-weight: 500;
-          color: #00362e;
-          line-height: 1.45;
-          margin-bottom: 1rem;
+          flex-direction: column;
+          gap: 0.2rem;
+          padding-top: 0.85rem;
+          margin-bottom: 1.1rem;
+          border-top: 1px solid rgba(0, 54, 46, 0.09);
         }
-        .hackathon-status-label {
-          display: block;
+        .hackathon-next-label {
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.62rem;
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.09em;
-          color: #1d7a5f;
-          margin-bottom: 0.15rem;
+          letter-spacing: 0.11em;
+          color: #8a8a8a;
         }
-        .hackathon-status-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: #e8a020;
-          flex-shrink: 0;
-          margin-top: 0.32rem;
-          animation: hackathonPulse 2s ease-in-out infinite;
-        }
-        @keyframes hackathonPulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.85); }
+        .hackathon-next-value {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: #00362e;
+          line-height: 1.45;
         }
         .hackathon-tags {
           display: flex;
@@ -726,10 +703,6 @@ function Projects() {
 
         @media (hover: none) {
           .project-card:hover { transform: none; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .project-card-live-dot,
-          .hackathon-status-dot { animation: none; }
         }
         @media (max-width: 900px) {
           .projects-toolbar {
