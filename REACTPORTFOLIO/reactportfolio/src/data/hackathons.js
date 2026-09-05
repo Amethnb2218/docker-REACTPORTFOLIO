@@ -20,7 +20,7 @@ export const hackathons = [
     slug: 'poesam-orange',
     name: 'POESAM — Orange',
     event: 'Prix Orange de l\'Entrepreneur Social en Afrique et au Moyen-Orient 2026',
-    award: 'Finaliste — Top 10',
+    award: 'Finaliste — Top 10 national',
     year: '2026',
     description: "Participation au POESAM 2026 avec FRESCOOP AI, une solution visant à améliorer la visibilité économique et l'accès au financement des producteurs agricoles.",
     role: 'Co-fondateur / Full Stack Developer / DevOps',
